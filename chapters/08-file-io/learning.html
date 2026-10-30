@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 8 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 8 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/08-file-io/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 8 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,444 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+      <h2>1. The FILE Type and Streams</h2>
+      <p>In C, all input and output operations are performed through <strong>streams</strong>. A stream is an abstraction that represents a continuous flow of data to or from a device (such as a disk file, terminal, keyboard, network socket, or pipe). This abstraction decouples your C code from the physical storage hardware.</p>
+
+      <p>A stream is represented in C programs by a pointer to an opaque structure type named <code>FILE</code> (defined in <code>&lt;stdio.h&gt;</code>). You never inspect or manipulate the internal members of a <code>FILE</code> struct directly; instead, you pass a <code>FILE *</code> handle to the standard library I/O functions.</p>
+
+      <h3>Standard Streams</h3>
+      <p>When a C program starts execution, the runtime environment automatically opens three standard streams, available as global <code>FILE *</code> constants:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Stream</th>
+            <th>Type</th>
+            <th>Default Device</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>stdin</code></td>
+            <td><code>FILE *</code></td>
+            <td>Keyboard</td>
+            <td>Standard input stream (read by <code>scanf</code>, <code>getchar</code>, <code>fgets</code>)</td>
+          </tr>
+          <tr>
+            <td><code>stdout</code></td>
+            <td><code>FILE *</code></td>
+            <td>Terminal / Display</td>
+            <td>Standard output stream (written by <code>printf</code>, <code>putchar</code>, <code>puts</code>)</td>
+          </tr>
+          <tr>
+            <td><code>stderr</code></td>
+            <td><code>FILE *</code></td>
+            <td>Terminal / Display</td>
+            <td>Standard error stream for diagnostic messages (unbuffered by default)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Stream Buffering Modes</h3>
+      <p>To reduce expensive system calls to the operating system kernel, C streams buffer data in memory before flushing it to the underlying device:</p>
+      <ul>
+        <li><strong>Fully buffered (<code>_IOFBF</code>)</strong>: Characters are accumulated in an internal block buffer and written to disk only when the buffer is full (or flushed explicitly with <code>fflush()</code> or <code>fclose()</code>). Typical for disk files.</li>
+        <li><strong>Line buffered (<code>_IOLBF</code>)</strong>: Characters are flushed whenever a newline character (<code>'\n'</code>) is encountered or the buffer fills up. Typical for interactive output to terminals (<code>stdout</code>).</li>
+        <li><strong>Unbuffered (<code>_IONBF</code>)</strong>: Characters are written immediately to the destination without any intermediate buffering. Default for <code>stderr</code> so critical error messages appear without delay if a crash occurs.</li>
+      </ul>
+
+      <h2>2. Opening and Closing Files</h2>
+      <p>Files are opened with <code>fopen()</code> and closed with <code>fclose()</code>:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>file_open_close.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span><span class="st">"data.txt"</span><span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error opening data.txt"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* ... perform file operations ... */</span>
+
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">)</span> <span class="pu">==</span> EOF<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error closing file"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>File Access Modes</h3>
+      <p>The second argument to <code>fopen()</code> is a string specifying the file mode:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>Meaning</th>
+            <th>If File Exists</th>
+            <th>If File Does Not Exist</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>"r"</code></td>
+            <td>Open for reading</td>
+            <td>Reads from start</td>
+            <td>Fails (returns <code>NULL</code>)</td>
+          </tr>
+          <tr>
+            <td><code>"w"</code></td>
+            <td>Open for writing (truncate/create)</td>
+            <td><strong>Truncates to 0 bytes</strong></td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code>"a"</code></td>
+            <td>Open for appending (write at end)</td>
+            <td>Appends to end</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code>"r+"</code></td>
+            <td>Open for reading and writing</td>
+            <td>Positions at start</td>
+            <td>Fails (returns <code>NULL</code>)</td>
+          </tr>
+          <tr>
+            <td><code>"w+"</code></td>
+            <td>Open for reading and writing (truncate)</td>
+            <td><strong>Truncates to 0 bytes</strong></td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code>"a+"</code></td>
+            <td>Open for reading and appending</td>
+            <td>Reads anywhere, writes at end</td>
+            <td>Creates new file</td>
+          </tr>
+          <tr>
+            <td><code>"rb"</code>, <code>"wb"</code>, <code>"ab"</code></td>
+            <td>Binary equivalents of the above</td>
+            <td>Same behavior</td>
+            <td>Same behavior</td>
+          </tr>
+          <tr>
+            <td><code>"r+b"</code>, <code>"w+b"</code>, <code>"a+b"</code></td>
+            <td>Binary read/update equivalents</td>
+            <td>Same behavior</td>
+            <td>Same behavior</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Always close open files and check return values:</strong> Failing to call <code>fclose()</code> causes resource and file descriptor leaks in the operating system. Furthermore, buffered write data is flushed when <code>fclose()</code> runs; if you fail to close a file or if your program crashes, buffered data may never be written to disk.</div>
+      </div>
+
+      <h2>3. Text Mode I/O</h2>
+      <p>Text mode streams translate line endings transparently. On Windows systems, text mode converts <code>\n</code> in memory to <code>\r\n</code> (CR-LF) on disk upon writing, and converts <code>\r\n</code> back to <code>\n</code> upon reading. On POSIX systems (Linux / macOS), text mode and binary mode are identical.</p>
+
+      <h3>1. Formatted I/O: <code>fprintf</code> and <code>fscanf</code></h3>
+      <p><code>fprintf</code> and <code>fscanf</code> work identically to <code>printf</code> and <code>scanf</code>, but accept a target <code>FILE *</code> stream as their first argument.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>formatted_io.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Writing formatted text */</span>
+<span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"%s %d %.2f\n"</span><span class="pu">,</span> <span class="st">"Alice"</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">3.85</span><span class="pu">);</span>
+
+<span class="cm">/* Reading formatted text */</span>
+<span class="ty">char</span> name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+<span class="ty">int</span> age<span class="pu">;</span>
+<span class="ty">double</span> gpa<span class="pu">;</span>
+<span class="kw">if</span> <span class="pu">(</span><span class="fn">fscanf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"%31s %d %lf"</span><span class="pu">,</span> name<span class="pu">, &amp;</span>age<span class="pu">, &amp;</span>gpa<span class="pu">)</span> <span class="pu">==</span> <span class="nm">3</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read student: %s, age %d, GPA %.2f\n"</span><span class="pu">,</span> name<span class="pu">,</span> age<span class="pu">,</span> gpa<span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>2. Line-by-Line I/O: <code>fgets</code> and <code>fputs</code></h3>
+      <p><code>fgets()</code> is the recommended, buffer-safe function for reading text line-by-line. Unlike the dangerous and removed <code>gets()</code>, <code>fgets()</code> requires specifying the maximum buffer size.</p>
+      <ul>
+        <li><code>char *fgets(char *str, int size, FILE *stream)</code>: Reads up to <code>size - 1</code> characters, stopping after a newline (<code>'\n'</code>) or EOF. Stores the newline inside <code>str</code> and appends a null terminator (<code>'\0'</code>). Returns <code>str</code> on success, or <code>NULL</code> on EOF / error.</li>
+        <li><code>int fputs(const char *str, FILE *stream)</code>: Writes null-terminated string <code>str</code> to <code>stream</code> (does NOT automatically append a newline). Returns non-negative integer on success, <code>EOF</code> on error.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>fgets_fputs.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">char</span> buffer<span class="pu">[</span><span class="nm">256</span><span class="pu">];</span>
+<span class="kw">while</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>buffer<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buffer<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">fputs</span><span class="pu">(</span>buffer<span class="pu">,</span> stdout<span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>3. Character-by-Character I/O: <code>fgetc</code> and <code>fputc</code></h3>
+      <ul>
+        <li><code>int fgetc(FILE *stream)</code>: Reads the next character as an <code>unsigned char</code> cast to <code>int</code>, or returns <code>EOF</code> on end-of-file or error.</li>
+        <li><code>int fputc(int ch, FILE *stream)</code>: Writes character <code>ch</code> to <code>stream</code>. Returns the character written, or <code>EOF</code> on error.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Store <code>fgetc()</code> return value in an <code>int</code>, never a <code>char</code>:</strong> <code>EOF</code> is a negative integer (typically <code>-1</code>). If you store the return value in a <code>char</code> on platforms where <code>char</code> is unsigned (or if a valid byte matches <code>(char)EOF</code>), the comparison <code>ch != EOF</code> will fail.</div>
+      </div>
+
+      <h2>4. Binary Mode I/O</h2>
+      <p>Binary streams transfer raw bytes without translating newlines or interpreting null characters. Binary mode is essential for media files, network packets, and structured binary records.</p>
+
+      <h3><code>fread</code> and <code>fwrite</code></h3>
+      <ul>
+        <li><code>size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream)</code>: Writes <code>nmemb</code> elements of size <code>size</code> bytes each from memory buffer <code>ptr</code> to <code>stream</code>. Returns the number of items successfully written.</li>
+        <li><code>size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)</code>: Reads up to <code>nmemb</code> elements of size <code>size</code> bytes from <code>stream</code> into buffer <code>ptr</code>. Returns the number of items successfully read.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>struct_binary_io.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">char</span>   title<span class="pu">[</span><span class="nm">64</span><span class="pu">];</span>
+    <span class="ty">double</span> price<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Product</span><span class="pu">;</span>
+
+<span class="ty">void</span> <span class="fn">save_product</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Product</span> <span class="pu">*</span>p<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"wb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+
+    <span class="ty">size_t</span> written <span class="pu">=</span> <span class="fn">fwrite</span><span class="pu">(</span>p<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Product</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>written <span class="pu">!=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Write failed"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">load_product</span><span class="pu">(</span><span class="ty">Product</span> <span class="pu">*</span>p<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="ty">size_t</span> read_count <span class="pu">=</span> <span class="fn">fread</span><span class="pu">(</span>p<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Product</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="kw">return</span> read_count <span class="pu">==</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Portability &amp; Endianness Note:</strong> Dumping memory structures directly to disk with <code>fwrite(&amp;struct, sizeof(struct), 1, fp)</code> writes struct padding bytes and architecture-dependent multi-byte integers (Little Endian vs Big Endian). Binary files written this way may not be compatible across different compilers, alignments, or CPU architectures. For robust cross-platform interchange, consider serialisation formats (such as fixed byte layouts, JSON, or protocol buffers).</div>
+      </div>
+
+      <h2>5. File Positioning (Random Access)</h2>
+      <p>C streams maintain an internal file position indicator that advances as you read or write. You can query or modify this indicator to perform random access I/O.</p>
+
+      <h3><code>fseek</code> and <code>ftell</code></h3>
+      <ul>
+        <li><code>int fseek(FILE *stream, long offset, int whence)</code>: Repositions the file position indicator. Returns <code>0</code> on success, non-zero on error.</li>
+        <li><code>long ftell(FILE *stream)</code>: Returns the current byte offset from the beginning of the file, or <code>-1L</code> on error.</li>
+        <li><code>void rewind(FILE *stream)</code>: Resets the position indicator to the start of the file (equivalent to <code>(void)fseek(stream, 0L, SEEK_SET)</code>, plus clearing error flags).</li>
+      </ul>
+
+      <p>The <code>whence</code> parameter specifies the anchor point for <code>offset</code>:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Anchor Point</th>
+            <th>Example: Seek to 10th byte</th>
+            <th>Example: Seek to end</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>SEEK_SET</code></td>
+            <td>Beginning of file</td>
+            <td><code>fseek(fp, 10L, SEEK_SET)</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>SEEK_CUR</code></td>
+            <td>Current position</td>
+            <td><code>fseek(fp, 10L, SEEK_CUR)</code></td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td><code>SEEK_END</code></td>
+            <td>End of file</td>
+            <td>&mdash;</td>
+            <td><code>fseek(fp, 0L, SEEK_END)</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Measuring File Size with <code>ftell</code></h3>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>file_size.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="fn">fseek</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="nm">0L</span><span class="pu">,</span> SEEK_END<span class="pu">);</span>
+<span class="ty">long</span> size <span class="pu">=</span> <span class="fn">ftell</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="fn">rewind</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"File size: %ld bytes\n"</span><span class="pu">,</span> size<span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Large Files: <code>fgetpos</code> and <code>fsetpos</code></h3>
+      <p>Because <code>ftell()</code> and <code>fseek()</code> use <code>long</code> integers, they may overflow on files exceeding 2 GB on 32-bit <code>long</code> systems. C provides <code>fgetpos</code> and <code>fsetpos</code> using the opaque <code>fpos_t</code> type to handle arbitrary file sizes.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>fpos_example.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">fpos_t</span> pos<span class="pu">;</span>
+<span class="fn">fgetpos</span><span class="pu">(</span>fp<span class="pu">, &amp;</span>pos<span class="pu">);</span> <span class="cm">/* record current position */</span>
+<span class="cm">/* ... read or write elsewhere ... */</span>
+<span class="fn">fsetpos</span><span class="pu">(</span>fp<span class="pu">, &amp;</span>pos<span class="pu">);</span> <span class="cm">/* restore saved position */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>6. Error Handling in File I/O</h2>
+      <p>When an I/O operation returns fewer elements than expected or an error indicator, you must determine whether the stream encountered an end-of-file condition or a hardware/OS error.</p>
+
+      <h3>Inspection Functions</h3>
+      <ul>
+        <li><code>int feof(FILE *stream)</code>: Returns non-zero if the end-of-file indicator has been set for <code>stream</code>.</li>
+        <li><code>int ferror(FILE *stream)</code>: Returns non-zero if the error indicator has been set for <code>stream</code>.</li>
+        <li><code>void clearerr(FILE *stream)</code>: Clears both the EOF and error indicators for <code>stream</code>.</li>
+        <li><code>void perror(const char *s)</code>: Prints string <code>s</code>, a colon, and the human-readable description corresponding to the current global <code>errno</code>.</li>
+        <li><code>char *strerror(int errnum)</code> (from <code>&lt;string.h&gt;</code>): Returns a string describing the error code <code>errnum</code> (e.g. <code>errno</code>).</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Never use <code>while (!feof(fp))</code> to control read loops:</strong> <code>feof()</code> only returns true <em>after</em> a read operation has already attempted to read past the end of the file and failed. If used as the loop condition, your loop body will execute one extra time on garbage/stale data. Always check the return value of your read function (e.g. <code>fgets</code>, <code>fread</code>, <code>fscanf</code>, <code>fgetc</code>) as the loop condition!</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>correct_eof_handling.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* WRONG: Processes last record twice! */</span>
+<span class="cm">/* while (!feof(fp)) { fscanf(fp, "%d", &amp;val); printf("%d\n", val); } */</span>
+
+<span class="cm">/* CORRECT: Check return value directly */</span>
+<span class="ty">int</span> val<span class="pu">;</span>
+<span class="kw">while</span> <span class="pu">(</span><span class="fn">fscanf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"%d"</span><span class="pu">, &amp;</span>val<span class="pu">)</span> <span class="pu">==</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read: %d\n"</span><span class="pu">,</span> val<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="cm">/* After loop, check why it terminated */</span>
+<span class="kw">if</span> <span class="pu">(</span><span class="fn">ferror</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">{</span>
+    <span class="fn">perror</span><span class="pu">(</span><span class="st">"I/O error occurred during read"</span><span class="pu">);</span>
+<span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span><span class="fn">feof</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"End of file reached successfully.\n"</span><span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>7. Temporary Files</h2>
+      <p>C provides functions in <code>&lt;stdio.h&gt;</code> for creating scratchpad temporary files:</p>
+
+      <ul>
+        <li><code>FILE *tmpfile(void)</code>: Creates and opens a temporary binary file in <code>"wb+"</code> mode. The file is automatically deleted when it is closed or when the program terminates normally.</li>
+        <li><code>char *tmpnam(char *str)</code>: Generates a unique temporary filename.</li>
+      </ul>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Security Caveat with <code>tmpnam</code>:</strong> <code>tmpnam()</code> is inherently vulnerable to Time-of-Check to Time-of-Use (TOCTOU) race conditions: between the time <code>tmpnam()</code> generates the name and your program creates the file with <code>fopen()</code>, another process or attacker could create a symlink with that name. Prefer <code>tmpfile()</code> or POSIX <code>mkstemp()</code>.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>tmpfile_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>tmp <span class="pu">=</span> <span class="fn">tmpfile</span><span class="pu">();</span>
+    <span class="kw">if</span> <span class="pu">(</span>tmp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to create temporary file"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"Temporary data stored in scratch file\n"</span><span class="pu">,</span> tmp<span class="pu">);</span>
+    <span class="fn">rewind</span><span class="pu">(</span>tmp<span class="pu">);</span>
+
+    <span class="ty">char</span> line<span class="pu">[</span><span class="nm">128</span><span class="pu">];</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>line<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>line<span class="pu">),</span> tmp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read from temp: %s"</span><span class="pu">,</span> line<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>tmp<span class="pu">);</span> <span class="cm">/* File is automatically deleted from disk */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>8. Standard Streams Redirection</h2>
+      <p>Standard streams can be redirected programmatically in C or externally through shell operators.</p>
+
+      <h3>Programmatic Redirection: <code>freopen</code></h3>
+      <p><code>FILE *freopen(const char *filename, const char *mode, FILE *stream)</code> closes the existing <code>stream</code> (if open) and reassigns it to open <code>filename</code>. This is commonly used to redirect <code>stdout</code> or <code>stderr</code> to a log file.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>freopen_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"This message prints to the console terminal.\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Redirect stdout to output.log */</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">freopen</span><span class="pu">(</span><span class="st">"output.log"</span><span class="pu">,</span> <span class="st">"w"</span><span class="pu">,</span> stdout<span class="pu">)</span> <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"freopen failed"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"This message is written to output.log instead!\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Shell Redirection &amp; Special Devices</h3>
+      <p>In Unix and Windows command lines, you can redirect streams without modifying code:</p>
+      <ul>
+        <li><code>./prog &gt; out.txt</code> &mdash; Redirects <code>stdout</code> to <code>out.txt</code></li>
+        <li><code>./prog &lt; in.txt</code> &mdash; Redirects <code>stdin</code> from <code>in.txt</code></li>
+        <li><code>./prog 2&gt; err.log</code> &mdash; Redirects <code>stderr</code> to <code>err.log</code></li>
+        <li><code>./prog &gt; /dev/null 2&gt;&amp;1</code> &mdash; Discards both <code>stdout</code> and <code>stderr</code> using the special null sink device (<code>/dev/null</code> on Unix, <code>NUL</code> on Windows).</li>
+      </ul>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>C abstracts I/O through <code>FILE *</code> streams (<code>stdin</code>, <code>stdout</code>, <code>stderr</code>).</li>
+        <li>Always open files with <code>fopen()</code>, check for <code>NULL</code>, and close with <code>fclose()</code>.</li>
+        <li>Use <code>"w"</code> and <code>"w+"</code> with caution: they truncate existing files immediately.</li>
+        <li>For safe text line reading, use <code>fgets()</code> instead of <code>scanf()</code> or <code>gets()</code>.</li>
+        <li>For raw binary data and structs, use <code>fread()</code> and <code>fwrite()</code> with <code>"rb"</code>/<code>"wb"</code> modes.</li>
+        <li>Use <code>fseek()</code> (with <code>SEEK_SET</code>, <code>SEEK_CUR</code>, <code>SEEK_END</code>) and <code>ftell()</code> for random access positioning.</li>
+        <li>Never control read loops with <code>feof()</code>; check the read function's return value directly and inspect with <code>ferror()</code> / <code>feof()</code> afterward.</li>
+        <li>Use <code>tmpfile()</code> for auto-deleted temporary files and <code>freopen()</code> to redirect standard streams.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

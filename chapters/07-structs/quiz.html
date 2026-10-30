@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 7 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 7 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/07-structs/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 7 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 7</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 7 — Structures &amp; Unions</p>
+      <p class="subtitle">Chapter 7 — Structures &amp; Unions &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">How do you access a struct member through a pointer to that struct?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The dot operator on the pointer: <code>ptr.member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true" /><label>The arrow operator: <code>ptr-&gt;member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The address-of operator: <code>&amp;ptr.member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The scope operator: <code>ptr::member</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="For a pointer to a struct, the arrow operator &lt;code&gt;-&amp;gt;&lt;/code&gt; dereferences the pointer and selects the member in one step. The dot operator only works on a struct &lt;em&gt;value&lt;/em&gt;, and C has no &lt;code&gt;::&lt;/code&gt; operator."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">Why might <code>sizeof(struct S)</code> be larger than the sum of the sizes of its members?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>The compiler stores a hidden type tag in every struct</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Every struct includes a 4-byte header with its member count</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true" /><label>The compiler inserts padding bytes to satisfy alignment requirements</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>sizeof</code> always rounds up to the next power of two</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="CPUs prefer values stored at addresses that are multiples of their size. The compiler adds padding between members (and at the end) to keep every member properly aligned. For example, &lt;code&gt;struct { char a; int b; char c; }&lt;/code&gt; is 12 bytes, not 6."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What does <code>typedef struct { int x; } Point;</code> create?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true" /><label>An alias <code>Point</code> for the anonymous struct type</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>A variable named <code>Point</code> of an anonymous struct type</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>A new, distinct type that is incompatible with the struct</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>A compile error, because a struct must have a tag name</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="&lt;code&gt;typedef&lt;/code&gt; never creates a variable or a new type; it creates an alias. Here &lt;code&gt;Point&lt;/code&gt; becomes another name for the untagged (anonymous) struct, so you can declare &lt;code&gt;Point p;&lt;/code&gt; without writing &lt;code&gt;struct&lt;/code&gt;."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">In a union, how much memory is allocated?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>The sum of the sizes of all members</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>The size of the first member declared</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>Enough for the smallest member</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true" /><label>Enough for the largest member (plus any alignment padding)</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="All union members overlay the same storage, so the union is as large as its largest member, rounded up for alignment. &lt;code&gt;union { char c; double d; char buf[10]; }&lt;/code&gt; is 16 bytes on a typical 64-bit system."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">What is a tagged union?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A union whose members are all pointers</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true" /><label>A union paired with an enum or integer that records which member is currently valid</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A union declared with <code>typedef</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A union that the compiler automatically checks at run time</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A tagged union (variant) is a struct holding a union plus a tag field, usually an &lt;code&gt;enum&lt;/code&gt;. Code checks the tag before reading the union, which avoids reading the wrong member. C itself does not enforce this; it is a programming convention."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What is the underlying type of an <code>enum</code> in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>Always <code>char</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>Always <code>unsigned long</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>A floating-point type chosen by the compiler</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true" /><label>An integer type, implementation-defined but typically <code>int</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The enumeration constants have type &lt;code&gt;int&lt;/code&gt;, and the enum type is compatible with an implementation-defined integer type able to hold all the values. In practice this is &lt;code&gt;int&lt;/code&gt; or &lt;code&gt;unsigned int&lt;/code&gt;."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">What does <code>struct S s = {0};</code> do?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true" /><label>It zero-initialises all members of <code>s</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>It sets only the first member to 0 and leaves the rest garbage</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>It is a syntax error; a struct needs one value per member</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>It allocates <code>s</code> on the heap and sets it to NULL</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="When an initialiser list has fewer entries than there are members, the remaining members are initialised as if they had static storage duration, that is, to zero (or NULL). So &lt;code&gt;{0}&lt;/code&gt; sets the first member to 0 and zero-initialises all the others."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What is <code>ptr-&gt;member</code> equivalent to?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>*ptr.member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true" /><label><code>(*ptr).member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>&amp;ptr.member</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>*(ptr.member)</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The arrow is shorthand for dereferencing the pointer and then selecting the member. The parentheses in &lt;code&gt;(*ptr).member&lt;/code&gt; are essential: &lt;code&gt;*ptr.member&lt;/code&gt; parses as &lt;code&gt;*(ptr.member)&lt;/code&gt; because &lt;code&gt;.&lt;/code&gt; has higher precedence than unary &lt;code&gt;*&lt;/code&gt;."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

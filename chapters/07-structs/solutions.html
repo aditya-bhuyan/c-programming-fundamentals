@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 7 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 7 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/07-structs/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 7 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,299 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Student Record</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">int</span>    age<span class="pu">;</span>
+    <span class="ty">double</span> gpa<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Student</span><span class="pu">;</span>
+
+<span class="cm">/* Simple insertion sort, descending by GPA */</span>
+<span class="ty">void</span> <span class="fn">sort_by_gpa</span><span class="pu">(</span><span class="ty">Student</span> <span class="pu">*</span>s<span class="pu">,</span> <span class="ty">size_t</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">Student</span> key <span class="pu">=</span> s<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="ty">size_t</span> j <span class="pu">=</span> i<span class="pu">;</span>
+        <span class="kw">while</span> <span class="pu">(</span>j <span class="pu">&gt;</span> <span class="nm">0</span> <span class="pu">&amp;&amp;</span> s<span class="pu">[</span>j <span class="pu">-</span> <span class="nm">1</span><span class="pu">].</span>gpa <span class="pu">&lt;</span> key<span class="pu">.</span>gpa<span class="pu">)</span> <span class="pu">{</span>
+            s<span class="pu">[</span>j<span class="pu">]</span> <span class="pu">=</span> s<span class="pu">[</span>j <span class="pu">-</span> <span class="nm">1</span><span class="pu">];</span>
+            j<span class="pu">--;</span>
+        <span class="pu">}</span>
+        s<span class="pu">[</span>j<span class="pu">]</span> <span class="pu">=</span> key<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Student</span> students<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="st">"Alice"</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">3.45</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="st">"Bob"</span><span class="pu">,</span>   <span class="nm">22</span><span class="pu">,</span> <span class="nm">3.90</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="st">"Carol"</span><span class="pu">,</span> <span class="nm">21</span><span class="pu">,</span> <span class="nm">3.12</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+    <span class="ty">size_t</span> n <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>students<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>students<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">sort_by_gpa</span><span class="pu">(</span>students<span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-8s %-4s %s\n"</span><span class="pu">,</span> <span class="st">"Name"</span><span class="pu">,</span> <span class="st">"Age"</span><span class="pu">,</span> <span class="st">"GPA"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-8s %-4d %.2f\n"</span><span class="pu">,</span> students<span class="pu">[</span>i<span class="pu">].</span>name<span class="pu">,</span> students<span class="pu">[</span>i<span class="pu">].</span>age<span class="pu">,</span> students<span class="pu">[</span>i<span class="pu">].</span>gpa<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Name     Age  GPA
+Bob      22   3.90
+Alice    20   3.45
+Carol    21   3.12</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Struct assignment (<code>s[j] = s[j - 1]</code>) copies every member, so sorting whole records is as simple as sorting integers. The comparison key is <code>gpa</code>; <code>&lt;</code> in the while condition gives descending order. In production, <code>qsort</code> with a comparator is the better tool.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Point Distance</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;math.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">double</span> x<span class="pu">;</span>
+    <span class="ty">double</span> y<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Point</span><span class="pu">;</span>
+
+<span class="ty">double</span> <span class="fn">distance</span><span class="pu">(</span><span class="ty">Point</span> a<span class="pu">,</span> <span class="ty">Point</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">double</span> dx <span class="pu">=</span> b<span class="pu">.</span>x <span class="pu">-</span> a<span class="pu">.</span>x<span class="pu">;</span>
+    <span class="ty">double</span> dy <span class="pu">=</span> b<span class="pu">.</span>y <span class="pu">-</span> a<span class="pu">.</span>y<span class="pu">;</span>
+    <span class="kw">return</span> <span class="fn">sqrt</span><span class="pu">(</span>dx <span class="pu">*</span> dx <span class="pu">+</span> dy <span class="pu">*</span> dy<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Point</span> p1 <span class="pu">=</span> <span class="pu">{</span><span class="nm">0.0</span><span class="pu">,</span> <span class="nm">0.0</span><span class="pu">};</span>
+    <span class="ty">Point</span> p2 <span class="pu">=</span> <span class="pu">{</span><span class="nm">3.0</span><span class="pu">,</span> <span class="nm">4.0</span><span class="pu">};</span>
+    <span class="ty">Point</span> p3 <span class="pu">=</span> <span class="pu">{-</span><span class="nm">1.5</span><span class="pu">,</span> <span class="nm">2.0</span><span class="pu">};</span>
+    <span class="ty">Point</span> p4 <span class="pu">=</span> <span class="pu">{</span><span class="nm">4.5</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">2.0</span><span class="pu">};</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Distance (0,0) to (3,4)       = %.4f\n"</span><span class="pu">,</span> <span class="fn">distance</span><span class="pu">(</span>p1<span class="pu">,</span> p2<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Distance (-1.5,2) to (4.5,-2) = %.4f\n"</span><span class="pu">,</span> <span class="fn">distance</span><span class="pu">(</span>p3<span class="pu">,</span> p4<span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Distance (0,0) to (3,4)       = 5.0000
+Distance (-1.5,2) to (4.5,-2) = 7.2111</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Structs of two doubles (16 bytes) are cheap to pass by value. Comparing floating-point results exactly is fragile; here 3-4-5 happens to give exactly 5.0, but print with a precision (<code>%.4f</code>) rather than testing with <code>==</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Linked List Node</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="ty">Node</span> <span class="pu">{</span>
+    <span class="ty">int</span>          value<span class="pu">;</span>
+    <span class="kw">struct</span> <span class="ty">Node</span> <span class="pu">*</span>next<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Node</span><span class="pu">;</span>
+
+<span class="ty">Node</span> <span class="pu">*</span><span class="fn">push_front</span><span class="pu">(</span><span class="ty">Node</span> <span class="pu">*</span>head<span class="pu">,</span> <span class="ty">int</span> value<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Node</span> <span class="pu">*</span>n <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span> <span class="pu">*</span>n<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> head<span class="pu">;</span>
+    <span class="pu">}</span>
+    n<span class="pu">-&gt;</span>value <span class="pu">=</span> value<span class="pu">;</span>
+    n<span class="pu">-&gt;</span>next  <span class="pu">=</span> head<span class="pu">;</span>
+    <span class="kw">return</span> n<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">print_list</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Node</span> <span class="pu">*</span>head<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">const</span> <span class="ty">Node</span> <span class="pu">*</span>cur <span class="pu">=</span> head<span class="pu">;</span> cur <span class="pu">!=</span> NULL<span class="pu">;</span> cur <span class="pu">=</span> cur<span class="pu">-&gt;</span>next<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d -&gt; "</span><span class="pu">,</span> cur<span class="pu">-&gt;</span>value<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"NULL\n"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">free_list</span><span class="pu">(</span><span class="ty">Node</span> <span class="pu">*</span>head<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">while</span> <span class="pu">(</span>head <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">Node</span> <span class="pu">*</span>next <span class="pu">=</span> head<span class="pu">-&gt;</span>next<span class="pu">;</span>
+        <span class="fn">free</span><span class="pu">(</span>head<span class="pu">);</span>
+        head <span class="pu">=</span> next<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Node</span> <span class="pu">*</span>head <span class="pu">=</span> NULL<span class="pu">;</span>
+
+    <span class="cm">/* Pushing 50, 40, ..., 10 to the front yields 10 -&gt; 20 -&gt; 30 -&gt; 40 -&gt; 50 */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span> i <span class="pu">&gt;=</span> <span class="nm">1</span><span class="pu">;</span> i<span class="pu">--)</span> <span class="pu">{</span>
+        head <span class="pu">=</span> <span class="fn">push_front</span><span class="pu">(</span>head<span class="pu">,</span> i <span class="pu">*</span> <span class="nm">10</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">print_list</span><span class="pu">(</span>head<span class="pu">);</span>
+    <span class="fn">free_list</span><span class="pu">(</span>head<span class="pu">);</span>
+    head <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"List freed.\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>10 -&gt; 20 -&gt; 30 -&gt; 40 -&gt; 50 -&gt; NULL
+List freed.</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Each node is allocated with <code>malloc(sizeof *n)</code>, which stays correct if the type of <code>n</code> changes. In <code>free_list</code>, the next pointer is saved <em>before</em> <code>free(head)</code>; reading <code>head-&gt;next</code> after freeing would be use-after-free. Setting <code>head = NULL</code> afterwards avoids a dangling pointer.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Tagged Union Calculator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">enum</span> <span class="pu">{</span> RESULT_INT<span class="pu">,</span> RESULT_DOUBLE <span class="pu">}</span> <span class="ty">ResultType</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">ResultType</span> type<span class="pu">;</span>
+    <span class="kw">union</span> <span class="pu">{</span>
+        <span class="ty">int</span>    i<span class="pu">;</span>
+        <span class="ty">double</span> d<span class="pu">;</span>
+    <span class="pu">}</span> value<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Result</span><span class="pu">;</span>
+
+<span class="cm">/* Integer division stays an int when exact; otherwise promotes to double */</span>
+<span class="ty">Result</span> <span class="fn">divide</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Result</span> r<span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">%</span> b <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        r<span class="pu">.</span>type <span class="pu">=</span> RESULT_INT<span class="pu">;</span>
+        r<span class="pu">.</span>value<span class="pu">.</span>i <span class="pu">=</span> a <span class="pu">/</span> b<span class="pu">;</span>
+    <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+        r<span class="pu">.</span>type <span class="pu">=</span> RESULT_DOUBLE<span class="pu">;</span>
+        r<span class="pu">.</span>value<span class="pu">.</span>d <span class="pu">=</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>a <span class="pu">/</span> b<span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">Result</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Result</span> r<span class="pu">;</span>
+    r<span class="pu">.</span>type <span class="pu">=</span> RESULT_INT<span class="pu">;</span>
+    r<span class="pu">.</span>value<span class="pu">.</span>i <span class="pu">=</span> a <span class="pu">+</span> b<span class="pu">;</span>
+    <span class="kw">return</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">print_result</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>expr<span class="pu">,</span> <span class="ty">Result</span> r<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-8s = "</span><span class="pu">,</span> expr<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>r<span class="pu">.</span>type <span class="pu">==</span> RESULT_INT<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d (int)\n"</span><span class="pu">,</span> r<span class="pu">.</span>value<span class="pu">.</span>i<span class="pu">);</span>
+    <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%.4f (double)\n"</span><span class="pu">,</span> r<span class="pu">.</span>value<span class="pu">.</span>d<span class="pu">);</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">print_result</span><span class="pu">(</span><span class="st">"7 + 5"</span><span class="pu">,</span>  <span class="fn">add</span><span class="pu">(</span><span class="nm">7</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">));</span>
+    <span class="fn">print_result</span><span class="pu">(</span><span class="st">"12 / 4"</span><span class="pu">,</span> <span class="fn">divide</span><span class="pu">(</span><span class="nm">12</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">));</span>
+    <span class="fn">print_result</span><span class="pu">(</span><span class="st">"7 / 2"</span><span class="pu">,</span>  <span class="fn">divide</span><span class="pu">(</span><span class="nm">7</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">));</span>
+    <span class="fn">print_result</span><span class="pu">(</span><span class="st">"10 / 3"</span><span class="pu">,</span> <span class="fn">divide</span><span class="pu">(</span><span class="nm">10</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>7 + 5    = 12 (int)
+12 / 4   = 3 (int)
+7 / 2    = 3.5000 (double)
+10 / 3   = 3.3333 (double)</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>The tag decides which union member is read, so the correct format specifier is always chosen. <code>12 / 4</code> divides exactly and stays an int, while <code>7 / 2</code> promotes to double.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Binary File Record</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="pp">#define</span> FILENAME <span class="st">"records.bin"</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">24</span><span class="pu">];</span>
+    <span class="ty">double</span> balance<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Record</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Record</span> out<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="st">"Alice"</span><span class="pu">,</span> <span class="nm">1250.75</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">2</span><span class="pu">,</span> <span class="st">"Bob"</span><span class="pu">,</span>    <span class="nm">310.00</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">3</span><span class="pu">,</span> <span class="st">"Carol"</span><span class="pu">,</span> <span class="nm">9999.99</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+    <span class="ty">size_t</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>out<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>out<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="cm">/* --- Write --- */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>FILENAME<span class="pu">,</span> <span class="st">"wb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen (write)"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="ty">size_t</span> written <span class="pu">=</span> <span class="fn">fwrite</span><span class="pu">(</span>out<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Record</span><span class="pu">),</span> count<span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Wrote %zu records (%zu bytes each) to %s\n"</span><span class="pu">,</span> written<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Record</span><span class="pu">),</span> FILENAME<span class="pu">);</span>
+
+    <span class="cm">/* --- Read back --- */</span>
+    <span class="ty">Record</span> in<span class="pu">[</span><span class="nm">3</span><span class="pu">];</span>
+    <span class="fn">memset</span><span class="pu">(</span>in<span class="pu">,</span> <span class="nm">0</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>in<span class="pu">));</span>
+
+    fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>FILENAME<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen (read)"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="ty">size_t</span> nread <span class="pu">=</span> <span class="fn">fread</span><span class="pu">(</span>in<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Record</span><span class="pu">),</span> count<span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read  %zu records back\n\n"</span><span class="pu">,</span> nread<span class="pu">);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> nread<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"id=%d name=%-6s balance=%.2f\n"</span><span class="pu">,</span> in<span class="pu">[</span>i<span class="pu">].</span>id<span class="pu">,</span> in<span class="pu">[</span>i<span class="pu">].</span>name<span class="pu">,</span> in<span class="pu">[</span>i<span class="pu">].</span>balance<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Wrote 3 records (40 bytes each) to records.bin
+Read  3 records back
+
+id=1 name=Alice  balance=1250.75
+id=2 name=Bob    balance=310.00
+id=3 name=Carol  balance=9999.99</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><code>fwrite</code>/<code>fread</code> return the number of items transferred, which should equal <code>count</code>. The binary file stores the raw bytes of each struct, including padding, so it is only portable between systems with the same layout and endianness.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/08-file-io/index.html" class="btn btn-primary">Next Chapter: Chapter 8 &#8594;</a>
     </div>
 
   </main>

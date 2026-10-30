@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 1 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 1 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/01-variables/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 1 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,123 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout info"><span class="callout-icon">&#128221;</span><div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div></div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">Which format specifier correctly prints an <code>unsigned long long</code> value with <code>printf</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>%lld</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true" /><label><code>%llu</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>%lu</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>%u</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="%llu is for unsigned long long. %lld is the signed variant, %lu is unsigned long and %u is unsigned int; using the wrong one is undefined behaviour."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What does the C standard guarantee about <code>sizeof(int)</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>It is always exactly 4 bytes</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true" /><label>It is at least 2 bytes (not necessarily 4)</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>It is always the same as <code>sizeof(long)</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>It is exactly the size of a pointer</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The standard only requires int to hold at least the range -32767 to 32767, i.e. at least 16 bits / 2 bytes. 4 bytes is typical on modern systems but not guaranteed."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What value is stored by <code>int x = 3.9;</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>4 (rounded)</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>3.9</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true" /><label>3 (truncated)</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>It does not compile</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Converting a floating-point value to an integer discards the fractional part (truncation toward zero). It does not round."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">Which of these types can hold the largest integer value?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>long</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>unsigned int</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>long long</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true" /><label><code>unsigned long long</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="unsigned long long has at least 64 bits and no sign bit, so it reaches at least 18,446,744,073,709,551,615 - higher than any signed type of the same width."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">Which header defines <code>INT_MAX</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;stdio.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;stdlib.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;float.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true" /><label><code>&lt;limits.h&gt;</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="&lt;limits.h&gt; defines the integer limits (INT_MAX, INT_MIN, CHAR_MAX, LONG_MAX, ...). &lt;float.h&gt; defines the floating-point limits."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">Which type qualifier prevents a variable from being modified after initialisation?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>volatile</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>static</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true" /><label><code>const</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>register</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="const makes the object read-only; the compiler rejects assignments to it. volatile does a different job - it tells the compiler the value may change unexpectedly."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">What is the type of the value produced by the <code>sizeof</code> operator?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>int</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true" /><label><code>size_t</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>unsigned int</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>long</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="sizeof yields a value of type size_t, an unsigned integer type. Print it with %zu."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What happens when an <code>unsigned int</code> overflows?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>The program crashes</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>The behaviour is undefined</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true" /><label>It wraps around (modular arithmetic)</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>It saturates at <code>UINT_MAX</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Unsigned arithmetic is performed modulo 2^N, so UINT_MAX + 1 becomes 0. Only signed overflow is undefined behaviour."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

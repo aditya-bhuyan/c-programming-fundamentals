@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 2 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 2 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/02-operators/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 2 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 2</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 2 — Operators &amp; Expressions</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 2 — Operators &amp; Expressions &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,123 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout info"><span class="callout-icon">&#127947;</span><div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div></div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Arithmetic Calculator
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Declare two <code>int</code> variables (for example <code>a = 17</code> and <code>b = 5</code>). Compute and print the sum, difference, product, <strong>integer</strong> quotient and remainder. Then also print the quotient as a real number with two decimals.</p>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output (for a = 17, b = 5)</span></div>
+      <pre>a = 17, b = 5
+a + b = 22
+a - b = 12
+a * b = 85
+a / b = 3
+a % b = 2
+a / b (real) = 3.40</pre>
+    </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">To print a literal percent sign inside <code>printf</code> use <code>%%</code>. For the real quotient, cast one operand: <code>(double)a / b</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        Bit Flags
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Use an <code>unsigned char</code> as a flag byte, starting at 0. <strong>Set</strong> bits 0, 2 and 4, then print the value (in binary and decimal). Then <strong>clear</strong> bit 2 and print again.</p>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>After setting bits 0, 2, 4: 00010101 (21)
+After clearing bit 2:       00010001 (17)</pre>
+    </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Set with <code>flags |= (1u &lt;&lt; n)</code>; clear with <code>flags &amp;= ~(1u &lt;&lt; n)</code>. To print binary, loop <code>bit</code> from 7 down to 0 and output <code>(flags &gt;&gt; bit) &amp; 1</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Short-Circuit Demo
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write two functions, <code>first()</code> returning 0 and <code>second()</code> returning 1, each printing a message when called. Use them in four expressions &mdash; <code>first() &amp;&amp; second()</code>, <code>second() &amp;&amp; first()</code>, <code>first() || second()</code>, <code>second() || first()</code> &mdash; printing the result of each. <strong>Before running</strong>, predict which messages will appear for each expression.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Remember: <code>&amp;&amp;</code> skips its right side when the left is false; <code>||</code> skips its right side when the left is true. Store each result in an <code>int</code> and print it after the expression.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Swap Without Temp
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Swap two integers using only the XOR (<code>^</code>) operator &mdash; <strong>no temporary variable</strong>. Print the values before and after.</p>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output (a = 12, b = 25)</span></div>
+      <pre>Before: a = 12, b = 25
+After:  a = 25, b = 12</pre>
+    </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Three statements: <code>a = a ^ b;</code> then <code>b = a ^ b;</code> then <code>a = a ^ b;</code>. XOR-ing a value with the same number twice gives the original value back.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Precedence Puzzle
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>With <code>int a = 5, b = 3, c = 2;</code>, predict the output of each expression <strong>on paper first</strong> (write down how the compiler groups it), then write a program that prints all five and verify your predictions.</p>
+    <div class="code-block">
+      <div class="code-header"><span>puzzle.c</span></div>
+      <pre>a <span class="pu">+</span> b <span class="pu">*</span> c            <span class="cm">/* 1 */</span>
+a <span class="pu">-</span> b <span class="pu">-</span> c            <span class="cm">/* 2 */</span>
+a <span class="pu">&gt;</span> b <span class="pu">&amp;&amp;</span> b <span class="pu">&gt;</span> c <span class="pu">||</span> c <span class="pu">&gt;</span> a   <span class="cm">/* 3 */</span>
+a <span class="pu">&amp;</span> b <span class="pu">==</span> c           <span class="cm">/* 4 */</span>
+a <span class="pu">&lt;&lt;</span> <span class="nm">1</span> <span class="pu">+</span> c           <span class="cm">/* 5 */</span></pre>
+    </div>
+        <p>Your compiler will probably warn about some of these lines &mdash; read the warnings: they tell you what grouping the compiler chose.</p>
+
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use the precedence table in the Learning section. Remember that <code>==</code> binds tighter than <code>&amp;</code>, and <code>+</code> binds tighter than <code>&lt;&lt;</code>. Then rewrite each with full parentheses to confirm.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">Next: Solutions &#8594;</a>
     </div>
 
   </main>

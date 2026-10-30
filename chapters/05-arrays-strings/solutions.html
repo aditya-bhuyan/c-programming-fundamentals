@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 5 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 5 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/05-arrays-strings/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 5 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,301 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Array Statistics</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_stats.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> arr<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">42</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">19</span><span class="pu">,</span> <span class="nm">85</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">56</span><span class="pu">,</span> <span class="nm">71</span><span class="pu">,</span> <span class="nm">28</span><span class="pu">,</span> <span class="nm">14</span><span class="pu">,</span> <span class="nm">63</span> <span class="pu">};</span>
+    <span class="ty">int</span>    n   <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>arr<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>arr<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Array   : "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d%s"</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">],</span> i <span class="pu">&lt;</span> n <span class="pu">-</span> <span class="nm">1</span> <span class="pu">?</span> <span class="st">", "</span> <span class="pu">:</span> <span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="ty">int</span>  min <span class="pu">=</span> arr<span class="pu">[</span><span class="nm">0</span><span class="pu">],</span> max <span class="pu">=</span> arr<span class="pu">[</span><span class="nm">0</span><span class="pu">];</span>
+    <span class="ty">long</span> sum <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">&lt;</span> min<span class="pu">)</span> min <span class="pu">=</span> arr<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="kw">if</span> <span class="pu">(</span>arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">&gt;</span> max<span class="pu">)</span> max <span class="pu">=</span> arr<span class="pu">[</span>i<span class="pu">];</span>
+        sum <span class="pu">+=</span> arr<span class="pu">[</span>i<span class="pu">];</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Min     : %d\n"</span><span class="pu">,</span> min<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Max     : %d\n"</span><span class="pu">,</span> max<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Sum     : %ld\n"</span><span class="pu">,</span> sum<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Average : %.2f\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>sum <span class="pu">/</span> n<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
       <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <div><strong>Key Insight:</strong> Initialise <code>min</code> and <code>max</code> to <code>arr[0]</code>, not to <code>0</code> or <code>INT_MAX</code>. Starting from the first element is the most readable and correct approach, and allows the loop to start at index 0 without any special-casing.</div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128196;</span>
+      <div><strong>Expected output:</strong><pre style="margin:.4rem 0 0;">Array   : 42, 7, 19, 85, 3, 56, 71, 28, 14, 63
+Min     : 3
+Max     : 85
+Sum     : 388
+Average : 38.80</pre></div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — String Reverse</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_reverse.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Reverse s in-place; finds length without strlen */</span>
+<span class="ty">void</span> <span class="fn">reverse_str</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Step 1: find length without strlen */</span>
+    <span class="ty">int</span> len <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span>s<span class="pu">[</span>len<span class="pu">]</span> <span class="pu">!=</span> <span class="st">'\0'</span><span class="pu">)</span>
+        len<span class="pu">++;</span>
+
+    <span class="cm">/* Step 2: two-pointer swap */</span>
+    <span class="ty">int</span> left  <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> right <span class="pu">=</span> len <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span>left <span class="pu">&lt;</span> right<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> tmp   <span class="pu">=</span> s<span class="pu">[</span>left<span class="pu">];</span>
+        s<span class="pu">[</span>left<span class="pu">]</span>   <span class="pu">=</span> s<span class="pu">[</span>right<span class="pu">];</span>
+        s<span class="pu">[</span>right<span class="pu">]</span>  <span class="pu">=</span> tmp<span class="pu">;</span>
+        left<span class="pu">++;</span>
+        right<span class="pu">--;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">char</span> s1<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"algorithm"</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Original : %s\n"</span><span class="pu">,</span> s1<span class="pu">);</span>
+    <span class="fn">reverse_str</span><span class="pu">(</span>s1<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Reversed : %s\n\n"</span><span class="pu">,</span> s1<span class="pu">);</span>
+
+    <span class="ty">char</span> s2<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"racecar"</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Original : %s\n"</span><span class="pu">,</span> s2<span class="pu">);</span>
+    <span class="fn">reverse_str</span><span class="pu">(</span>s2<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Reversed : %s\n"</span><span class="pu">,</span> s2<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> The two-pointer technique — one starting at the front, one at the back, closing inward — is the canonical O(n) in-place reversal. No temporary buffer is needed: a single <code>char tmp</code> is sufficient to swap. An odd-length string's centre element is never touched because the loop exits when <code>left == right</code>.</div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128196;</span>
+      <div><strong>Expected output:</strong><pre style="margin:.4rem 0 0;">Original : algorithm
+Reversed : mhtirogla
+
+Original : racecar
+Reversed : racecar</pre></div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Binary Search</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_bsearch.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">binary_search</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">int</span> n<span class="pu">,</span> <span class="ty">int</span> target<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> low  <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> high <span class="pu">=</span> n <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="kw">while</span> <span class="pu">(</span>low <span class="pu">&lt;=</span> high<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> mid <span class="pu">=</span> low <span class="pu">+</span> <span class="pu">(</span>high <span class="pu">-</span> low<span class="pu">)</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>  <span class="cm">/* avoids (low+high) overflow */</span>
+
+        <span class="kw">if</span>      <span class="pu">(</span>arr<span class="pu">[</span>mid<span class="pu">]</span> <span class="pu">==</span> target<span class="pu">)</span> <span class="kw">return</span> mid<span class="pu">;</span>
+        <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>arr<span class="pu">[</span>mid<span class="pu">]</span> <span class="pu">&lt;</span>  target<span class="pu">)</span> low  <span class="pu">=</span> mid <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>
+        <span class="kw">else</span>                          high <span class="pu">=</span> mid <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="pu">-</span><span class="nm">1</span><span class="pu">;</span>  <span class="cm">/* not found */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> sorted<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">16</span><span class="pu">,</span> <span class="nm">23</span><span class="pu">,</span> <span class="nm">38</span><span class="pu">,</span> <span class="nm">56</span><span class="pu">,</span> <span class="nm">72</span><span class="pu">,</span> <span class="nm">91</span> <span class="pu">};</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>sorted<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>sorted<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Sorted  : "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d%s"</span><span class="pu">,</span> sorted<span class="pu">[</span>i<span class="pu">],</span> i <span class="pu">&lt;</span> n<span class="pu">-</span><span class="nm">1</span> <span class="pu">?</span> <span class="st">", "</span> <span class="pu">:</span> <span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="ty">int</span> targets<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">23</span><span class="pu">,</span> <span class="nm">38</span><span class="pu">,</span> <span class="nm">99</span><span class="pu">,</span> <span class="nm">2</span> <span class="pu">};</span>
+    <span class="ty">int</span> tc <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>targets<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>targets<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> tc<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> idx <span class="pu">=</span> <span class="fn">binary_search</span><span class="pu">(</span>sorted<span class="pu">,</span> n<span class="pu">,</span> targets<span class="pu">[</span>i<span class="pu">]</span><span class="pu">);</span>
+        <span class="kw">if</span> <span class="pu">(</span>idx <span class="pu">&gt;=</span> <span class="nm">0</span><span class="pu">)</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Search %-3d -> found at index %d\n"</span><span class="pu">,</span> targets<span class="pu">[</span>i<span class="pu">],</span> idx<span class="pu">);</span>
+        <span class="kw">else</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Search %-3d -> not found (-1)\n"</span><span class="pu">,</span> targets<span class="pu">[</span>i<span class="pu">]</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Binary search runs in O(log n) time by halving the search space each iteration. The critical correctness detail is computing the midpoint as <code>low + (high - low) / 2</code> rather than <code>(low + high) / 2</code> — the latter overflows to a negative value when both <code>low</code> and <code>high</code> exceed <code>INT_MAX / 2</code>.</div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128196;</span>
+      <div><strong>Expected output:</strong><pre style="margin:.4rem 0 0;">Sorted  : 2, 5, 8, 12, 16, 23, 38, 56, 72, 91
+Search 23  -> found at index 5
+Search 38  -> found at index 6
+Search 99  -> not found (-1)
+Search 2   -> found at index 0</pre></div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Word Count</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_wordcount.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">word_count</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> count   <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> in_word <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>   <span class="cm">/* 0 = in whitespace, 1 = inside a word */</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> s<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">!=</span> <span class="st">'\0'</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>s<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">!=</span> <span class="st">' '</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">if</span> <span class="pu">(!</span>in_word<span class="pu">)</span> <span class="pu">{</span>
+                count<span class="pu">++;</span>
+                in_word <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+            <span class="pu">}</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            in_word <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> count<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>tests<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="st">"Hello World"</span><span class="pu">,</span>
+        <span class="st">"  spaces  everywhere  "</span><span class="pu">,</span>
+        <span class="st">"oneword"</span><span class="pu">,</span>
+        <span class="st">""</span><span class="pu">,</span>
+        <span class="st">"   "</span>
+    <span class="pu">};</span>
+    <span class="ty">int</span> nt <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>tests<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>tests<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> nt<span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\"%-24s\" -> %d words\n"</span><span class="pu">,</span> tests<span class="pu">[</span>i<span class="pu">],</span> <span class="fn">word_count</span><span class="pu">(</span>tests<span class="pu">[</span>i<span class="pu">]</span><span class="pu">)</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> The <code>in_word</code> state flag elegantly handles multiple consecutive spaces, leading spaces, and trailing spaces — the word count only increments on the <em>transition</em> from whitespace to non-whitespace. This is the same pattern used inside C standard library functions like <code>strtok</code>.</div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128196;</span>
+      <div><strong>Expected output:</strong><pre style="margin:.4rem 0 0;">"Hello World"            -> 2 words
+"  spaces  everywhere  " -> 2 words
+"oneword"                -> 1 word
+""                       -> 0 words
+"   "                    -> 0 words</pre></div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Matrix Multiply</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_matmul.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> N <span class="nm">3</span>
+
+<span class="ty">void</span> <span class="fn">print_matrix</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>label<span class="pu">,</span> <span class="ty">int</span> m<span class="pu">[][</span>N<span class="pu">])</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%s\n"</span><span class="pu">,</span> label<span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> N<span class="pu">;</span> r<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> N<span class="pu">;</span> c<span class="pu">++)</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> m<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]</span><span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">mat_multiply</span><span class="pu">(</span><span class="ty">int</span> A<span class="pu">[][</span>N<span class="pu">],</span> <span class="ty">int</span> B<span class="pu">[][</span>N<span class="pu">],</span> <span class="ty">int</span> C<span class="pu">[][</span>N<span class="pu">])</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> N<span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> j <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> j <span class="pu">&lt;</span> N<span class="pu">;</span> j<span class="pu">++)</span> <span class="pu">{</span>
+            C<span class="pu">[</span>i<span class="pu">][</span>j<span class="pu">]</span> <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+            <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> k <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> k <span class="pu">&lt;</span> N<span class="pu">;</span> k<span class="pu">++)</span>
+                C<span class="pu">[</span>i<span class="pu">][</span>j<span class="pu">]</span> <span class="pu">+=</span> A<span class="pu">[</span>i<span class="pu">][</span>k<span class="pu">]</span> <span class="pu">*</span> B<span class="pu">[</span>k<span class="pu">][</span>j<span class="pu">];</span>
+        <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> A<span class="pu">[</span>N<span class="pu">][</span>N<span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">6</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">,</span> <span class="nm">9</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+    <span class="ty">int</span> B<span class="pu">[</span>N<span class="pu">][</span>N<span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">,</span> <span class="nm">9</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">6</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+    <span class="ty">int</span> C<span class="pu">[</span>N<span class="pu">][</span>N<span class="pu">];</span>
+
+    <span class="fn">print_matrix</span><span class="pu">(</span><span class="st">"Matrix A:"</span><span class="pu">,</span> A<span class="pu">);</span>
+    <span class="fn">print_matrix</span><span class="pu">(</span><span class="st">"Matrix B:"</span><span class="pu">,</span> B<span class="pu">);</span>
+
+    <span class="fn">mat_multiply</span><span class="pu">(</span>A<span class="pu">,</span> B<span class="pu">,</span> C<span class="pu">);</span>
+
+    <span class="fn">print_matrix</span><span class="pu">(</span><span class="st">"A x B = C:"</span><span class="pu">,</span> C<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> The three-loop structure — <em>i</em> iterates rows of A, <em>j</em> iterates columns of B, <em>k</em> accumulates the dot product — is the textbook O(n³) algorithm for square matrix multiplication. Explicitly zeroing <code>C[i][j] = 0</code> inside the <em>i,j</em> loops (or declaring <code>C</code> with <code>= {0}</code>) is essential, as uninitialized stack memory contains garbage.</div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128196;</span>
+      <div><strong>Expected output:</strong><pre style="margin:.4rem 0 0;">Matrix A:
+   1   2   3
+   4   5   6
+   7   8   9
+Matrix B:
+   7   8   9
+   2   3   4
+   1   5   6
+A x B = C:
+  14  29  31
+  44  67  82
+  74 105 133</pre></div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/06-pointers/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
     </div>
 
   </main>

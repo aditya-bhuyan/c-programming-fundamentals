@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 1 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 1 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/01-variables/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 1 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,358 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+
+      <h2>1. What is a variable?</h2>
+      <p>A <strong>variable</strong> is a named region of memory that holds a value of a particular type. Every byte of your computer's memory has a numeric <strong>address</strong>; the compiler maps each variable name to the address of the first byte of its storage, so you can write <code>age</code> instead of something like <code>0x7ffee3a4b8ac</code>.</p>
+      <p>The <strong>type</strong> tells the compiler two things: how many bytes to reserve, and how to interpret the bits stored there (as a signed integer, a floating-point number, a character, and so on).</p>
+
+      <h3>Declaration, assignment and initialisation</h3>
+      <table>
+        <thead><tr><th>Term</th><th>Syntax</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Declaration</td><td><code>type name;</code></td><td>Reserves storage and tells the compiler the name and type. For a local variable the value is <em>indeterminate</em> (garbage) until you set it.</td></tr>
+          <tr><td>Assignment</td><td><code>name = value;</code></td><td>Stores a value in an already-declared variable.</td></tr>
+          <tr><td>Initialisation</td><td><code>type name = value;</code></td><td>Declaration and first value in one step. Always preferred.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>var_basics.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> age<span class="pu">;</span>               <span class="cm">/* declaration: value is indeterminate */</span>
+    age <span class="pu">=</span> <span class="nm">30</span><span class="pu">;</span>              <span class="cm">/* assignment */</span>
+    <span class="ty">int</span> height <span class="pu">=</span> <span class="nm">180</span><span class="pu">;</span>      <span class="cm">/* declaration + initialisation */</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">1</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>      <span class="cm">/* several variables of the same type */</span>
+
+    <span class="cm">/* &amp;variable is the address-of operator; %p expects a void * */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"age    = %d stored at %p\n"</span><span class="pu">,</span> age<span class="pu">,</span>    <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>age<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"height = %d stored at %p\n"</span><span class="pu">,</span> height<span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>height<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a + b  = %d\n"</span><span class="pu">,</span> a <span class="pu">+</span> b<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Reading an uninitialised local variable is a bug: its value is whatever bytes happened to be in that memory. Global and <code>static</code> variables, by contrast, are zero-initialised automatically.</div>
+      </div>
+
+      <h3>lvalues and rvalues (briefly)</h3>
+      <p>An <strong>lvalue</strong> ("locator value") is an expression that refers to a memory location, so it can appear on the <em>left</em> of an assignment. An <strong>rvalue</strong> is a plain value that has no storage you can assign to. Variables are lvalues; literals and arithmetic results are rvalues.</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>lvalue.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    x <span class="pu">=</span> x <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>        <span class="cm">/* left x is an lvalue (a location);
+                         right x + 1 is an rvalue (a value) */</span>
+
+    <span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> <span class="pu">&amp;</span>x<span class="pu">;</span>      <span class="cm">/* you can take the address of an lvalue ...   */</span>
+    <span class="cm">/* int *q = &amp;5;      ... but not of an rvalue: compile error      */</span>
+    <span class="cm">/* 5 = x;            error: a literal is not an lvalue            */</span>
+    <span class="cm">/* (x + 1) = 3;      error: the result of + is not an lvalue      */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x = %d, *p = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> <span class="pu">*</span>p<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <h2>2. Integer types</h2>
+      <p>C provides five integer types of increasing width: <code>char</code>, <code>short</code>, <code>int</code>, <code>long</code> and <code>long long</code>. Each has a <code>signed</code> form (the default, except possibly for plain <code>char</code>) and an <code>unsigned</code> form that stores only non-negative values but reaches twice as high.</p>
+      <table>
+        <thead><tr><th>Type</th><th>Typical size</th><th>Range (signed)</th><th>Range (unsigned)</th></tr></thead>
+        <tbody>
+          <tr><td><code>char</code> / <code>signed char</code> / <code>unsigned char</code></td><td>1 byte</td><td>-128 to 127</td><td>0 to 255</td></tr>
+          <tr><td><code>short</code> / <code>unsigned short</code></td><td>2 bytes</td><td>-32,768 to 32,767</td><td>0 to 65,535</td></tr>
+          <tr><td><code>int</code> / <code>unsigned int</code></td><td>4 bytes</td><td>-2,147,483,648 to 2,147,483,647</td><td>0 to 4,294,967,295</td></tr>
+          <tr><td><code>long</code> / <code>unsigned long</code></td><td>8 bytes (4 on Windows and 32-bit systems)</td><td>-9.22&times;10<sup>18</sup> to 9.22&times;10<sup>18</sup> (64-bit)</td><td>0 to 1.84&times;10<sup>19</sup> (64-bit)</td></tr>
+          <tr><td><code>long long</code> / <code>unsigned long long</code></td><td>8 bytes</td><td>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td><td>0 to 18,446,744,073,709,551,615</td></tr>
+        </tbody>
+      </table>
+      <p>The sizes above are <em>typical</em>, not guaranteed. The standard only promises minimum ranges: <code>short</code> and <code>int</code> hold at least 16 bits, <code>long</code> at least 32 bits, and <code>long long</code> at least 64 bits. It also guarantees <code>sizeof(char) == 1</code> and that each type is at least as wide as the one before it (<code>char</code> &le; <code>short</code> &le; <code>int</code> &le; <code>long</code> &le; <code>long long</code>).</p>
+
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div>Plain <code>char</code> may be signed or unsigned depending on the platform (signed on x86 and Apple silicon, unsigned on many ARM Linux targets). Use <code>signed char</code> or <code>unsigned char</code> when the sign matters, and plain <code>char</code> only for text.</div>
+      </div>
+
+      <h3>Exact limits: <code>&lt;limits.h&gt;</code></h3>
+      <p>Never hard-code a range. The header <code>&lt;limits.h&gt;</code> defines macros such as <code>INT_MIN</code>, <code>INT_MAX</code>, <code>UINT_MAX</code>, <code>LONG_MAX</code>, <code>LLONG_MAX</code>, <code>CHAR_BIT</code> and <code>CHAR_MAX</code> that are correct for the platform you compile on.</p>
+      <table>
+        <thead><tr><th>Format specifier</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td><code>%d</code> / <code>%i</code></td><td><code>int</code></td></tr>
+          <tr><td><code>%u</code></td><td><code>unsigned int</code></td></tr>
+          <tr><td><code>%hd</code></td><td><code>short</code></td></tr>
+          <tr><td><code>%ld</code> / <code>%lu</code></td><td><code>long</code> / <code>unsigned long</code></td></tr>
+          <tr><td><code>%lld</code> / <code>%llu</code></td><td><code>long long</code> / <code>unsigned long long</code></td></tr>
+          <tr><td><code>%c</code></td><td><code>char</code> (as a character)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>int_limits.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MIN   = %d\n"</span><span class="pu">,</span>   INT_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MAX   = %d\n"</span><span class="pu">,</span>   INT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"UINT_MAX  = %u\n"</span><span class="pu">,</span>   UINT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"LLONG_MAX = %lld\n"</span><span class="pu">,</span> LLONG_MAX<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <h2>3. Floating-point types</h2>
+      <p>Floating-point types store real numbers in a binary scientific-notation format (sign, exponent, mantissa), as defined by IEEE 754 on virtually every modern machine. They have a huge range but limited <em>precision</em>: only a certain number of significant decimal digits are reliable.</p>
+      <table>
+        <thead><tr><th>Type</th><th>Size</th><th>Significant digits</th><th>Header</th></tr></thead>
+        <tbody>
+          <tr><td><code>float</code></td><td>4 bytes (32-bit)</td><td>about 6&ndash;7 (<code>FLT_DIG</code> = 6)</td><td><code>&lt;float.h&gt;</code></td></tr>
+          <tr><td><code>double</code></td><td>8 bytes (64-bit)</td><td>about 15&ndash;16 (<code>DBL_DIG</code> = 15)</td><td><code>&lt;float.h&gt;</code></td></tr>
+          <tr><td><code>long double</code></td><td>8, 12 or 16 bytes (platform dependent)</td><td>15 to 33 (<code>LDBL_DIG</code>)</td><td><code>&lt;float.h&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p><code>&lt;float.h&gt;</code> provides <code>FLT_MAX</code>, <code>DBL_MAX</code>, <code>LDBL_MAX</code> (largest finite values), <code>FLT_MIN</code>, <code>DBL_MIN</code> (smallest <em>normalised positive</em> values &mdash; not the most negative!) and <code>FLT_EPSILON</code>, <code>DBL_EPSILON</code> (the gap between 1.0 and the next representable number).</p>
+      <p>Literals: <code>3.14</code> is a <code>double</code>; append <code>f</code> for <code>float</code> (<code>3.14f</code>) or <code>L</code> for <code>long double</code> (<code>3.14L</code>). In <code>printf</code>, <code>%f</code> prints a <code>double</code> (a <code>float</code> argument is automatically promoted to <code>double</code>), so <code>%lf</code> is equivalent; <code>long double</code> needs <code>%Lf</code>. Use <code>%e</code> for scientific notation.</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>float_limits.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;float.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"FLT_MAX = %e  (about %d digits)\n"</span><span class="pu">,</span> FLT_MAX<span class="pu">,</span> FLT_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"DBL_MAX = %e  (about %d digits)\n"</span><span class="pu">,</span> DBL_MAX<span class="pu">,</span> DBL_DIG<span class="pu">);</span>
+
+    <span class="ty">float</span>  f <span class="pu">=</span> <span class="nm">0.1f</span><span class="pu">;</span>
+    <span class="ty">double</span> d <span class="pu">=</span> <span class="nm">0.1</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"float  0.1 = %.20f\n"</span><span class="pu">,</span> f<span class="pu">);</span>   <span class="cm">/* shows representation error */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double 0.1 = %.20f\n"</span><span class="pu">,</span> d<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Most decimal fractions such as <code>0.1</code> have no exact binary representation. Never compare floating-point values with <code>==</code>; compare the absolute difference against a small tolerance instead.</div>
+      </div>
+
+      <h2>4. The <code>sizeof</code> operator</h2>
+      <p><code>sizeof</code> is an <em>operator</em> (not a function) that is normally evaluated at compile time. It yields the size, in bytes, of a type or of an expression's type.</p>
+      <ul>
+        <li><code>sizeof(type)</code> &mdash; parentheses are <strong>required</strong> for a type name: <code>sizeof(int)</code>.</li>
+        <li><code>sizeof variable</code> or <code>sizeof expression</code> &mdash; parentheses are <strong>optional</strong>: <code>sizeof count</code>. The operand is not evaluated.</li>
+        <li>The result has type <code>size_t</code>, an unsigned integer type defined in <code>&lt;stddef.h&gt;</code> (and <code>&lt;stdio.h&gt;</code>). Always print it with <code>%zu</code>; using <code>%d</code> or <code>%lu</code> is non-portable.</li>
+      </ul>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>sizeof_demo.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span>    count <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">double</span> ratio <span class="pu">=</span> <span class="nm">0.5</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(int)    = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>     <span class="cm">/* type: parentheses needed */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof count   = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span> count<span class="pu">);</span>    <span class="cm">/* variable: optional       */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(ratio)  = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>ratio<span class="pu">));</span>   <span class="cm">/* parentheses also fine    */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(long)   = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">long</span><span class="pu">));</span>    <span class="cm">/* platform dependent       */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(void *) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>  <span class="cm">/* 8 on 64-bit, 4 on 32-bit */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <h3>Platform differences</h3>
+      <table>
+        <thead><tr><th>Type</th><th>32-bit Linux/Windows (ILP32)</th><th>64-bit Linux/macOS (LP64)</th><th>64-bit Windows (LLP64)</th></tr></thead>
+        <tbody>
+          <tr><td><code>int</code></td><td>4</td><td>4</td><td>4</td></tr>
+          <tr><td><code>long</code></td><td>4</td><td>8</td><td>4</td></tr>
+          <tr><td><code>long long</code></td><td>8</td><td>8</td><td>8</td></tr>
+          <tr><td><code>void *</code></td><td>4</td><td>8</td><td>8</td></tr>
+          <tr><td><code>long double</code></td><td>12 (Linux) / 8 (MSVC)</td><td>16 (x86-64) or 8 (Apple silicon)</td><td>8 (MSVC) / 16 (MinGW)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>When you need an exact width, include <code>&lt;stdint.h&gt;</code> and use <code>int32_t</code>, <code>uint64_t</code> and friends. Use <code>sizeof</code> instead of hard-coded byte counts whenever you compute sizes (for example when allocating memory).</div>
+      </div>
+
+      <h2>5. Type qualifiers and storage classes</h2>
+      <h3>Type qualifiers</h3>
+      <ul>
+        <li><code>const</code> &mdash; the object may not be modified through this name after initialisation. The compiler rejects attempted assignments. Use it for constants and for pointer parameters you only read from.</li>
+        <li><code>volatile</code> &mdash; the value may change in ways the compiler cannot see (hardware registers, signal handlers, memory shared with other threads or devices). The compiler must not cache it in a register or optimise away reads and writes.</li>
+      </ul>
+      <h3>Storage classes</h3>
+      <table>
+        <thead><tr><th>Keyword</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>auto</code></td><td>Default for local variables: automatic storage, created on block entry and destroyed on exit. Almost never written explicitly.</td></tr>
+          <tr><td><code>static</code></td><td>Inside a function: the variable keeps its value between calls and lives for the whole program. At file scope: the name is private to that source file (internal linkage).</td></tr>
+          <tr><td><code>extern</code></td><td>Declares a variable that is <em>defined</em> elsewhere (another file, or earlier in this one). Allocates no storage by itself.</td></tr>
+          <tr><td><code>register</code></td><td>A hint that the variable should be kept in a CPU register. Modern compilers largely ignore the hint, and you cannot take the address of a <code>register</code> variable.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>qualifiers.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> global_count <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span>                <span class="cm">/* defined here */</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">next_id</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="kw">static</span> <span class="ty">int</span> id <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>               <span class="cm">/* initialised once, persists across calls */</span>
+    <span class="kw">return</span> <span class="pu">++</span>id<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">int</span> limit <span class="pu">=</span> <span class="nm">100</span><span class="pu">;</span>           <span class="cm">/* read-only */</span>
+    <span class="kw">extern</span> <span class="ty">int</span> global_count<span class="pu">;</span>         <span class="cm">/* refers to the definition above */</span>
+    <span class="kw">register</span> <span class="ty">int</span> i<span class="pu">;</span>                  <span class="cm">/* hint only; &amp;i would be illegal */</span>
+    <span class="ty">volatile</span> <span class="ty">int</span> device_flag <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>    <span class="cm">/* compiler must always re-read it */</span>
+
+    <span class="kw">for</span> <span class="pu">(</span>i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">3</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"id = %d\n"</span><span class="pu">,</span> <span class="fn">next_id</span><span class="pu">());</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"limit = %d, global_count = %d, flag = %d\n"</span><span class="pu">,</span>
+           limit<span class="pu">,</span> global_count<span class="pu">,</span> device_flag<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <h2>6. Naming rules &amp; conventions</h2>
+      <h3>Rules for identifiers</h3>
+      <ul>
+        <li>May contain <strong>letters</strong> (<code>a&ndash;z</code>, <code>A&ndash;Z</code>), <strong>digits</strong> and the <strong>underscore</strong>.</li>
+        <li>Must <strong>not start with a digit</strong>: <code>2fast</code> is invalid, <code>fast2</code> is valid.</li>
+        <li>Are <strong>case-sensitive</strong>: <code>count</code>, <code>Count</code> and <code>COUNT</code> are three different names.</li>
+        <li>Must not be a <strong>reserved keyword</strong>.</li>
+        <li>Avoid names beginning with an underscore followed by an uppercase letter, or with two underscores &mdash; these are reserved for the implementation.</li>
+      </ul>
+      <h3>Reserved keywords (C17)</h3>
+      <p style="line-height:2;"><code>auto</code> <code>break</code> <code>case</code> <code>char</code> <code>const</code> <code>continue</code> <code>default</code> <code>do</code> <code>double</code> <code>else</code> <code>enum</code> <code>extern</code> <code>float</code> <code>for</code> <code>goto</code> <code>if</code> <code>inline</code> <code>int</code> <code>long</code> <code>register</code> <code>restrict</code> <code>return</code> <code>short</code> <code>signed</code> <code>sizeof</code> <code>static</code> <code>struct</code> <code>switch</code> <code>typedef</code> <code>union</code> <code>unsigned</code> <code>void</code> <code>volatile</code> <code>while</code> <code>_Alignas</code> <code>_Alignof</code> <code>_Atomic</code> <code>_Bool</code> <code>_Complex</code> <code>_Generic</code> <code>_Imaginary</code> <code>_Noreturn</code> <code>_Static_assert</code> <code>_Thread_local</code></p>
+      <h3>Conventions</h3>
+      <ul>
+        <li><strong>snake_case</strong> for variables and functions: <code>max_speed</code>, <code>total_count</code>.</li>
+        <li><strong>UPPER_CASE</strong> for macros and constants: <code>#define BUFFER_SIZE 256</code>.</li>
+        <li>Choose descriptive names. <code>i</code> and <code>j</code> are fine for loop counters; elsewhere prefer <code>student_count</code> over <code>sc</code>.</li>
+        <li>Declare a variable as close as possible to where it is first used, and initialise it there.</li>
+      </ul>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>naming.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> MAX_STUDENTS <span class="nm">30</span>                 <span class="cm">/* macro: UPPER_CASE */</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> student_count <span class="pu">=</span> <span class="nm">24</span><span class="pu">;</span>             <span class="cm">/* valid, snake_case        */</span>
+    <span class="ty">int</span> count2 <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>                     <span class="cm">/* valid: digit not first   */</span>
+    <span class="ty">int</span> _hidden <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>                    <span class="cm">/* valid, but avoid _Upper  */</span>
+    <span class="cm">/* int 2count;    invalid: starts with a digit      */</span>
+    <span class="cm">/* int my-var;    invalid: '-' is not allowed       */</span>
+    <span class="cm">/* int float;     invalid: reserved keyword         */</span>
+    <span class="cm">/* int Count, count;  valid but confusing: case matters */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d of %d seats used (%d %d)\n"</span><span class="pu">,</span>
+           student_count<span class="pu">,</span> MAX_STUDENTS<span class="pu">,</span> count2<span class="pu">,</span> _hidden<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <h2>7. Implicit type conversion (promotion)</h2>
+      <p>When operands of different types meet in an expression, C converts them automatically. Knowing the rules prevents many subtle bugs.</p>
+      <h3>Integer promotion</h3>
+      <p>Before any arithmetic, operands of type <code>char</code>, <code>short</code> (signed or unsigned) and <code>_Bool</code> are converted to <code>int</code> (or to <code>unsigned int</code> if <code>int</code> cannot hold all their values). That is why <code>'A' + 1</code> is an <code>int</code> with value 66, and why <code>short * short</code> is computed in <code>int</code> and does not overflow at 16 bits.</p>
+      <h3>Usual arithmetic conversions</h3>
+      <p>After promotion, if the two operands still differ, the "lower" type is converted to the "higher" one. Roughly:</p>
+      <table>
+        <thead><tr><th>If one operand is&hellip;</th><th>&hellip;the other is converted to</th></tr></thead>
+        <tbody>
+          <tr><td><code>long double</code></td><td><code>long double</code></td></tr>
+          <tr><td><code>double</code></td><td><code>double</code></td></tr>
+          <tr><td><code>float</code></td><td><code>float</code></td></tr>
+          <tr><td>unsigned, with rank &ge; the other operand's</td><td>that unsigned type (a negative signed value wraps to a large positive one)</td></tr>
+          <tr><td>otherwise</td><td>the higher-ranked integer type (<code>int</code>, <code>long</code>, <code>long long</code>)</td></tr>
+        </tbody>
+      </table>
+      <h3>Truncation on assignment</h3>
+      <p>Assigning a value to a variable of a different type converts it silently. Converting a floating-point value to an integer <strong>discards the fractional part</strong> (it truncates toward zero and does not round): <code>int x = 3.9;</code> stores <code>3</code> and <code>int y = -3.9;</code> stores <code>-3</code>. Converting to a narrower integer type that cannot hold the value wraps modulo 2<sup>N</sup> for unsigned types and is implementation-defined for signed types.</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-header"><span>promotion.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span>          x  <span class="pu">=</span> <span class="nm">3.9</span><span class="pu">;</span>       <span class="cm">/* truncated to 3 (-Wconversion warns) */</span>
+    <span class="ty">double</span>       d  <span class="pu">=</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>     <span class="cm">/* integer division first: 3, then 3.0 */</span>
+    <span class="ty">double</span>       d2 <span class="pu">=</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2.0</span><span class="pu">;</span>   <span class="cm">/* 2.0 is double, so 7 becomes 7.0: 3.5 */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> u  <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="ty">char</span>         c  <span class="pu">=</span> <span class="st">'A'</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x  = %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"d  = %.1f, d2 = %.1f\n"</span><span class="pu">,</span> d<span class="pu">,</span> d2<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"c + 1 = %d (an int)\n"</span><span class="pu">,</span> c <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"u - 10 = %u (unsigned wrap-around)\n"</span><span class="pu">,</span> u <span class="pu">-</span> <span class="nm">10</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+    <div class="prose">
+
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Mixing signed and unsigned operands is a classic trap: <code>-1 &lt; 1u</code> is <em>false</em>, because <code>-1</code> is converted to <code>UINT_MAX</code>. Compile with <code>-Wall -Wextra</code> to catch it.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>A variable is a named, typed region of memory; declare it as <code>type name;</code> and initialise it at the point of declaration.</li>
+        <li>Variables are lvalues (they have an address); literals and computed results are rvalues.</li>
+        <li>Integer types (<code>char</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>long long</code>) come in signed and unsigned forms; their sizes vary by platform, so use <code>&lt;limits.h&gt;</code> (<code>INT_MAX</code>, <code>INT_MIN</code>, &hellip;).</li>
+        <li><code>float</code>, <code>double</code> and <code>long double</code> trade range and precision against size; limits live in <code>&lt;float.h&gt;</code> (<code>FLT_MAX</code>, <code>DBL_MAX</code>, &hellip;).</li>
+        <li><code>sizeof</code> yields a <code>size_t</code>; print it with <code>%zu</code>. Parentheses are required for types, optional for variables.</li>
+        <li><code>const</code> forbids modification and <code>volatile</code> forbids caching; <code>static</code>, <code>extern</code>, <code>auto</code> and <code>register</code> control lifetime and linkage.</li>
+        <li>Identifiers use letters, digits and underscores, cannot start with a digit, and cannot be keywords. Use <code>snake_case</code> for variables and <code>UPPER_CASE</code> for macros.</li>
+        <li>Narrower types are promoted to <code>int</code>; mixed types are converted to the "higher" type; assigning a <code>double</code> to an <code>int</code> truncates (<code>int x = 3.9;</code> gives 3).</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

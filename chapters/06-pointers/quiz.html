@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 6 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 6 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/06-pointers/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 6 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 6</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 6 — Pointers</p>
+      <p class="subtitle">Chapter 6 — Pointers &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What does <code>int *p = NULL;</code> mean?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>p</code> points to an integer variable whose value is 0</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true"  /><label><code>p</code> is a pointer initialised to address 0 (points to no valid object)</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>p</code> points to random unallocated heap memory</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The compiler deletes the pointer variable <code>p</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="NULL represents a null pointer constant (address 0) indicating that the pointer does not reference any valid memory location or object."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">If <code>p</code> is an <code>int *</code> at address <code>0x1000</code> on a system where <code>sizeof(int) == 4</code>, what address does <code>p + 1</code> evaluate to?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>0x1001</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true"  /><label><code>0x1004</code> (p's address + 4 bytes)</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>0x1008</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>0x1002</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Pointer arithmetic scales by the size of the pointed-to type. Adding 1 to an int* advances the address by 1 * sizeof(int) = 4 bytes."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">In C, what is the expression <code>*(a + i)</code> strictly equivalent to?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>&amp;a[i]</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>a + sizeof(i)</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true"  /><label><code>a[i]</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>*a + i</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="By definition in the C language standard, array subscripting a[i] is defined as identical to *(a + i)."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">What is a dangling pointer?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A pointer that was declared as <code>void *</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true"  /><label>A pointer that points to memory that has been deallocated or gone out of scope</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A pointer that has been explicitly initialised to <code>NULL</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A pointer whose value is altered inside a loop</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A dangling pointer holds the address of memory that has been freed (via free()) or a local stack variable whose scope has ended. Dereferencing it causes undefined behaviour."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">Which declaration creates a pointer where the <strong>pointer address cannot change</strong>, but the <strong>pointed-to value can</strong>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>const int *p;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true"  /><label><code>int * const p;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>const int * const p;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>int const *p;</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Reading right-to-left: 'int * const p' means p is a const pointer to a mutable int. The address in p is fixed, but *p can be modified."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What is the size of any pointer type (<code>char *</code>, <code>int *</code>, <code>double *</code>, <code>void *</code>) on a standard 64-bit architecture?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>1 byte for <code>char *</code>, 4 bytes for <code>int *</code>, 8 bytes for <code>double *</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>4 bytes for all pointers</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true"  /><label>8 bytes for all pointers</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>16 bytes for all pointers</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="On a 64-bit architecture, virtual memory addresses are 64 bits (8 bytes) wide, so every pointer variable occupies 8 bytes regardless of the target data type."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">What must you do before dereferencing a <code>void *</code> in standard C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Multiply it by <code>sizeof(void)</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true"  /><label>Cast it to a concrete pointer type (e.g. <code>int *</code> or <code>char *</code>)</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Pass it to <code>free()</code> first</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Nothing; <code>*void_ptr</code> automatically infers the original type</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Because 'void' has an incomplete type with no size, the compiler cannot know how many bytes to read or how to interpret them without an explicit cast to a concrete pointer type."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What happens when you dereference a null pointer in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>It returns 0 as a default value</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>The compiler automatically catches it and re-initialises the pointer</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true"  /><label>Undefined behaviour (typically resulting in a segmentation fault / crash)</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>A <code>NullPointerException</code> exception object is thrown</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Dereferencing NULL is undefined behaviour in C. On operating systems with memory protection (MMU), accessing page 0 triggers a hardware fault (SIGSEGV / segmentation fault) and terminates the process."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

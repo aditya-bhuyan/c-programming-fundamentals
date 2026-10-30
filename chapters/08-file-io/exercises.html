@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 8 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 8 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/08-file-io/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 8 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 8</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 8 — File I/O</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 8 — File I/O &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,134 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Line Counter
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a program that opens a specified text file (for example, create a sample test file <code>sample.txt</code> containing a few lines of text), counts the total number of lines in the file by counting newline characters (<code>'\n'</code>), and prints the count. Ensure you handle errors gracefully if the file cannot be opened.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>File: sample.txt
+Total lines: 4</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>int ch; while ((ch = fgetc(fp)) != EOF) { if (ch == '\n') lines++; }</code>. Don't forget to close the file with <code>fclose(fp)</code> when done.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        File Copy (Character by Character)
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a program that copies the contents of a source file (<code>source.txt</code>) to a destination file (<code>destination.txt</code>) character by character using <code>fgetc()</code> and <code>fputc()</code>. Check for errors opening both files, count the total number of bytes copied, and report the result.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Copied 52 bytes from 'source.txt' to 'destination.txt' successfully.</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Open the source file with <code>"r"</code> and destination file with <code>"w"</code>. If the second <code>fopen</code> fails, remember to close the first open file before exiting!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        CSV Parser &amp; Average GPA Calculator
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a program that creates a CSV file named <code>grades.csv</code> containing student records with columns <code>Name,Major,GPA</code>. Then reopen the file, parse each record line-by-line using <code>fgets()</code> and <code>sscanf()</code> (skipping the header row), print each student's details, and compute and print the class average GPA.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Student Records:
+- Emma Watson (Computer Science): GPA 3.90
+- Liam Neeson (Mathematics): GPA 3.40
+- Sophia Chen (Physics): GPA 3.80
+- Noah Davis (Engineering): GPA 3.70
+
+Total students: 4
+Average GPA: 3.70</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>sscanf(line, "%31[^,],%31[^,],%lf", name, major, &amp;gpa)</code> to parse comma-separated fields into separate variables. Accumulate total GPA and record count in a loop.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Binary Record Database with Random Access Search
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Define a structure <code>Product</code> with fields <code>int id</code>, <code>char name[32]</code>, and <code>double price</code>. Write a program that writes 5 products with IDs <code>101</code> through <code>105</code> to a binary file <code>catalog.bin</code> using <code>fwrite()</code>. Then, implement a function <code>int find_product_by_index(FILE *fp, int index, Product *out)</code> that uses <code>fseek()</code> to jump directly to the $k$-th record without reading previous records, loads it with <code>fread()</code>, and displays the found item.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Database created with 5 products.
+Looking up product at index 2 (offset 2 * sizeof(Product))...
+Found: ID = 103, Name = Mechanical Keyboard, Price = $89.99
+
+Looking up product at index 4 (offset 4 * sizeof(Product))...
+Found: ID = 105, Name = USB-C Hub, Price = $29.50</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>fseek(fp, (long)index * sizeof(Product), SEEK_SET)</code>. If <code>fseek</code> succeeds, call <code>fread(out, sizeof(Product), 1, fp)</code> and verify that <code>fread</code> returns 1.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Log File Rotator
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement a function <code>void log_message(const char *filename, const char *msg)</code> that appends a timestamped message to a log file. Before appending, check the size of the log file using <code>fseek(fp, 0L, SEEK_END)</code> and <code>ftell(fp)</code>. If the file size exceeds 1,024 bytes (1 KB), close the file, rotate it by renaming it to <code>app.log.bak</code> (overwriting any previous backup using <code>remove()</code> and <code>rename()</code>), and create a fresh new <code>app.log</code> file.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Writing log entries...
+Entry 1 written (size: 45 bytes)
+...
+Entry 22 written (size: 990 bytes)
+Entry 23: Log size exceeded 1024 bytes (1035 bytes). Rotating 'app.log' -> 'app.log.bak'...
+Rotation complete. Fresh 'app.log' created.
+Entry 24 written to new active log (size: 45 bytes)</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">To check size without truncating, open with <code>"a+"</code> or <code>"r"</code>. If size &ge; 1024, close the handle, call <code>remove("app.log.bak")</code>, call <code>rename("app.log", "app.log.bak")</code>, and open a new <code>app.log</code> with <code>"w"</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>

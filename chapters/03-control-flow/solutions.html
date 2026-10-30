@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 3 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 3 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/03-control-flow/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 3 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,211 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — FizzBuzz</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_fizzbuzz.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">%</span> <span class="nm">15</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"FizzBuzz\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">%</span> <span class="nm">3</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Fizz\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">%</span> <span class="nm">5</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Buzz\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> i<span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
       <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <div><strong>Key Insight:</strong> The order of conditions in an <code>if / else if</code> chain matters. Since any multiple of 15 is also divisible by 3 and 5, testing <code>i % 15 == 0</code> first guarantees that FizzBuzz is printed before the individual 3 or 5 branches can intercept it.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Number / Star Triangle</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_triangle.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> height <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> row <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> row <span class="pu">&lt;=</span> height<span class="pu">;</span> row<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> col <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> col <span class="pu">&lt;=</span> row<span class="pu">;</span> col<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"*"</span><span class="pu">);</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> The inner loop upper limit is <code>row</code>, causing row 1 to print 1 star, row 2 to print 2 stars, up to row 5 printing 5 stars. The newline <code>printf("\n");</code> executes once per row after the inner loop finishes.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Prime Sieve (Sieve of Eratosthenes)</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_sieve.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdbool.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">bool</span> is_prime<span class="pu">[</span><span class="nm">101</span><span class="pu">];</span>
+
+    <span class="cm">/* 1. Initialize all entries as prime candidates (true) */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        is_prime<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> <span class="kw">true</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    is_prime<span class="pu">[</span><span class="nm">0</span><span class="pu">]</span> <span class="pu">=</span> <span class="kw">false</span><span class="pu">;</span>
+    <span class="pu">is_prime[</span><span class="nm">1</span><span class="pu">]</span> <span class="pu">=</span> <span class="kw">false</span><span class="pu">;</span>
+
+    <span class="cm">/* 2. Sieve multiples starting from p * p */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> p <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span> p <span class="pu">*</span> p <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> p<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>is_prime<span class="pu">[</span>p<span class="pu">])</span> <span class="pu">{</span>
+            <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> multiple <span class="pu">=</span> p <span class="pu">*</span> p<span class="pu">;</span> multiple <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> multiple <span class="pu">+=</span> p<span class="pu">)</span> <span class="pu">{</span>
+                is_prime<span class="pu">[</span>multiple<span class="pu">]</span> <span class="pu">=</span> <span class="kw">false</span><span class="pu">;</span>
+            <span class="pu">}</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* 3. Output results */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Primes up to 100:\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>is_prime<span class="pu">[</span>i<span class="pu">])</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> i<span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Starting the inner loop at <code>p * p</code> is an important mathematical optimization: all smaller multiples of <code>p</code> (e.g. <code>2*p</code>, <code>3*p</code>) have already been crossed out by earlier prime factors smaller than <code>p</code>.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Menu Simulator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_menu.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdbool.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> user_actions<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">9</span><span class="pu">,</span> <span class="nm">5</span> <span class="pu">};</span>
+    <span class="ty">int</span> total_actions <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>user_actions<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>user_actions<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- ATM System Initialized ---\n"</span><span class="pu">);</span>
+
+    <span class="ty">bool</span> running <span class="pu">=</span> <span class="kw">true</span><span class="pu">;</span>
+    <span class="ty">int</span> index <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="kw">while</span> <span class="pu">(</span>running <span class="pu">&amp;&amp;</span> index <span class="pu">&lt;</span> total_actions<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> choice <span class="pu">=</span> user_actions<span class="pu">[</span>index<span class="pu">++];</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"[Action] Choice %d -> "</span><span class="pu">,</span> choice<span class="pu">);</span>
+
+        <span class="kw">switch</span> <span class="pu">(</span>choice<span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">case</span> <span class="nm">1</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Action: Checking Balance ($1,250.00)\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">2</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Action: Deposit Funds ($200.00 deposited)\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">3</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Action: Withdraw Funds ($50.00 dispensed)\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">4</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Action: Account Statement Generated\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">5</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Action: Exiting system. Thank you!\n"</span><span class="pu">);</span>
+                running <span class="pu">=</span> <span class="kw">false</span><span class="pu">;</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">default</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"[ERROR] Invalid menu choice. Please select 1-5.\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Session ended successfully.\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Setting a flag variable like <code>running = false;</code> inside <code>case 5:</code> is the standard structured programming approach in C to break out of the enclosing <code>while</code> loop from within a nested <code>switch</code> statement.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Palindrome Number Checker</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_palindrome.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdbool.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> test_numbers<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">12321</span><span class="pu">,</span> <span class="nm">12345</span><span class="pu">,</span> <span class="nm">1001</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">44</span> <span class="pu">};</span>
+    <span class="ty">int</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>test_numbers<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>test_numbers<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Checking numbers:\n"</span><span class="pu">);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> original <span class="pu">=</span> test_numbers<span class="pu">[</span>i<span class="pu">];</span>
+
+        <span class="kw">if</span> <span class="pu">(</span>original <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%5d -> NOT a palindrome (negative numbers cannot be palindromes)\n"</span><span class="pu">,</span> original<span class="pu">);</span>
+            <span class="kw">continue</span><span class="pu">;</span>
+        <span class="pu">}</span>
+
+        <span class="ty">int</span> temp <span class="pu">=</span> original<span class="pu">;</span>
+        <span class="ty">long</span> <span class="ty">long</span> reversed <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+        <span class="kw">while</span> <span class="pu">(</span>temp <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="ty">int</span> digit <span class="pu">=</span> temp <span class="pu">%</span> <span class="nm">10</span><span class="pu">;</span>
+            reversed <span class="pu">=</span> reversed <span class="pu">*</span> <span class="nm">10</span> <span class="pu">+</span> digit<span class="pu">;</span>
+            temp <span class="pu">/=</span> <span class="nm">10</span><span class="pu">;</span>
+        <span class="pu">}</span>
+
+        <span class="kw">if</span> <span class="pu">(</span>original <span class="pu">==</span> reversed<span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%5d -> PALINDROME (reversed: %lld)\n"</span><span class="pu">,</span> original<span class="pu">,</span> reversed<span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%5d -> NOT a palindrome (reversed: %lld)\n"</span><span class="pu">,</span> original<span class="pu">,</span> reversed<span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Using <code>long long</code> for <code>reversed</code> prevents integer overflow if reversing a large 32-bit integer causes digits to exceed <code>INT_MAX</code> before comparison.</div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/04-functions/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
     </div>
 
   </main>

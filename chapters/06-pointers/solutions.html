@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 6 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 6 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/06-pointers/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 6 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,231 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Pointer Basics &amp; Indirect Modification</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span>    i_val <span class="pu">=</span> <span class="nm">42</span><span class="pu">;</span>
+    <span class="ty">double</span> d_val <span class="pu">=</span> <span class="nm">3.14159</span><span class="pu">;</span>
+    <span class="ty">char</span>   c_val <span class="pu">=</span> <span class="st">'Z'</span><span class="pu">;</span>
+
+    <span class="ty">int</span>    <span class="pu">*</span>p_i <span class="pu">=</span> <span class="pu">&amp;</span>i_val<span class="pu">;</span>
+    <span class="ty">double</span> <span class="pu">*</span>p_d <span class="pu">=</span> <span class="pu">&amp;</span>d_val<span class="pu">;</span>
+    <span class="ty">char</span>   <span class="pu">*</span>p_c <span class="pu">=</span> <span class="pu">&amp;</span>c_val<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Initial:\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int val:    %d at address %p\n"</span><span class="pu">,</span>    <span class="pu">*</span>p_i<span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p_i<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double val: %f at address %p\n"</span><span class="pu">,</span> <span class="pu">*</span>p_d<span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p_d<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"char val:   %c at address %p\n"</span><span class="pu">,</span>    <span class="pu">*</span>p_c<span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p_c<span class="pu">);</span>
+
+    <span class="cm">/* Modify via pointers */</span>
+    <span class="pu">*</span>p_i <span class="pu">=</span> <span class="nm">100</span><span class="pu">;</span>
+    <span class="pu">*</span>p_d <span class="pu">=</span> <span class="nm">2.71828</span><span class="pu">;</span>
+    <span class="pu">*</span>p_c <span class="pu">=</span> <span class="st">'A'</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nAfter modification via pointers:\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int val:    %d\n"</span><span class="pu">,</span> i_val<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double val: %f\n"</span><span class="pu">,</span> d_val<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"char val:   %c\n"</span><span class="pu">,</span> c_val<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Writing <code>*p_i = 100;</code> writes directly to the memory address of <code>i_val</code>, so reading <code>i_val</code> subsequently produces the newly updated value.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Array Sum via Pointer Arithmetic</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">long</span> <span class="ty">long</span> <span class="fn">sum_array</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">size_t</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">long</span> <span class="ty">long</span> total <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>end <span class="pu">=</span> arr <span class="pu">+</span> n<span class="pu">;</span> <span class="cm">/* pointer to one-past-the-last element */</span>
+
+    <span class="kw">while</span> <span class="pu">(</span>arr <span class="pu">&lt;</span> end<span class="pu">)</span> <span class="pu">{</span>
+        total <span class="pu">+=</span> <span class="pu">*</span>arr<span class="pu">;</span>        <span class="cm">/* dereference current element */</span>
+        arr<span class="pu">++;</span>                 <span class="cm">/* advance pointer by sizeof(int) */</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> total<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> data<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">10</span><span class="pu">,</span> <span class="nm">25</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">,</span> <span class="nm">45</span><span class="pu">,</span> <span class="nm">50</span><span class="pu">,</span> <span class="nm">60</span><span class="pu">};</span>
+    <span class="ty">size_t</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>data<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>data<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="ty">long</span> <span class="ty">long</span> result <span class="pu">=</span> <span class="fn">sum_array</span><span class="pu">(</span>data<span class="pu">,</span> count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Array: [10, 25, 30, 45, 50, 60]\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Sum = %lld\n"</span><span class="pu">,</span> result<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Because <code>arr</code> is declared as <code>const int *arr</code>, the function promises not to modify any array elements while summing them.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Generic and Typed Pointer Swaps</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">swap_int</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">&amp;&amp;</span> b<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> tmp <span class="pu">=</span> <span class="pu">*</span>a<span class="pu">;</span>
+        <span class="pu">*</span>a <span class="pu">=</span> <span class="pu">*</span>b<span class="pu">;</span>
+        <span class="pu">*</span>b <span class="pu">=</span> tmp<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">swap_double</span><span class="pu">(</span><span class="ty">double</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="ty">double</span> <span class="pu">*</span>b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">&amp;&amp;</span> b<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">double</span> tmp <span class="pu">=</span> <span class="pu">*</span>a<span class="pu">;</span>
+        <span class="pu">*</span>a <span class="pu">=</span> <span class="pu">*</span>b<span class="pu">;</span>
+        <span class="pu">*</span>b <span class="pu">=</span> tmp<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">swap_generic</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="ty">void</span> <span class="pu">*</span>b<span class="pu">,</span> <span class="ty">size_t</span> size<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(!</span>a <span class="pu">||</span> <span class="pu">!</span>b <span class="pu">||</span> a <span class="pu">==</span> b<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*</span>p1 <span class="pu">=</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*)</span>a<span class="pu">;</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*</span>p2 <span class="pu">=</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*)</span>b<span class="pu">;</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> size<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">unsigned</span> <span class="ty">char</span> temp <span class="pu">=</span> p1<span class="pu">[</span>i<span class="pu">];</span>
+        p1<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> p2<span class="pu">[</span>i<span class="pu">];</span>
+        p2<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> temp<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">10</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>
+    <span class="fn">swap_int</span><span class="pu">(&amp;</span>a<span class="pu">,</span> <span class="pu">&amp;</span>b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int swap:    a = 20, b = 10 (actual: a = %d, b = %d)\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+
+    <span class="ty">double</span> x <span class="pu">=</span> <span class="nm">1.50</span><span class="pu">,</span> y <span class="pu">=</span> <span class="nm">9.75</span><span class="pu">;</span>
+    <span class="fn">swap_double</span><span class="pu">(&amp;</span>x<span class="pu">,</span> <span class="pu">&amp;</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double swap: x = %.2f, y = %.2f\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="ty">long</span> p <span class="pu">=</span> <span class="nm">12345</span><span class="pu">,</span> q <span class="pu">=</span> <span class="nm">67890</span><span class="pu">;</span>
+    <span class="fn">swap_generic</span><span class="pu">(&amp;</span>p<span class="pu">,</span> <span class="pu">&amp;</span>q<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">long</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"generic:     p = %ld, q = %ld\n"</span><span class="pu">,</span> p<span class="pu">,</span> q<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>In C, <code>unsigned char *</code> is explicitly allowed to alias and inspect any memory block byte-by-byte without breaking strict aliasing rules.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Reverse Array In-Place (Two-Pointer Technique)</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">reverse_array</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">size_t</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>arr <span class="pu">==</span> NULL <span class="pu">||</span> n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+
+    <span class="ty">int</span> <span class="pu">*</span>left <span class="pu">=</span> arr<span class="pu">;</span>
+    <span class="ty">int</span> <span class="pu">*</span>right <span class="pu">=</span> arr <span class="pu">+</span> n <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="kw">while</span> <span class="pu">(</span>left <span class="pu">&lt;</span> right<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> temp <span class="pu">=</span> <span class="pu">*</span>left<span class="pu">;</span>
+        <span class="pu">*</span>left <span class="pu">=</span> <span class="pu">*</span>right<span class="pu">;</span>
+        <span class="pu">*</span>right <span class="pu">=</span> temp<span class="pu">;</span>
+
+        <span class="pu">++</span>left<span class="pu">;</span>
+        <span class="pu">--</span>right<span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> arr<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">6</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">};</span>
+    <span class="ty">size_t</span> len <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>arr<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>arr<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Original: "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> len<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="fn">reverse_array</span><span class="pu">(</span>arr<span class="pu">,</span> len<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Reversed: "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> len<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>The two-pointer technique achieves $O(n)$ time complexity with $O(1)$ extra space, reversing elements completely in-place.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Bounded String Copy Implementation</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">char</span> <span class="pu">*</span><span class="fn">my_strncpy</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*</span>dst<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>src<span class="pu">,</span> <span class="ty">size_t</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>dst <span class="pu">==</span> NULL <span class="pu">||</span> n <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="kw">return</span> dst<span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(</span>src <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="pu">*</span>dst <span class="pu">=</span> <span class="st">'\0'</span><span class="pu">;</span>
+        <span class="kw">return</span> dst<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">char</span> <span class="pu">*</span>start <span class="pu">=</span> dst<span class="pu">;</span>
+    <span class="ty">size_t</span> copied <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="cm">/* Copy characters up to n - 1 */</span>
+    <span class="kw">while</span> <span class="pu">(*</span>src <span class="pu">!=</span> <span class="st">'\0'</span> <span class="pu">&amp;&amp;</span> copied <span class="pu">+</span> <span class="nm">1</span> <span class="pu">&lt;</span> n<span class="pu">)</span> <span class="pu">{</span>
+        <span class="pu">*</span>dst<span class="pu">++</span> <span class="pu">=</span> <span class="pu">*</span>src<span class="pu">++;</span>
+        <span class="pu">++</span>copied<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Guarantee null termination */</span>
+    <span class="pu">*</span>dst <span class="pu">=</span> <span class="st">'\0'</span><span class="pu">;</span>
+
+    <span class="kw">return</span> start<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>source <span class="pu">=</span> <span class="st">"C Programming Fundamentals"</span><span class="pu">;</span>
+    <span class="ty">char</span> buf1<span class="pu">[</span><span class="nm">30</span><span class="pu">];</span>
+    <span class="ty">char</span> buf2<span class="pu">[</span><span class="nm">14</span><span class="pu">];</span>
+
+    <span class="fn">my_strncpy</span><span class="pu">(</span>buf1<span class="pu">,</span> source<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buf1<span class="pu">));</span>
+    <span class="fn">my_strncpy</span><span class="pu">(</span>buf2<span class="pu">,</span> source<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buf2<span class="pu">));</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Source:      \"%s\"\n"</span><span class="pu">,</span> source<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Copied (30): \"%s\"\n"</span><span class="pu">,</span> buf1<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Copied (14): \"%s\"\n"</span><span class="pu">,</span> buf2<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Unlike the standard C library <code>strncpy</code> (which does <em>not</em> null-terminate if the source length exceeds <code>n</code>), this safe implementation guarantees null-termination without buffer overflows.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/07-structs/index.html" class="btn btn-primary">Next Chapter: Chapter 7 &#8594;</a>
     </div>
 
   </main>

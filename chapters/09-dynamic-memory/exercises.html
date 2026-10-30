@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 9 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 9 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/09-dynamic-memory/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 9 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 9</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 9 — Dynamic Memory Management</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 9 — Dynamic Memory Management &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,160 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Compile with <code>gcc -std=c17 -Wall -Wextra -g -fsanitize=address -o ex&lt;N&gt; ex&lt;N&gt;.c</code> and run under Valgrind to verify you have no leaks.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Dynamic Array of Squares
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Allocate an <code>int</code> array of size <code>N = 10</code> on the heap using <code>malloc</code>. Fill each element with its index squared (<code>arr[i] = i * i</code>). Print all elements on one line. Free the array and set the pointer to <code>NULL</code>.</p>
+        <p>Requirements:</p>
+        <ul>
+          <li>Check the return value of <code>malloc</code> for <code>NULL</code>.</li>
+          <li>Use <code>sizeof(int)</code> in the allocation — never hardcode byte counts.</li>
+          <li>Set the pointer to <code>NULL</code> after freeing.</li>
+        </ul>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Squares: 0 1 4 9 16 25 36 49 64 81</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Declare <code>int *arr = malloc(N * sizeof(int));</code>, check <code>if (!arr) return 1;</code>, fill with <code>arr[i] = i * i;</code>, then call <code>free(arr); arr = NULL;</code></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        Grow-able Dynamic Stack
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement a stack backed by a dynamic <code>int</code> array that doubles capacity when full. Provide the following functions:</p>
+        <ul>
+          <li><code>Stack *stack_create(int initial_capacity)</code> — allocate and initialise the stack.</li>
+          <li><code>int stack_push(Stack *s, int value)</code> — push a value; grow the backing array if full. Return 1 on success, 0 on allocation failure.</li>
+          <li><code>int stack_pop(Stack *s, int *out)</code> — pop a value into <code>*out</code>; return 0 if empty.</li>
+          <li><code>int stack_peek(const Stack *s, int *out)</code> — peek at the top without removing.</li>
+          <li><code>int stack_is_empty(const Stack *s)</code> — return 1 if empty.</li>
+          <li><code>void stack_free(Stack *s)</code> — free all memory.</li>
+        </ul>
+        <p>In <code>main</code>, push integers 1–12, pop and print them all (should appear in reverse: 12 down to 1).</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output (partial)</span></div>
+          <pre>Pushed: 1 2 3 4 5 6 7 8 9 10 11 12
+Popped: 12 11 10 9 8 7 6 5 4 3 2 1</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use a struct <code>{ int *data; int top; int capacity; }</code>. In <code>push</code>, when <code>top == capacity</code>, double capacity with the safe <code>realloc</code> pattern (temp pointer, check NULL, then update).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Dynamic String Tokeniser
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a function <code>char **split_words(const char *sentence, int *count)</code> that splits a space-delimited string into a dynamically allocated array of <code>char *</code> tokens. Each token must itself be a heap-allocated copy of the word. Set <code>*count</code> to the number of tokens. The caller is responsible for freeing each token and the array.</p>
+        <p>In <code>main</code>, call the function on <code>"the quick brown fox jumps"</code>, print each token on its own line, then free everything.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Token 0: "the"
+Token 1: "quick"
+Token 2: "brown"
+Token 3: "fox"
+Token 4: "jumps"
+Total: 5 tokens</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>strdup</code> (or <code>malloc</code> + <code>memcpy</code>) to copy each token. Start with a small capacity array for the <code>char **</code> list and grow it with <code>realloc</code> as needed. Use <code>strtok</code> or manual pointer scanning to find word boundaries.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Generic Dynamic Array (<code>void *</code>)
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement a type-generic dynamic array (like a miniature <code>std::vector</code>) using <code>void *</code> and an element-size parameter. Provide:</p>
+        <ul>
+          <li><code>DynArray *da_create(size_t elem_size, size_t init_capacity)</code></li>
+          <li><code>int da_push(DynArray *da, const void *elem)</code> — append a copy of the element</li>
+          <li><code>void *da_get(const DynArray *da, size_t idx)</code> — return pointer to element at index</li>
+          <li><code>size_t da_len(const DynArray *da)</code></li>
+          <li><code>void da_free(DynArray *da)</code></li>
+        </ul>
+        <p>Demonstrate with both an <code>int</code> array (push 1–5) and a <code>double</code> array (push 1.1, 2.2, 3.3). Print all elements of each array using <code>da_get</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Ints:    1 2 3 4 5
+Doubles: 1.10 2.20 3.30</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Store a <code>char *buf</code> (raw bytes), <code>size_t elem_size</code>, <code>size_t len</code>, and <code>size_t capacity</code>. In <code>da_push</code>, grow with <code>realloc</code> when <code>len == capacity</code>, then use <code>memcpy(buf + len * elem_size, elem, elem_size)</code> to append.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Fixed-Block Memory Pool
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement a simple fixed-size block memory pool. The pool pre-allocates one large buffer with a single <code>malloc</code> call at startup and hands out fixed-size blocks from it. A free list (as an embedded singly-linked list within the free blocks) tracks available blocks.</p>
+        <p>Provide:</p>
+        <ul>
+          <li><code>Pool *pool_create(size_t block_size, size_t num_blocks)</code> — allocate the arena, link free blocks.</li>
+          <li><code>void *pool_alloc(Pool *p)</code> — return a block from the free list; return <code>NULL</code> if exhausted.</li>
+          <li><code>void pool_free(Pool *p, void *block)</code> — return the block to the free list (no OS <code>free</code>).</li>
+          <li><code>void pool_destroy(Pool *p)</code> — release the arena with a single <code>free</code>.</li>
+        </ul>
+        <p>Demonstrate by allocating 5 blocks of <code>sizeof(int)</code>, storing values 10–50, printing them, freeing block 2, reallocating it, and printing the updated value. Confirm no Valgrind leaks.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output (example)</span></div>
+          <pre>Block 0 = 10
+Block 1 = 20
+Block 2 = 30
+Block 3 = 40
+Block 4 = 50
+Freed block 2, reallocated it = 99
+Pool destroyed — no leaks.</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Store a <code>void *arena</code> (the big malloc'd buffer) and a <code>void *free_head</code>. During <code>pool_create</code>, iterate over each block and write a <code>void *</code> next-pointer into the first <code>sizeof(void *)</code> bytes. In <code>pool_alloc</code>, pop the head. In <code>pool_free</code>, push back to the head. <code>block_size</code> must be at least <code>sizeof(void *)</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>

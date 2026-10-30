@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 1 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 1 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/01-variables/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 1 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,293 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout info"><span class="callout-icon">&#128161;</span><div>Compile every example with <code>gcc -std=c17 -Wall -Wextra -o NAME NAME.c</code> (for example <code>gcc -std=c17 -Wall -Wextra -o 01_declare 01_declare.c</code>) and run it with <code>./NAME</code>. Type the code in yourself rather than pasting it &mdash; you will learn more.</div></div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Declaring variables of every basic type</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Declares and initialises one variable of each basic type and prints it with the correct format specifier: <code>%d</code>, <code>%u</code>, <code>%ld</code>, <code>%llu</code>, <code>%f</code>, <code>%lf</code> and <code>%c</code> (plus <code>%hd</code>, <code>%lld</code> and <code>%Lf</code> for the remaining types). Integer literal suffixes (<code>u</code>, <code>L</code>, <code>LL</code>, <code>ULL</code>) make each literal's type match its variable.</p>
+<div class="code-block">
+  <div class="code-header"><span>01_declare.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="cm">/* Integer types: declaration + initialisation in one statement */</span>
+    <span class="ty">char</span>               letter  <span class="pu">=</span> <span class="st">'C'</span><span class="pu">;</span>                      <span class="cm">/* %c   */</span>
+    <span class="ty">short</span>              year    <span class="pu">=</span> <span class="nm">2024</span><span class="pu">;</span>                     <span class="cm">/* %hd  */</span>
+    <span class="ty">int</span>                count   <span class="pu">=</span> <span class="pu">-</span><span class="nm">42</span><span class="pu">;</span>                      <span class="cm">/* %d   */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span>       items   <span class="pu">=</span> <span class="nm">4000000000u</span><span class="pu">;</span>              <span class="cm">/* %u   */</span>
+    <span class="ty">long</span>               pop     <span class="pu">=</span> <span class="nm">7900000000L</span><span class="pu">;</span>              <span class="cm">/* %ld  */</span>
+    <span class="ty">long</span> <span class="ty">long</span>          deficit <span class="pu">=</span> <span class="pu">-</span><span class="nm">9000000000000000000LL</span><span class="pu">;</span>   <span class="cm">/* %lld */</span>
+    <span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> huge    <span class="pu">=</span> <span class="nm">18000000000000000000ULL</span><span class="pu">;</span>  <span class="cm">/* %llu */</span>
+
+    <span class="cm">/* Floating-point types */</span>
+    <span class="ty">float</span>              ratio   <span class="pu">=</span> <span class="nm">3.14159f</span><span class="pu">;</span>                 <span class="cm">/* %f   */</span>
+    <span class="ty">double</span>             precise <span class="pu">=</span> <span class="nm">2.718281828459045</span><span class="pu">;</span>        <span class="cm">/* %f or %lf */</span>
+    <span class="ty">long</span> <span class="ty">double</span>        third   <span class="pu">=</span> <span class="nm">1.0L</span> <span class="pu">/</span> <span class="nm">3.0L</span><span class="pu">;</span>              <span class="cm">/* %Lf  */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"char               : %c (code %d)\n"</span><span class="pu">,</span> letter<span class="pu">,</span> letter<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"short              : %hd\n"</span><span class="pu">,</span> year<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int                : %d\n"</span><span class="pu">,</span> count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"unsigned int       : %u\n"</span><span class="pu">,</span> items<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"long               : %ld\n"</span><span class="pu">,</span> pop<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"long long          : %lld\n"</span><span class="pu">,</span> deficit<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"unsigned long long : %llu\n"</span><span class="pu">,</span> huge<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"float              : %f\n"</span><span class="pu">,</span> ratio<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double (%%f)        : %f\n"</span><span class="pu">,</span> precise<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double (%%lf)       : %lf\n"</span><span class="pu">,</span> precise<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"long double        : %Lf\n"</span><span class="pu">,</span> third<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">char               : C (code 67)<br>short              : 2024<br>int                : -42<br>unsigned int       : 4000000000<br>long               : 7900000000<br>long long          : -9000000000000000000<br>unsigned long long : 18000000000000000000<br>float              : 3.141590<br>double (%f)        : 2.718282<br>double (%lf)       : 2.718282<br>long double        : 0.333333</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div><code>%f</code> and <code>%lf</code> behave identically in <code>printf</code> because a <code>float</code> argument is promoted to <code>double</code>. (In <code>scanf</code> they differ: <code>%f</code> reads a <code>float</code>, <code>%lf</code> reads a <code>double</code>.) The <code>long double</code> value is only printed to 6 digits here; use <code>%.20Lf</code> to see more.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Sizes and limits with <code>sizeof</code> and <code>&lt;limits.h&gt;</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Prints the size of every primitive type with <code>sizeof</code> and <code>%zu</code>, shows both forms of <code>sizeof</code> (with a type and with a variable), and prints <code>INT_MAX</code>, <code>INT_MIN</code> and <code>CHAR_MAX</code>.</p>
+<div class="code-block">
+  <div class="code-header"><span>02_sizeof.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>   <span class="cm">/* CHAR_BIT, CHAR_MAX, INT_MAX, INT_MIN */</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> counter <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="cm">/* sizeof(type) - parentheses are REQUIRED for a type name */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(char)               = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">char</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(short)              = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">short</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(int)                = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(long)               = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">long</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(long long)          = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">long</span> <span class="ty">long</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(float)              = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">float</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(double)             = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">double</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(long double)        = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">long</span> <span class="ty">double</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(void *)             = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(size_t)             = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">size_t</span><span class="pu">));</span>
+
+    <span class="cm">/* sizeof variable - parentheses are optional for an expression */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof counter             = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span> counter<span class="pu">);</span>
+
+    <span class="cm">/* Constants from &lt;limits.h&gt; */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"CHAR_BIT                   = %d\n"</span><span class="pu">,</span> CHAR_BIT<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"CHAR_MAX                   = %d\n"</span><span class="pu">,</span> CHAR_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MAX                    = %d\n"</span><span class="pu">,</span> INT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MIN                    = %d\n"</span><span class="pu">,</span> INT_MIN<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">sizeof(char)               = 1<br>sizeof(short)              = 2<br>sizeof(int)                = 4<br>sizeof(long)               = 8<br>sizeof(long long)          = 8<br>sizeof(float)              = 4<br>sizeof(double)             = 8<br>sizeof(long double)        = 8<br>sizeof(void *)             = 8<br>sizeof(size_t)             = 8<br>sizeof counter             = 4<br>CHAR_BIT                   = 8<br>CHAR_MAX                   = 127<br>INT_MAX                    = 2147483647<br>INT_MIN                    = -2147483648</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div>Your output may differ: <code>long</code> is 4 bytes on Windows, <code>long double</code> is 16 on x86-64 Linux, <code>void *</code> is 4 on 32-bit systems, and <code>CHAR_MAX</code> is 255 where plain <code>char</code> is unsigned. The output shown is from a 64-bit macOS (Apple silicon) system.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Signed overflow and unsigned wrap-around</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Contrasts signed overflow, which is <strong>undefined behaviour</strong>, with unsigned overflow, which is fully defined as modular arithmetic.</p>
+<div class="code-block">
+  <div class="code-header"><span>03_overflow.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="cm">/*
+     * SIGNED overflow is UNDEFINED BEHAVIOUR in C. The standard places no
+     * requirement on what happens; the compiler may assume it never occurs
+     * and optimise accordingly. On most machines, compiled without
+     * optimisation, the result "wraps" to INT_MIN (two's complement), but
+     * you must never rely on this.
+     *
+     * 'volatile' stops the compiler from folding the addition at compile
+     * time, so the demonstration reflects what the hardware does.
+     */</span>
+    <span class="ty">volatile</span> <span class="ty">int</span> big <span class="pu">=</span> INT_MAX<span class="pu">;</span>
+    <span class="ty">int</span> wrapped <span class="pu">=</span> big <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>               <span class="cm">/* undefined behaviour! */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MAX          = %d\n"</span><span class="pu">,</span> INT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"INT_MAX + 1      = %d  (undefined behaviour)\n"</span><span class="pu">,</span> wrapped<span class="pu">);</span>
+
+    <span class="cm">/*
+     * UNSIGNED overflow is well defined: arithmetic is performed modulo
+     * 2^N, where N is the number of bits in the type. UINT_MAX + 1 gives 0
+     * and 0 - 1 gives UINT_MAX. This is guaranteed by the standard.
+     */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> u <span class="pu">=</span> UINT_MAX<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"UINT_MAX         = %u\n"</span><span class="pu">,</span> u<span class="pu">);</span>
+    u <span class="pu">=</span> u <span class="pu">+</span> <span class="nm">1u</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"UINT_MAX + 1     = %u  (wraps to 0)\n"</span><span class="pu">,</span> u<span class="pu">);</span>
+    u <span class="pu">=</span> u <span class="pu">-</span> <span class="nm">1u</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"0 - 1            = %u  (wraps to UINT_MAX)\n"</span><span class="pu">,</span> u<span class="pu">);</span>
+
+    <span class="cm">/* Same rule for narrower unsigned types: 255 + 1 wraps to 0 */</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> byte <span class="pu">=</span> <span class="nm">255</span><span class="pu">;</span>
+    byte <span class="pu">=</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span><span class="pu">)(</span>byte <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"uchar 255 + 1    = %d\n"</span><span class="pu">,</span> byte<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">INT_MAX          = 2147483647<br>INT_MAX + 1      = -2147483648  (undefined behaviour)<br>UINT_MAX         = 4294967295<br>UINT_MAX + 1     = 0  (wraps to 0)<br>0 - 1            = 4294967295  (wraps to UINT_MAX)<br>uchar 255 + 1    = 0</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div>The signed result <code>-2147483648</code> is what a typical two's-complement machine produces without optimisation, but the C standard allows <em>anything</em>. With optimisation, compilers may legitimately assume <code>x + 1 &gt; x</code> is always true for signed <code>x</code>. Unsigned arithmetic is the opposite: the standard guarantees wrap-around modulo 2<sup>N</sup>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Using <code>const</code> correctly</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Shows the four <code>const</code> pointer combinations. Read declarations right-to-left: <code>const int *p</code> is a pointer to a constant int; <code>int *const p</code> is a constant pointer to an int.</p>
+<div class="code-block">
+  <div class="code-header"><span>04_const.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="ty">int</span> b <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>
+
+    <span class="cm">/* 1. const int - the VALUE can never change after initialisation */</span>
+    <span class="ty">const</span> <span class="ty">int</span> max_users <span class="pu">=</span> <span class="nm">100</span><span class="pu">;</span>
+    <span class="cm">/* max_users = 200;   &lt;- compile error: assignment of read-only variable */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"max_users              = %d\n"</span><span class="pu">,</span> max_users<span class="pu">);</span>
+
+    <span class="cm">/* 2. Pointer to const int - cannot modify the data THROUGH the pointer,
+          but the pointer itself can be re-pointed elsewhere. */</span>
+    <span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>ptr_to_const <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+    <span class="cm">/* *ptr_to_const = 99;  &lt;- compile error: read-only location */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"*ptr_to_const          = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>ptr_to_const<span class="pu">);</span>
+    ptr_to_const <span class="pu">=</span> <span class="pu">&amp;</span>b<span class="pu">;</span>                       <span class="cm">/* OK: pointer is not const */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"*ptr_to_const (after)  = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>ptr_to_const<span class="pu">);</span>
+
+    <span class="cm">/* 3. const pointer to int - the pointer can never be re-pointed, but
+          the data it points to can be modified. */</span>
+    <span class="ty">int</span> <span class="pu">*</span><span class="ty">const</span> const_ptr <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+    <span class="pu">*</span>const_ptr <span class="pu">=</span> <span class="nm">15</span><span class="pu">;</span>                         <span class="cm">/* OK: data is not const */</span>
+    <span class="cm">/* const_ptr = &amp;b;      &lt;- compile error: assignment of read-only variable */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a via const_ptr        = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>const_ptr<span class="pu">);</span>
+
+    <span class="cm">/* 4. const pointer to const int - neither can change */</span>
+    <span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span><span class="ty">const</span> locked <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+    <span class="cm">/* *locked = 1;  and  locked = &amp;b;  are BOTH compile errors */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"*locked                = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>locked<span class="pu">);</span>
+
+    <span class="cm">/*
+     * Reading the declaration: read right-to-left.
+     *   const int *p        -&gt; p is a pointer to a const int
+     *   int *const p        -&gt; p is a const pointer to an int
+     *   const int *const p  -&gt; p is a const pointer to a const int
+     *
+     * Casting away const and then writing to a genuinely const object
+     * (e.g. max_users) is undefined behaviour - don't do it.
+     */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">max_users              = 100<br>*ptr_to_const          = 10<br>*ptr_to_const (after)  = 20<br>a via const_ptr        = 15<br>*locked                = 15</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div>Each commented-out line is a compile-time error (typically <em>"assignment of read-only variable"</em> or <em>"read-only location"</em>). The compiler enforces <code>const</code>, so you get the error before the program ever runs. Try un-commenting them one at a time.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Implicit conversions: narrowing, widening, char arithmetic</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Demonstrates truncation when a <code>double</code> is stored in an <code>int</code>, widening of an <code>int</code> to <code>double</code>, the difference between integer and floating-point division, and arithmetic on <code>char</code> values.</p>
+<div class="code-block">
+  <div class="code-header"><span>05_conversion.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="cm">/* Narrowing: double -&gt; int TRUNCATES toward zero (no rounding) */</span>
+    <span class="ty">double</span> pi <span class="pu">=</span> <span class="nm">3.99</span><span class="pu">;</span>
+    <span class="ty">double</span> neg <span class="pu">=</span> <span class="pu">-</span><span class="nm">3.99</span><span class="pu">;</span>
+    <span class="ty">int</span> truncated <span class="pu">=</span> pi<span class="pu">;</span>                 <span class="cm">/* 3 */</span>
+    <span class="ty">int</span> truncated_neg <span class="pu">=</span> neg<span class="pu">;</span>            <span class="cm">/* -3, not -4 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double 3.99  -&gt; int : %d\n"</span><span class="pu">,</span> truncated<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double -3.99 -&gt; int : %d\n"</span><span class="pu">,</span> truncated_neg<span class="pu">);</span>
+
+    <span class="cm">/* Widening: int -&gt; double is value-preserving here */</span>
+    <span class="ty">int</span> seven <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span>
+    <span class="ty">double</span> widened <span class="pu">=</span> seven<span class="pu">;</span>             <span class="cm">/* 7.0 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int 7        -&gt; double : %.1f\n"</span><span class="pu">,</span> widened<span class="pu">);</span>
+
+    <span class="cm">/* Integer division vs. floating-point division */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"7 / 2                  = %d\n"</span><span class="pu">,</span> seven <span class="pu">/</span> <span class="nm">2</span><span class="pu">);</span>          <span class="cm">/* int / int       */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"7 / 2.0                = %.1f\n"</span><span class="pu">,</span> seven <span class="pu">/</span> <span class="nm">2.0</span><span class="pu">);</span>      <span class="cm">/* int promoted    */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"(double)7 / 2          = %.1f\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>seven <span class="pu">/</span> <span class="nm">2</span><span class="pu">);/*</span> explicit cast   <span class="pu">*/</span>
+
+    <span class="cm">/* char arithmetic: chars are promoted to int before the '+' */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"'A' + 1                = %d\n"</span><span class="pu">,</span> <span class="st">'A'</span> <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>            <span class="cm">/* int 66          */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"(char)('A' + 1)        = %c\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">char</span><span class="pu">)(</span><span class="st">'A'</span> <span class="pu">+</span> <span class="nm">1</span><span class="pu">));</span>    <span class="cm">/* 'B'             */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"'a' - 'A'              = %d\n"</span><span class="pu">,</span> <span class="st">'a'</span> <span class="pu">-</span> <span class="st">'A'</span><span class="pu">);</span>          <span class="cm">/* 32              */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"'7' - '0'              = %d\n"</span><span class="pu">,</span> <span class="st">'7'</span> <span class="pu">-</span> <span class="st">'0'</span><span class="pu">);</span>          <span class="cm">/* digit -&gt; value  */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">double 3.99  -&gt; int : 3<br>double -3.99 -&gt; int : -3<br>int 7        -&gt; double : 7.0<br>7 / 2                  = 3<br>7 / 2.0                = 3.5<br>(double)7 / 2          = 3.5<br>'A' + 1                = 66<br>(char)('A' + 1)        = B<br>'a' - 'A'              = 32<br>'7' - '0'              = 7</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div><code>'A' + 1</code> has type <code>int</code> (66), so printing it with <code>%d</code> gives <code>66</code>. To get the character <code>'B'</code> you must cast back to <code>char</code> (or print the int with <code>%c</code>). The output assumes an ASCII character set.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — A table of <code>&lt;limits.h&gt;</code> and <code>&lt;float.h&gt;</code> constants</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Prints a right-aligned table of the integer and floating-point limits for your platform. Each constant has its own type, so each row uses the matching specifier (<code>%d</code>, <code>%u</code>, <code>%ld</code>, <code>%lu</code>, <code>%lld</code>, <code>%llu</code>, <code>%e</code>).</p>
+<div class="code-block">
+  <div class="code-header"><span>06_limits.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;float.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">puts</span><span class="pu">(</span><span class="st">"=== &lt;limits.h&gt; ==="</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"CHAR_BIT"</span><span class="pu">,</span>   CHAR_BIT<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"SCHAR_MIN"</span><span class="pu">,</span>  SCHAR_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"SCHAR_MAX"</span><span class="pu">,</span>  SCHAR_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"UCHAR_MAX"</span><span class="pu">,</span>  UCHAR_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"CHAR_MIN"</span><span class="pu">,</span>   CHAR_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"CHAR_MAX"</span><span class="pu">,</span>   CHAR_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"SHRT_MIN"</span><span class="pu">,</span>   SHRT_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"SHRT_MAX"</span><span class="pu">,</span>   SHRT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"USHRT_MAX"</span><span class="pu">,</span>  USHRT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"INT_MIN"</span><span class="pu">,</span>    INT_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>   <span class="st">"INT_MAX"</span><span class="pu">,</span>    INT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26u\n"</span><span class="pu">,</span>   <span class="st">"UINT_MAX"</span><span class="pu">,</span>   UINT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26ld\n"</span><span class="pu">,</span>  <span class="st">"LONG_MIN"</span><span class="pu">,</span>   LONG_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26ld\n"</span><span class="pu">,</span>  <span class="st">"LONG_MAX"</span><span class="pu">,</span>   LONG_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26lu\n"</span><span class="pu">,</span>  <span class="st">"ULONG_MAX"</span><span class="pu">,</span>  ULONG_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26lld\n"</span><span class="pu">,</span> <span class="st">"LLONG_MIN"</span><span class="pu">,</span>  LLONG_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26lld\n"</span><span class="pu">,</span> <span class="st">"LLONG_MAX"</span><span class="pu">,</span>  LLONG_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26llu\n"</span><span class="pu">,</span> <span class="st">"ULLONG_MAX"</span><span class="pu">,</span> ULLONG_MAX<span class="pu">);</span>
+
+    <span class="fn">puts</span><span class="pu">(</span><span class="st">"\n=== &lt;float.h&gt; ==="</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"FLT_DIG"</span><span class="pu">,</span>      FLT_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"FLT_MANT_DIG"</span><span class="pu">,</span> FLT_MANT_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"FLT_EPSILON"</span><span class="pu">,</span>  FLT_EPSILON<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"FLT_MIN"</span><span class="pu">,</span>      FLT_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"FLT_MAX"</span><span class="pu">,</span>      FLT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"DBL_DIG"</span><span class="pu">,</span>      DBL_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"DBL_MANT_DIG"</span><span class="pu">,</span> DBL_MANT_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"DBL_EPSILON"</span><span class="pu">,</span>  DBL_EPSILON<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"DBL_MIN"</span><span class="pu">,</span>      DBL_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26e\n"</span><span class="pu">,</span>  <span class="st">"DBL_MAX"</span><span class="pu">,</span>      DBL_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"LDBL_DIG"</span><span class="pu">,</span>     LDBL_DIG<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-12s %26d\n"</span><span class="pu">,</span>  <span class="st">"LDBL_MANT_DIG"</span><span class="pu">,</span>LDBL_MANT_DIG<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">=== &lt;limits.h&gt; ===<br>CHAR_BIT                              8<br>SCHAR_MIN                          -128<br>SCHAR_MAX                           127<br>UCHAR_MAX                           255<br>CHAR_MIN                           -128<br>CHAR_MAX                            127<br>SHRT_MIN                         -32768<br>SHRT_MAX                          32767<br>USHRT_MAX                         65535<br>INT_MIN                     -2147483648<br>INT_MAX                      2147483647<br>UINT_MAX                     4294967295<br>LONG_MIN           -9223372036854775808<br>LONG_MAX            9223372036854775807<br>ULONG_MAX          18446744073709551615<br>LLONG_MIN          -9223372036854775808<br>LLONG_MAX           9223372036854775807<br>ULLONG_MAX         18446744073709551615<br>&nbsp;<br>=== &lt;float.h&gt; ===<br>FLT_DIG                               6<br>FLT_MANT_DIG                         24<br>FLT_EPSILON                1.192093e-07<br>FLT_MIN                    1.175494e-38<br>FLT_MAX                    3.402823e+38<br>DBL_DIG                              15<br>DBL_MANT_DIG                         53<br>DBL_EPSILON                2.220446e-16<br>DBL_MIN                   2.225074e-308<br>DBL_MAX                   1.797693e+308<br>LDBL_DIG                             15<br>LDBL_MANT_DIG                        53</code></div></div>
+<div class="callout info"><span class="callout-icon">&#128161;</span><div><code>FLT_MIN</code> and <code>DBL_MIN</code> are the smallest <em>positive normalised</em> values, not the most negative ones &mdash; use <code>-FLT_MAX</code> for that. Output shown is from a 64-bit macOS (Apple silicon) system; <code>LDBL_*</code> values differ on x86 (64-bit mantissa, 18 digits).</div></div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

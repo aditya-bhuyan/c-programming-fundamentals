@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 4 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 4 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/04-functions/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 4 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,605 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+      <h2>1. Why Functions?</h2>
+      <p>A <strong>function</strong> is a named, reusable block of code that performs one well-defined task. Every C program already contains at least one: <code>main()</code>. As programs grow, you break them into many small functions for four main reasons:</p>
+      <ul>
+        <li><strong>Code reuse</strong> &mdash; write the logic once, call it from anywhere.</li>
+        <li><strong>Abstraction</strong> &mdash; callers only need to know <em>what</em> a function does (its name and signature), not <em>how</em> it does it. You use <code>printf</code> every day without reading its source.</li>
+        <li><strong>Testability</strong> &mdash; a small function with clear inputs and outputs can be tested in isolation.</li>
+        <li><strong>Readability</strong> &mdash; <code>if (is_leap_year(y))</code> reads better than a block of modulo arithmetic.</li>
+      </ul>
+      <h3>The DRY Principle</h3>
+      <p><strong>D</strong>on't <strong>R</strong>epeat <strong>Y</strong>ourself: every piece of knowledge should live in exactly one place. Copy-pasting the same logic means a bug fix must be repeated everywhere, and it is easy to miss one copy.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>dry_before_after.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* BEFORE: the same formula is copy-pasted three times */</span>
+<span class="ty">double</span> a1 <span class="pu">=</span> <span class="nm">3.14159265</span> <span class="pu">*</span> r1 <span class="pu">*</span> r1<span class="pu">;</span>
+<span class="ty">double</span> a2 <span class="pu">=</span> <span class="nm">3.14159265</span> <span class="pu">*</span> r2 <span class="pu">*</span> r2<span class="pu">;</span>
+<span class="ty">double</span> a3 <span class="pu">=</span> <span class="nm">3.14159265</span> <span class="pu">*</span> r3 <span class="pu">*</span> r3<span class="pu">;</span>
+
+<span class="cm">/* AFTER: one definition, many calls */</span>
+<span class="ty">double</span> <span class="fn">circle_area</span><span class="pu">(</span><span class="ty">double</span> r<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> <span class="nm">3.14159265</span> <span class="pu">*</span> r <span class="pu">*</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">double</span> a1 <span class="pu">=</span> <span class="fn">circle_area</span><span class="pu">(</span>r1<span class="pu">);</span>
+<span class="ty">double</span> a2 <span class="pu">=</span> <span class="fn">circle_area</span><span class="pu">(</span>r2<span class="pu">);</span>
+<span class="ty">double</span> a3 <span class="pu">=</span> <span class="fn">circle_area</span><span class="pu">(</span>r3<span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Rule of thumb:</strong> if a function does not fit on one screen, or you struggle to describe it in a single sentence without the word &ldquo;and&rdquo;, it is probably doing too much. Split it.</div>
+      </div>
+
+      <h3>Anatomy of a Function</h3>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>anatomy.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/*  return type   name      parameter list       */</span>
+    <span class="ty">int</span>         <span class="fn">add</span>   <span class="pu">(</span> <span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b <span class="pu">)</span>
+    <span class="pu">{</span>                              <span class="cm">/* body begins */</span>
+        <span class="ty">int</span> sum <span class="pu">=</span> a <span class="pu">+</span> b<span class="pu">;</span>           <span class="cm">/* local variable */</span>
+        <span class="kw">return</span> sum<span class="pu">;</span>                <span class="cm">/* value handed back to the caller */</span>
+    <span class="pu">}</span>                              <span class="cm">/* body ends */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>2. Declaration vs Definition</h2>
+      <p>These two terms are often confused:</p>
+      <table>
+        <thead><tr><th>Term</th><th>What it provides</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Declaration</strong> (prototype)</td><td>The name, return type, and parameter types &mdash; the <em>signature</em>. No body.</td><td><code>int add(int a, int b);</code></td></tr>
+          <tr><td><strong>Definition</strong></td><td>The signature <em>plus</em> the body. This is what the compiler turns into machine code.</td><td><code>int add(int a, int b) { return a + b; }</code></td></tr>
+        </tbody>
+      </table>
+      <p>C compiles top to bottom. If you call a function before the compiler has seen either its declaration or its definition, you get an error (in C99 and later, an <em>implicit declaration</em> is not allowed). A <strong>forward declaration</strong> tells the compiler &ldquo;this function exists; its body appears later (or in another file)&rdquo;.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>forward_decl.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">);</span>          <span class="cm">/* forward declaration (prototype) */</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="fn">add</span><span class="pu">(</span><span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">));</span> <span class="cm">/* OK: the compiler already knows add() */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>         <span class="cm">/* definition appears after main() */</span>
+    <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">5</code></div></div>
+
+    <div class="prose">
+      <h3>Why It Matters with Multiple Files</h3>
+      <p>Real programs are split across several <code>.c</code> files that are compiled separately. Each file is compiled in isolation, so it needs prototypes for any function defined elsewhere. The standard solution is a <strong>header file</strong> that holds the declarations and is <code>#include</code>d by every file that needs them:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>mathutil.h</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#ifndef</span> MATHUTIL_H
+<span class="pp">#define</span> MATHUTIL_H
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">);</span>        <span class="cm">/* declarations only */</span>
+<span class="ty">int</span> <span class="fn">square</span><span class="pu">(</span><span class="ty">int</span> x<span class="pu">);</span>
+
+<span class="pp">#endif</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>mathutil.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">"mathutil.h"</span>
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>   <span class="cm">/* definitions */</span>
+<span class="ty">int</span> <span class="fn">square</span><span class="pu">(</span><span class="ty">int</span> x<span class="pu">)</span>     <span class="pu">{</span> <span class="kw">return</span> x <span class="pu">*</span> x<span class="pu">;</span> <span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>main.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">"mathutil.h"</span>             <span class="cm">/* gives main.c the prototypes */</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="fn">square</span><span class="pu">(</span><span class="fn">add</span><span class="pu">(</span><span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">)));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>Build with <code>gcc -std=c17 -Wall -o app main.c mathutil.c</code>. The compiler checks <code>main.c</code> against the prototypes; the <em>linker</em> later connects the call to the real definition in <code>mathutil.c</code>.</p>
+      <h3>The <code>void</code> Return Type and <code>void</code> Parameter List</h3>
+      <ul>
+        <li><code>void</code> as a <strong>return type</strong> means the function returns nothing. It is called for its side effects (printing, modifying state).</li>
+        <li><code>(void)</code> as a <strong>parameter list</strong> means the function takes no arguments. Always write <code>int main(void)</code> rather than <code>int main()</code>: in C, empty parentheses mean &ldquo;unspecified arguments&rdquo; and disable argument checking.</li>
+      </ul>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Mismatched signatures:</strong> a prototype and its definition must agree exactly on return type and parameter types. A mismatch across files is not always caught by the compiler and leads to undefined behaviour at run time. Putting the prototype in a shared header, and including that header in the defining file too, lets the compiler catch the mismatch.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>3. Parameters and Arguments</h2>
+      <p>The variables listed in a function&rsquo;s definition are called <strong>parameters</strong>. The values supplied when you call it are called <strong>arguments</strong>.</p>
+      <p>C passes every argument <strong>by value</strong>: the function receives a <em>copy</em> of each argument. Changing a parameter changes only the function&rsquo;s own local copy; the caller&rsquo;s variable is untouched.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>by_value.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">try_to_change</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    n <span class="pu">=</span> <span class="nm">999</span><span class="pu">;</span>                         <span class="cm">/* modifies the local copy only */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"inside:  n = %d\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="fn">try_to_change</span><span class="pu">(</span>x<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"outside: x = %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>  <span class="cm">/* still 5 */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">inside:  n = 999
+outside: x = 5</code></div></div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128221;</span>
+        <div><strong>Arguments are evaluated before the call.</strong> In <code>f(a + 1, b * 2)</code> the expressions are computed first, and the results are copied into the parameters. The C standard does <em>not</em> specify the order in which the arguments are evaluated, so never write <code>f(i++, i++)</code>.</div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Need to modify the caller&rsquo;s variable?</strong> Pass its <em>address</em> (a pointer). The pointer itself is still copied, but both copies point to the same variable. You will do this in Chapter 6; Example 2 in this chapter gives a preview. Arrays are a special case covered in Chapter 5.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>4. Return Values</h2>
+      <p>The <code>return</code> statement ends the function immediately and hands a value back to the caller. The value is converted to the declared return type.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>return_forms.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> <span class="fn">max</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">&gt;</span> b<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> a<span class="pu">;</span>        <span class="cm">/* early return: function ends here */</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> b<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">greet</span><span class="pu">(</span><span class="kw">const</span> <span class="ty">char</span> <span class="pu">*</span>name<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>name <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span><span class="pu">;</span>          <span class="cm">/* in a void function: bare return, no value */</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, %s!\n"</span><span class="pu">,</span> name<span class="pu">);</span>
+<span class="pu">}</span>   <span class="cm">/* falling off the end of a void function is fine */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Returning a <code>struct</code> (Brief Look)</h3>
+      <p>A function can return a whole <code>struct</code> by value. This is a convenient way to return several related values without pointers. (Structs are covered fully in Chapter 7.)</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>return_struct.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Point</span> <span class="pu">{</span>
+    <span class="ty">int</span> x<span class="pu">;</span>
+    <span class="ty">int</span> y<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="kw">struct</span> <span class="ty">Point</span> <span class="fn">make_point</span><span class="pu">(</span><span class="ty">int</span> x<span class="pu">,</span> <span class="ty">int</span> y<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> p <span class="pu">=</span> <span class="pu">{</span> x<span class="pu">,</span> y <span class="pu">};</span>
+    <span class="kw">return</span> p<span class="pu">;</span>                    <span class="cm">/* the whole struct is copied to the caller */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> origin <span class="pu">=</span> <span class="fn">make_point</span><span class="pu">(</span><span class="nm">0</span><span class="pu">,</span> <span class="nm">0</span><span class="pu">);</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> p <span class="pu">=</span> <span class="fn">make_point</span><span class="pu">(</span><span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"origin = (%d, %d)\n"</span><span class="pu">,</span> origin<span class="pu">.</span>x<span class="pu">,</span> origin<span class="pu">.</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p      = (%d, %d)\n"</span><span class="pu">,</span> p<span class="pu">.</span>x<span class="pu">,</span> p<span class="pu">.</span>y<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">origin = (0, 0)
+p      = (3, 4)</code></div></div>
+
+    <div class="prose">
+      <div class="callout danger">
+        <span class="callout-icon">&#10060;</span>
+        <div><strong>A non-<code>void</code> function must return a value on every path.</strong> If control reaches the closing brace of a function that promised an <code>int</code> and the caller uses the result, the behaviour is <em>undefined</em>. (The one exception is <code>main</code>, which implicitly returns 0 in C99 and later.) Compile with <code>-Wall</code> to get the warning <code>control reaches end of non-void function</code>.</div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Never return the address of a local variable.</strong> Local variables are destroyed when the function returns, so the pointer would refer to dead memory (a <em>dangling pointer</em>).</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>5. Recursion</h2>
+      <p>A function is <strong>recursive</strong> if it calls itself. Every correct recursive function has two parts:</p>
+      <ol>
+        <li><strong>Base case</strong> &mdash; a condition that returns a result directly, <em>without</em> another recursive call. This stops the recursion.</li>
+        <li><strong>Recursive case</strong> &mdash; the function calls itself with a <em>smaller or simpler</em> problem that moves toward the base case.</li>
+      </ol>
+      <h3>Example: Factorial</h3>
+      <p>Mathematically, <code>n! = n &times; (n-1)!</code> with <code>0! = 1! = 1</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>factorial.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> <span class="fn">factorial</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>                        <span class="cm">/* base case */</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> n <span class="pu">*</span> <span class="fn">factorial</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">);</span>         <span class="cm">/* recursive case */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5! = %llu\n"</span><span class="pu">,</span> <span class="fn">factorial</span><span class="pu">(</span><span class="nm">5</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">5! = 120</code></div></div>
+
+    <div class="prose">
+      <p>Tracing <code>factorial(4)</code>: each call waits for the one below it, then the results are multiplied on the way back up.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>trace (not C code)</span><button class="copy-btn">Copy</button></div>
+      <pre>factorial(4)
+ = 4 * factorial(3)
+ = 4 * (3 * factorial(2))
+ = 4 * (3 * (2 * factorial(1)))
+ = 4 * (3 * (2 * 1))          &lt;- base case reached, unwinding begins
+ = 4 * (3 * 2)
+ = 4 * 6
+ = 24</pre>
+    </div>
+
+    <div class="prose">
+      <h3>Example: Fibonacci</h3>
+      <p>Each Fibonacci number is the sum of the previous two: <code>fib(n) = fib(n-1) + fib(n-2)</code>, with base cases <code>fib(0) = 0</code> and <code>fib(1) = 1</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>fibonacci.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">fib</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> n<span class="pu">;</span>                        <span class="cm">/* base cases: 0 and 1 */</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="fn">fib</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">+</span> <span class="fn">fib</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">2</span><span class="pu">);</span>      <span class="cm">/* two recursive calls */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> <span class="fn">fib</span><span class="pu">(</span>i<span class="pu">));</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">0 1 1 2 3 5 8 13 21 34 55 </code></div></div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Exponential cost:</strong> the naive <code>fib</code> recomputes the same values over and over: <code>fib(40)</code> makes over 300 million calls. Storing results (<em>memoisation</em>, see Example 3) turns it into a linear-time algorithm.</div>
+      </div>
+
+      <h3>Stack Frames and Stack Overflow</h3>
+      <p>Each call gets its own <strong>stack frame</strong> holding its parameters and local variables (Section 8). Recursive calls stack up one frame per level. If the base case is missing or never reached, the stack is exhausted and the program crashes with a <strong>stack overflow</strong> (typically a segmentation fault).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>infinite_recursion.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">void</span> <span class="fn">oops</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">oops</span><span class="pu">(</span>n <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>      <span class="cm">/* no base case: frames pile up until the stack overflows */</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Tail Recursion</h3>
+      <p>A call is a <strong>tail call</strong> if it is the very last thing the function does &mdash; nothing remains to be done after it returns. Our <code>factorial</code> is <em>not</em> tail-recursive because the multiplication happens after the recursive call returns. We can rewrite it with an <strong>accumulator</strong> parameter:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>tail_factorial.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> <span class="fn">fact_tail</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">,</span> <span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> acc<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> acc<span class="pu">;</span>                         <span class="cm">/* result already computed */</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="fn">fact_tail</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">,</span> acc <span class="pu">*</span> n<span class="pu">);</span>       <span class="cm">/* tail call: nothing left to do afterwards */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5! = %llu\n"</span><span class="pu">,</span> <span class="fn">fact_tail</span><span class="pu">(</span><span class="nm">5</span><span class="pu">,</span> <span class="nm">1</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">5! = 120</code></div></div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128221;</span>
+        <div><strong>Tail-call optimisation (TCO):</strong> because nothing needs the current frame after a tail call, a compiler <em>may</em> reuse it, turning the recursion into a loop with constant stack usage. GCC and Clang usually do this at <code>-O2</code>, but the C standard does <strong>not</strong> guarantee it, so don&rsquo;t rely on it for very deep recursion. When in doubt, use a loop.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>6. Scope and Lifetime</h2>
+      <p>Two related ideas describe a variable:</p>
+      <ul>
+        <li><strong>Scope</strong> &mdash; the region of source code where its name is visible.</li>
+        <li><strong>Lifetime</strong> (storage duration) &mdash; the period during which it occupies memory.</li>
+      </ul>
+      <table>
+        <thead><tr><th>Kind</th><th>Declared</th><th>Scope</th><th>Lifetime</th><th>Initial value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Local</strong> (<code>auto</code>)</td><td>Inside a function or block</td><td>That block</td><td>Each time the block is entered; destroyed on exit</td><td>Indeterminate (garbage) unless initialised</td></tr>
+          <tr><td><strong>Global</strong></td><td>Outside all functions</td><td>The whole file (and other files via <code>extern</code>)</td><td>Entire program run</td><td>Zero</td></tr>
+          <tr><td><strong>Static local</strong></td><td>Inside a function, with <code>static</code></td><td>That block</td><td>Entire program run</td><td>Zero (initialiser runs once)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>scope_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> total_calls <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>                 <span class="cm">/* global */</span>
+
+<span class="ty">int</span> <span class="fn">next_id</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">static</span> <span class="ty">int</span> id <span class="pu">=</span> <span class="nm">100</span><span class="pu">;</span>             <span class="cm">/* static local: initialised once, persists */</span>
+    <span class="ty">int</span> temp <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>                    <span class="cm">/* local: re-created every call */</span>
+    temp<span class="pu">++;</span>
+    total_calls<span class="pu">++;</span>
+    <span class="kw">return</span> id<span class="pu">++</span> <span class="pu">+</span> temp <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>          <span class="cm">/* returns 100, 101, 102, ... */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="fn">next_id</span><span class="pu">());</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="fn">next_id</span><span class="pu">());</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="fn">next_id</span><span class="pu">());</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"total_calls = %d\n"</span><span class="pu">,</span> total_calls<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">100
+101
+102
+total_calls = 3</code></div></div>
+
+    <div class="prose">
+      <h3>Block Scope and Shadowing</h3>
+      <p>A variable declared inside <code>{ }</code> exists only until the closing brace. An inner variable with the same name as an outer one <strong>shadows</strong> it: the outer variable still exists but is hidden. Compile with <code>-Wshadow</code> to catch accidental shadowing.</p>
+      <h3>Why Globals Are Bad Practice</h3>
+      <ul>
+        <li><strong>Hidden dependencies:</strong> a function&rsquo;s behaviour depends on state that does not appear in its signature.</li>
+        <li><strong>Hard to debug:</strong> any function anywhere can modify the value, so tracking down who changed it is painful.</li>
+        <li><strong>Hard to test:</strong> tests must reset global state between runs, and tests can interfere with each other.</li>
+        <li><strong>Not reusable or thread-safe:</strong> two threads modifying the same global create data races.</li>
+        <li><strong>Name collisions</strong> in large programs.</li>
+      </ul>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Prefer parameters and return values</strong> to pass data around. If state must be shared inside one file, make it <code>static</code> at file scope (<code>static int counter;</code>), which gives it <em>internal linkage</em> so other files cannot touch it. Reserve true globals for genuine constants, ideally declared <code>const</code>.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>7. Function Pointers</h2>
+      <p>A function lives in memory, so it has an address. A <strong>function pointer</strong> is a variable that stores that address and can be used to call the function indirectly.</p>
+      <h3>Declaration Syntax</h3>
+      <p>The parentheses around <code>*name</code> are essential:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>fnptr_syntax.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span>  <span class="pu">(*</span>op<span class="pu">)(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>       <span class="cm">/* op is a POINTER to a function (int,int) -&gt; int */</span>
+<span class="ty">int</span>  <span class="pu">*</span><span class="fn">op2</span><span class="pu">(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>        <span class="cm">/* op2 is a FUNCTION returning int*  (different!) */</span>
+
+op <span class="pu">=</span> add<span class="pu">;</span>                   <span class="cm">/* a function name decays to its address */</span>
+<span class="ty">int</span> r1 <span class="pu">=</span> <span class="fn">op</span><span class="pu">(</span><span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">);</span>          <span class="cm">/* call through the pointer */</span>
+<span class="ty">int</span> r2 <span class="pu">=</span> <span class="pu">(*</span>op<span class="pu">)(</span><span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">);</span>       <span class="cm">/* equivalent, older style */</span>
+
+<span class="cm">/* typedef makes it far more readable */</span>
+<span class="kw">typedef</span> <span class="ty">int</span> <span class="pu">(*</span><span class="ty">binary_op</span><span class="pu">)(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>
+<span class="ty">binary_op</span> f <span class="pu">=</span> add<span class="pu">;</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Use Case 1: Callbacks</h3>
+      <p>Pass a function as an argument so the called code can &ldquo;call back&rdquo; your logic. The standard library&rsquo;s <code>qsort</code> sorts any array type by calling a comparison function you supply:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>callback_qsort.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">compare_ints</span><span class="pu">(</span><span class="kw">const</span> <span class="ty">void</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="kw">const</span> <span class="ty">void</span> <span class="pu">*</span>b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="pu">*(</span><span class="kw">const</span> <span class="ty">int</span> <span class="pu">*)</span>a<span class="pu">;</span>
+    <span class="ty">int</span> y <span class="pu">=</span> <span class="pu">*(</span><span class="kw">const</span> <span class="ty">int</span> <span class="pu">*)</span>b<span class="pu">;</span>
+    <span class="kw">return</span> <span class="pu">(</span>x <span class="pu">&gt;</span> y<span class="pu">)</span> <span class="pu">-</span> <span class="pu">(</span>x <span class="pu">&lt;</span> y<span class="pu">);</span>        <span class="cm">/* -1, 0, or 1 */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> nums<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">42</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">19</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">88</span><span class="pu">,</span> <span class="nm">1</span> <span class="pu">};</span>
+    <span class="ty">size_t</span> n <span class="pu">=</span> <span class="kw">sizeof</span> nums <span class="pu">/</span> <span class="kw">sizeof</span> nums<span class="pu">[</span><span class="nm">0</span><span class="pu">];</span>
+
+    <span class="fn">qsort</span><span class="pu">(</span>nums<span class="pu">,</span> n<span class="pu">,</span> <span class="kw">sizeof</span> nums<span class="pu">[</span><span class="nm">0</span><span class="pu">],</span> compare_ints<span class="pu">);</span>   <span class="cm">/* pass the function */</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> nums<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">1 3 7 19 42 88 </code></div></div>
+
+    <div class="prose">
+      <p>(The <code>const void *</code> parameters and the casts rely on pointers, which Chapter 6 explains.)</p>
+      <h3>Use Case 2: Dispatch Tables</h3>
+      <p>An array of function pointers maps an index (or command number) directly to the code to run. This replaces a long <code>switch</code> and makes adding a new operation a one-line change. See Example 5 and Exercise 4.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>dispatch_sketch.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">typedef</span> <span class="ty">void</span> <span class="pu">(*</span>handler<span class="pu">)(</span><span class="ty">void</span><span class="pu">);</span>
+
+<span class="ty">void</span> <span class="fn">cmd_start</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span> <span class="fn">puts</span><span class="pu">(</span><span class="st">"starting"</span><span class="pu">);</span> <span class="pu">}</span>
+<span class="ty">void</span> <span class="fn">cmd_stop</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>  <span class="pu">{</span> <span class="fn">puts</span><span class="pu">(</span><span class="st">"stopping"</span><span class="pu">);</span> <span class="pu">}</span>
+
+handler table<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> cmd_start<span class="pu">,</span> cmd_stop <span class="pu">};</span>
+
+table<span class="pu">[</span>cmd<span class="pu">]();</span>         <span class="cm">/* call the handler selected by 'cmd' */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Always bounds-check the index</strong> into a dispatch table, and never call a function pointer that has not been assigned (<code>NULL</code> or uninitialised). Both are undefined behaviour and common sources of crashes and security holes.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>8. The Call Stack</h2>
+      <p>The <strong>call stack</strong> is a region of memory that tracks active function calls. It grows with each call and shrinks with each return, in strict last-in, first-out order. Each call pushes one <strong>stack frame</strong>.</p>
+      <h3>What Happens During a Call</h3>
+      <ol>
+        <li>The caller <strong>evaluates the arguments</strong> and places copies where the callee expects them (in registers or on the stack, depending on the platform&rsquo;s calling convention).</li>
+        <li>The CPU saves the <strong>return address</strong> &mdash; the instruction right after the call &mdash; and jumps to the function.</li>
+        <li>The function creates its <strong>stack frame</strong>: space for its local variables and saved registers.</li>
+        <li>The body runs. Parameters and locals are accessed relative to the frame.</li>
+        <li>On <code>return</code>, the return value is placed in a register (or memory), the frame is <strong>popped</strong>, and execution jumps back to the saved return address.</li>
+      </ol>
+      <p>Consider <code>main</code> calling <code>a()</code>, which calls <code>b()</code>. At the deepest point the stack looks like this (higher addresses at the top on most platforms):</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>call stack (conceptual)</span><button class="copy-btn">Copy</button></div>
+      <pre>   +--------------------------+   &lt;- stack grows downward
+   |  main's frame            |   locals of main, saved registers
+   |    return addr -&gt; OS/C runtime
+   +--------------------------+
+   |  a's frame               |   a's parameters + locals
+   |    return addr -&gt; in main, just after the call to a()
+   +--------------------------+
+   |  b's frame               |   b's parameters + locals
+   |    return addr -&gt; in a, just after the call to b()
+   +--------------------------+  &lt;- stack pointer (top of stack)</pre>
+    </div>
+
+    <div class="prose">
+      <p>When <code>b</code> returns, its frame disappears and execution resumes in <code>a</code>. Its local variables are now gone &mdash; which is why returning a pointer to a local is a bug, and why automatic variables start with garbage values: the memory is simply whatever the previous call left there.</p>
+      <div class="callout info">
+        <span class="callout-icon">&#128221;</span>
+        <div><strong>The stack is finite</strong> (commonly 1&ndash;8 MB). Very deep recursion or large local arrays (e.g. <code>int big[10000000];</code> inside a function) can overflow it. Large data belongs on the heap (Chapter 9).</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>9. Inline Functions</h2>
+      <p>Every function call has a small overhead (arguments, jump, frame, return). For tiny, hot functions, this overhead can matter. C99 introduced the <code>inline</code> keyword as a <em>hint</em> that the compiler may replace the call with the function body.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>inline_func.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">static</span> <span class="kw">inline</span> <span class="ty">int</span> <span class="fn">square</span><span class="pu">(</span><span class="ty">int</span> x<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> x <span class="pu">*</span> x<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <ul>
+        <li><code>inline</code> is only a <strong>request</strong>. The compiler is free to ignore it, and modern optimisers inline small functions on their own at <code>-O2</code> whether or not you ask.</li>
+        <li>Write <code>static inline</code> and place the definition in a header. Plain <code>inline</code> in C has subtle linkage rules that can produce &ldquo;undefined reference&rdquo; linker errors; <code>static inline</code> sidesteps them.</li>
+      </ul>
+      <h3>Inline Functions vs Macros</h3>
+      <p>A function-like macro is textual substitution done by the preprocessor, with no type checking. This causes classic bugs:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>macro_vs_inline.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> <span class="fn">SQUARE_MACRO</span><span class="pu">(</span>x<span class="pu">)</span> <span class="pu">((</span>x<span class="pu">)</span> <span class="pu">*</span> <span class="pu">(</span>x<span class="pu">))</span>     <span class="cm">/* even with parentheses... */</span>
+<span class="pp">#define</span> <span class="fn">BAD_SQUARE</span><span class="pu">(</span>x<span class="pu">)</span>   x <span class="pu">*</span> x           <span class="cm">/* ...this version is wrong */</span>
+
+<span class="kw">static</span> <span class="kw">inline</span> <span class="ty">int</span> <span class="fn">square</span><span class="pu">(</span><span class="ty">int</span> x<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> x <span class="pu">*</span> x<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> i <span class="pu">=</span> <span class="nm">3</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"BAD_SQUARE(1 + 2)   = %d\n"</span><span class="pu">,</span> <span class="fn">BAD_SQUARE</span><span class="pu">(</span><span class="nm">1</span> <span class="pu">+</span> <span class="nm">2</span><span class="pu">));</span>     <span class="cm">/* 1 + 2 * 1 + 2 = 5 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"SQUARE_MACRO(1 + 2) = %d\n"</span><span class="pu">,</span> <span class="fn">SQUARE_MACRO</span><span class="pu">(</span><span class="nm">1</span> <span class="pu">+</span> <span class="nm">2</span><span class="pu">));</span>   <span class="cm">/* (1+2)*(1+2) = 9 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"square(1 + 2)       = %d\n"</span><span class="pu">,</span> <span class="fn">square</span><span class="pu">(</span><span class="nm">1</span> <span class="pu">+</span> <span class="nm">2</span><span class="pu">));</span>         <span class="cm">/* 9 */</span>
+
+    <span class="cm">/* SQUARE_MACRO(i++) would evaluate i++ TWICE: undefined behaviour.   */</span>
+    <span class="cm">/* square(i++) evaluates i++ exactly once, then squares the old value. */</span>
+    <span class="ty">int</span> result <span class="pu">=</span> <span class="fn">square</span><span class="pu">(</span>i<span class="pu">++);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"square(i++)         = %d (i is now %d)\n"</span><span class="pu">,</span> result<span class="pu">,</span> i<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">BAD_SQUARE(1 + 2)   = 5
+SQUARE_MACRO(1 + 2) = 9
+square(1 + 2)       = 9
+square(i++)         = 9 (i is now 4)</code></div></div>
+
+    <div class="prose">
+      <table>
+        <thead><tr><th></th><th><code>static inline</code> function</th><th>Function-like macro</th></tr></thead>
+        <tbody>
+          <tr><td>Type checking</td><td>Yes</td><td>No</td></tr>
+          <tr><td>Argument evaluated</td><td>Once</td><td>Possibly multiple times (side-effect bugs)</td></tr>
+          <tr><td>Debugger / stack traces</td><td>Normal function (at <code>-O0</code>)</td><td>Invisible; expanded before compilation</td></tr>
+          <tr><td>Generic over types</td><td>No (one type per function)</td><td>Yes (works on any type)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Prefer <code>static inline</code> over macros</strong> for small computations. Keep macros for things functions cannot do: conditional compilation, constants, and token pasting.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li><strong>Functions</strong> give you reuse, abstraction, testability, and DRY code.</li>
+        <li>A <strong>declaration</strong> (prototype) gives the signature; a <strong>definition</strong> adds the body. Share declarations through headers. Write <code>(void)</code> for an empty parameter list.</li>
+        <li>C is strictly <strong>pass-by-value</strong>: parameters are copies, so changing them does not affect the caller.</li>
+        <li><code>return</code> sends a value back (any type, including a <code>struct</code>). A non-void function that does not return a value on every path invokes undefined behaviour.</li>
+        <li><strong>Recursion</strong> needs a base case and a recursive case that makes progress; each call uses a stack frame, so unbounded recursion overflows the stack. Tail recursion <em>may</em> be optimised into a loop.</li>
+        <li><strong>Scope and lifetime:</strong> locals are per-call, globals live forever but are hard to reason about, and <code>static</code> locals persist between calls while staying private to the function.</li>
+        <li><strong>Function pointers</strong> store a function&rsquo;s address, enabling callbacks and dispatch tables.</li>
+        <li>The <strong>call stack</strong> holds one frame per active call, including arguments, locals, and the return address.</li>
+        <li><code>static inline</code> functions are the type-safe alternative to function-like macros.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

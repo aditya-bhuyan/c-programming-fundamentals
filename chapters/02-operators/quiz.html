@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 2 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 2 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/02-operators/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 2 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 2</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 2 — Operators &amp; Expressions</p>
+      <p class="subtitle">Chapter 2 — Operators &amp; Expressions &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,123 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout info"><span class="callout-icon">&#128221;</span><div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div></div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What is the result of <code>7 / 2</code> in C when both operands are <code>int</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>3.5</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true" /><label><code>3</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>4</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label><code>2</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Integer division discards the fractional part (truncation toward zero), so 7 / 2 is 3. Use 7.0 / 2 or a cast to get 3.5."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">Which operator performs bitwise XOR?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>&amp;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>|</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true" /><label><code>^</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>~</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="^ is bitwise XOR (1 when the bits differ). &amp; is AND, | is OR, and ~ is the unary complement."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What does <code>&amp;&amp;</code> do when its left operand is false?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Evaluates both sides anyway</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true" /><label>Skips evaluating the right side (short-circuit)</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Evaluates the right side first</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Produces a compile-time error</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A false left operand already determines the result of &amp;&amp;, so the right operand is never evaluated. This is called short-circuit evaluation."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">What is <code>~0</code> on a 32-bit two's-complement system (as a signed <code>int</code>)?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>0</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>1</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true" /><label><code>-1</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>4294967295</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="~0 flips every bit of 0, giving all 1s. In two&#x27;s complement, a signed int with all bits set is -1 (as an unsigned int it would be 4294967295)."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">What is the difference between the value of <code>x++</code> and <code>++x</code> in an expression?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>No difference</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true" /><label><code>x++</code> uses the old value; <code>++x</code> uses the new value</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>x++</code> uses the new value; <code>++x</code> uses the old value</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>x++</code> adds 2 to x</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Post-increment yields the value before the increment; pre-increment yields the value after it. Either way, x ends up one greater."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What does <code>5 % 3</code> evaluate to?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>1</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true" /><label><code>2</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>1.67</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>0</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="% gives the remainder: 5 = 1 * 3 + 2, so 5 % 3 is 2."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">Which has higher precedence: <code>*</code> or <code>+</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>+</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true" /><label><code>*</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>They are equal</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>It depends on the compiler</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Multiplicative operators (* / %) bind tighter than additive operators (+ -), so 2 + 3 * 4 is 2 + (3 * 4) = 14."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What does <code>a ? b : c</code> return when <code>a</code> is 0?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>a</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>b</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true" /><label><code>c</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>0</code> always</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A zero condition is false, so the ternary operator evaluates and returns the third operand, c. Only that branch is evaluated."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

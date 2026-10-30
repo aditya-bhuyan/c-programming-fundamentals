@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 4 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 4 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/04-functions/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 4 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,222 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Power Function</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_power.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">double</span> <span class="fn">power</span><span class="pu">(</span><span class="ty">double</span> base<span class="pu">,</span> <span class="ty">int</span> exp<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>exp <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="cm">/* base^-n == 1 / base^n */</span>
+        <span class="kw">return</span> <span class="nm">1.0</span> <span class="pu">/</span> <span class="fn">power</span><span class="pu">(</span>base<span class="pu">,</span> <span class="pu">-</span>exp<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="ty">double</span> result <span class="pu">=</span> <span class="nm">1.0</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> exp<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        result <span class="pu">*=</span> base<span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> result<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2 ^ 10  = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(</span><span class="nm">2.0</span><span class="pu">,</span> <span class="nm">10</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2 ^ -3  = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(</span><span class="nm">2.0</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">3</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5 ^ 0   = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(</span><span class="nm">5.0</span><span class="pu">,</span> <span class="nm">0</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"(-3) ^ 3 = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(-</span><span class="nm">3.0</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"10 ^ -2 = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(</span><span class="nm">10.0</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1.5 ^ 2 = %g\n"</span><span class="pu">,</span> <span class="fn">power</span><span class="pu">(</span><span class="nm">1.5</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o ex1_power ex1_power.c</code> &nbsp;|&nbsp; Run: <code>./ex1_power</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">2 ^ 10  = 1024
+2 ^ -3  = 0.125
+5 ^ 0   = 1
+(-3) ^ 3 = -27
+10 ^ -2 = 0.01
+1.5 ^ 2 = 2.25</code></div></div>
+    <div class="callout tip">
       <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <div><strong>Key Insight:</strong> A negative exponent is handled by reducing it to the positive case: <code>x<sup>-n</sup> = 1 / x<sup>n</sup></code>. The recursive call <code>power(base, -exp)</code> is made with a positive exponent, so it reaches the loop and cannot recurse again. <code>power(x, 0)</code> returns 1.0 because the loop body never executes.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — String Length</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_strlen.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">size_t</span> <span class="fn">my_strlen</span><span class="pu">(</span><span class="kw">const</span> <span class="ty">char</span> <span class="pu">*</span>str<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">size_t</span> length <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span>str<span class="pu">[</span>length<span class="pu">]</span> <span class="pu">!=</span> <span class="st">'\0'</span><span class="pu">)</span> <span class="pu">{</span>
+        length<span class="pu">++;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> length<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\"Hello\"         -&gt; %zu\n"</span><span class="pu">,</span> <span class="fn">my_strlen</span><span class="pu">(</span><span class="st">"Hello"</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\"\"              -&gt; %zu\n"</span><span class="pu">,</span> <span class="fn">my_strlen</span><span class="pu">(</span><span class="st">""</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\"C programming\" -&gt; %zu\n"</span><span class="pu">,</span> <span class="fn">my_strlen</span><span class="pu">(</span><span class="st">"C programming"</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\"a b\"           -&gt; %zu\n"</span><span class="pu">,</span> <span class="fn">my_strlen</span><span class="pu">(</span><span class="st">"a b"</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o ex2_strlen ex2_strlen.c</code> &nbsp;|&nbsp; Run: <code>./ex2_strlen</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">"Hello"         -&gt; 5
+""              -&gt; 0
+"C programming" -&gt; 13
+"a b"           -&gt; 3</code></div></div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> A C string has no stored length. The only way to find it is to scan until the null terminator <code>'\0'</code>. This is why <code>strlen</code> is O(n) and why calling it repeatedly in a loop condition is wasteful. The parameter is <code>const char *</code> because the function only reads the string.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Recursive Sum of Digits</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_digitsum.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">sum_digits</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        n <span class="pu">=</span> <span class="pu">-</span>n<span class="pu">;</span>                             <span class="cm">/* ignore the sign */</span>
+    <span class="pu">}</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;</span> <span class="nm">10</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> n<span class="pu">;</span>                           <span class="cm">/* base case: a single digit */</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="pu">(</span>n <span class="pu">%</span> <span class="nm">10</span><span class="pu">)</span> <span class="pu">+</span> <span class="fn">sum_digits</span><span class="pu">(</span>n <span class="pu">/</span> <span class="nm">10</span><span class="pu">);</span>   <span class="cm">/* last digit + sum of the rest */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sum_digits(12345) = %d\n"</span><span class="pu">,</span> <span class="fn">sum_digits</span><span class="pu">(</span><span class="nm">12345</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sum_digits(0)     = %d\n"</span><span class="pu">,</span> <span class="fn">sum_digits</span><span class="pu">(</span><span class="nm">0</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sum_digits(9)     = %d\n"</span><span class="pu">,</span> <span class="fn">sum_digits</span><span class="pu">(</span><span class="nm">9</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sum_digits(-987)  = %d\n"</span><span class="pu">,</span> <span class="fn">sum_digits</span><span class="pu">(-</span><span class="nm">987</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sum_digits(1000)  = %d\n"</span><span class="pu">,</span> <span class="fn">sum_digits</span><span class="pu">(</span><span class="nm">1000</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o ex3_digitsum ex3_digitsum.c</code> &nbsp;|&nbsp; Run: <code>./ex3_digitsum</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">sum_digits(12345) = 15
+sum_digits(0)     = 0
+sum_digits(9)     = 9
+sum_digits(-987)  = 24
+sum_digits(1000)  = 1</code></div></div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Each call peels off the last digit with <code>n % 10</code> and recurses on <code>n / 10</code>, which is strictly smaller, so the base case (<code>n &lt; 10</code>) is always reached. <code>sum_digits(1000)</code> shows that zero digits are handled correctly: <code>0 + 0 + 0 + 1</code>. <code>-n</code> is safe here except for <code>INT_MIN</code>, which cannot be negated in an <code>int</code>.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Function Pointer Calculator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_calculator.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="ty">double</span> <span class="pu">(*</span><span class="ty">binary_op</span><span class="pu">)(</span><span class="ty">double</span><span class="pu">,</span> <span class="ty">double</span><span class="pu">);</span>
+
+<span class="ty">double</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span>      <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">subtract</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">-</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">multiply</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">*</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">divide</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span>   <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">/</span> b<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">binary_op</span> ops<span class="pu">[]</span>     <span class="pu">=</span> <span class="pu">{</span> add<span class="pu">,</span> subtract<span class="pu">,</span> multiply<span class="pu">,</span> divide <span class="pu">};</span>
+    <span class="kw">const</span> <span class="ty">char</span> symbol<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="st">'+'</span><span class="pu">,</span> <span class="st">'-'</span><span class="pu">,</span> <span class="st">'*'</span><span class="pu">,</span> <span class="st">'/'</span> <span class="pu">};</span>
+    <span class="ty">int</span> num_ops <span class="pu">=</span> <span class="pu">(</span><span class="ty">int</span><span class="pu">)(</span><span class="kw">sizeof</span> ops <span class="pu">/</span> <span class="kw">sizeof</span> ops<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="cm">/* Pre-set "user input": operation index, left operand, right operand */</span>
+    <span class="ty">int</span>    choices<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">0</span><span class="pu">,</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">7</span> <span class="pu">};</span>
+    <span class="ty">double</span> lefts<span class="pu">[]</span>   <span class="pu">=</span> <span class="pu">{</span> <span class="nm">12.0</span><span class="pu">,</span> <span class="nm">12.0</span><span class="pu">,</span> <span class="nm">12.0</span><span class="pu">,</span> <span class="nm">12.0</span><span class="pu">,</span> <span class="nm">5.0</span><span class="pu">,</span> <span class="nm">1.0</span> <span class="pu">};</span>
+    <span class="ty">double</span> rights<span class="pu">[]</span>  <span class="pu">=</span> <span class="pu">{</span>  <span class="nm">4.0</span><span class="pu">,</span>  <span class="nm">4.0</span><span class="pu">,</span>  <span class="nm">4.0</span><span class="pu">,</span>  <span class="nm">4.0</span><span class="pu">,</span> <span class="nm">0.0</span><span class="pu">,</span> <span class="nm">1.0</span> <span class="pu">};</span>
+    <span class="ty">int</span> num_tests <span class="pu">=</span> <span class="pu">(</span><span class="ty">int</span><span class="pu">)(</span><span class="kw">sizeof</span> choices <span class="pu">/</span> <span class="kw">sizeof</span> choices<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> num_tests<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> c <span class="pu">=</span> choices<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="kw">if</span> <span class="pu">(</span>c <span class="pu">&lt;</span> <span class="nm">0</span> <span class="pu">||</span> c <span class="pu">&gt;=</span> num_ops<span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"[ERROR] Invalid operation index %d\n"</span><span class="pu">,</span> c<span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>symbol<span class="pu">[</span>c<span class="pu">]</span> <span class="pu">==</span> <span class="st">'/'</span> <span class="pu">&amp;&amp;</span> rights<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">==</span> <span class="nm">0.0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"[ERROR] %.2f / %.2f: division by zero\n"</span><span class="pu">,</span> lefts<span class="pu">[</span>i<span class="pu">],</span> rights<span class="pu">[</span>i<span class="pu">]);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%.2f %c %.2f = %.2f\n"</span><span class="pu">,</span>
+                   lefts<span class="pu">[</span>i<span class="pu">],</span> symbol<span class="pu">[</span>c<span class="pu">],</span> rights<span class="pu">[</span>i<span class="pu">],</span> ops<span class="pu">[</span>c<span class="pu">](</span>lefts<span class="pu">[</span>i<span class="pu">],</span> rights<span class="pu">[</span>i<span class="pu">]));</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o ex4_calculator ex4_calculator.c</code> &nbsp;|&nbsp; Run: <code>./ex4_calculator</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">12.00 + 4.00 = 16.00
+12.00 - 4.00 = 8.00
+12.00 * 4.00 = 48.00
+12.00 / 4.00 = 3.00
+[ERROR] 5.00 / 0.00: division by zero
+[ERROR] Invalid operation index 7</code></div></div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> The dispatch table replaces a <code>switch</code> with a single indexed call, <code>ops[c](lefts[i], rights[i])</code>. Adding a new operation means writing one function and adding one entry to each array. The bounds check <code>c &lt; 0 || c &gt;= num_ops</code> must come <em>before</em> indexing the table, and division by zero is rejected before the function is called.</div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Tower of Hanoi</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_hanoi.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Moves n disks from `from` to `to`, using `via` as the spare peg.
+   Returns the number of moves made. */</span>
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="fn">hanoi</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">,</span> <span class="ty">char</span> from<span class="pu">,</span> <span class="ty">char</span> to<span class="pu">,</span> <span class="ty">char</span> via<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>                                        <span class="cm">/* base case: nothing to move */</span>
+    <span class="pu">}</span>
+
+    <span class="ty">unsigned</span> <span class="ty">long</span> moves <span class="pu">=</span> <span class="fn">hanoi</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">,</span> from<span class="pu">,</span> via<span class="pu">,</span> to<span class="pu">);</span>   <span class="cm">/* 1. clear the top n-1 disks */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Move disk %d: %c -&gt; %c\n"</span><span class="pu">,</span> n<span class="pu">,</span> from<span class="pu">,</span> to<span class="pu">);</span>     <span class="cm">/* 2. move the largest disk   */</span>
+    moves<span class="pu">++;</span>
+    moves <span class="pu">+=</span> <span class="fn">hanoi</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">,</span> via<span class="pu">,</span> to<span class="pu">,</span> from<span class="pu">);</span>                <span class="cm">/* 3. stack n-1 disks on top  */</span>
+
+    <span class="kw">return</span> moves<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">3</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Tower of Hanoi with %d disks:\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="ty">unsigned</span> <span class="ty">long</span> total <span class="pu">=</span> <span class="fn">hanoi</span><span class="pu">(</span>n<span class="pu">,</span> <span class="st">'A'</span><span class="pu">,</span> <span class="st">'C'</span><span class="pu">,</span> <span class="st">'B'</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Total moves: %lu (formula 2^%d - 1 = %lu)\n"</span><span class="pu">,</span> total<span class="pu">,</span> n<span class="pu">,</span> <span class="pu">(</span><span class="nm">1UL</span> <span class="pu">&lt;&lt;</span> n<span class="pu">)</span> <span class="pu">-</span> <span class="nm">1</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o ex5_hanoi ex5_hanoi.c</code> &nbsp;|&nbsp; Run: <code>./ex5_hanoi</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">Tower of Hanoi with 3 disks:
+Move disk 1: A -&gt; C
+Move disk 2: A -&gt; B
+Move disk 1: C -&gt; B
+Move disk 3: A -&gt; C
+Move disk 1: B -&gt; A
+Move disk 2: B -&gt; C
+Move disk 1: A -&gt; C
+Total moves: 7 (formula 2^3 - 1 = 7)</code></div></div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div><strong>Key Insight:</strong> Trust the recursion: if you can move <code>n-1</code> disks, then moving <code>n</code> disks is &ldquo;move <code>n-1</code> out of the way, move the biggest disk, move <code>n-1</code> back on top&rdquo;. The roles of the pegs swap with each call (<code>via</code> and <code>to</code> exchange places). The move count satisfies <code>T(n) = 2T(n-1) + 1</code>, which solves to <code>2<sup>n</sup> - 1</code>, so 20 disks already need over a million moves.</div>
+    </div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../05-arrays-strings/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
     </div>
 
   </main>

@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 3 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 3 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/03-control-flow/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 3 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 3</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 3 — Control Flow</p>
+      <p class="subtitle">Chapter 3 — Control Flow &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What is the "dangling else" problem in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>An else statement that has an empty body</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true"  /><label>An ambiguity where an else clause binds to the nearest preceding unmatched if</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>An else statement placed outside of any function definition</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>A syntax error generated when an if condition is missing parentheses</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="In C, an else statement binds to the closest preceding unmatched if at the same nesting level, which can create logic bugs if braces {} are omitted."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What happens if you omit the <code>break</code> statement at the end of a <code>switch</code> case?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>The compiler generates a fatal syntax error</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>The switch statement immediately exits after completing the matching case</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true"  /><label>Execution falls through and continues into subsequent cases</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>The program enters an unrecoverable infinite loop</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Without break, execution falls through into subsequent cases and executes their statements until a break or the end of the switch block is reached."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What is the minimum number of times the body of a <code>do-while</code> loop will execute?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>0 times</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true"  /><label>1 time</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>2 times</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>It depends on whether the condition is initially true or false</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Because a do-while loop evaluates its condition after executing the body (post-condition check), the body is guaranteed to run at least once."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">In a C <code>for</code> loop, what does writing <code>for (;;)</code> create?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A syntax error due to missing loop expressions</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A loop that executes 0 times and exits immediately</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true"  /><label>An infinite loop</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>A loop that executes exactly once</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="In C, an omitted condition expression in a for loop defaults to non-zero (true), resulting in an infinite loop equivalent to while (1)."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">What does the <code>continue</code> statement do when executed inside a <code>for</code> loop?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>Exits the loop completely and continues with the next statement outside</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>Jumps back to the loop's initialisation expression</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true"  /><label>Skips the rest of the body and jumps directly to the increment/update expression</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>Skips directly to the condition test without evaluating the increment expression</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="In a for loop, continue skips remaining statements in the body and jumps straight to the increment expression (e.g. i++) before checking the condition again."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">Can a <code>switch</code> statement evaluate a <code>float</code> or <code>double</code> expression in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>Yes, switch works with all primitive C types</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>Yes, but only in C99 and later standards</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true"  /><label>No, switch expressions and case labels only work on integer types</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>No, switch only works on char variables</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="C switch statements only operate on integral types (int, char, short, long, enum). Floating-point types (float, double) and strings are not allowed."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">What is the difference between <code>break</code> inside a loop versus <code>break</code> inside a <code>switch</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>break in a loop stops the program, while in switch it skips to default</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true"  /><label>Both exit the innermost enclosing construct (the loop or the switch)</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>break in a loop jumps to the next iteration; in switch it exits</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>break is not valid inside switch blocks</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="In both loops and switch blocks, break transfers control immediately to the statement following the innermost enclosing construct."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">Which keyword or syntax can directly exit multiple nested loops at once in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>break 2;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>break all;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true"  /><label>None directly — <code>goto</code> or boolean flags are required</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>break :outer;</code> (labeled break)</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Unlike Java or JavaScript, C does not support labeled or multi-level break. To break out of nested loops directly, C developers use goto or control flags."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

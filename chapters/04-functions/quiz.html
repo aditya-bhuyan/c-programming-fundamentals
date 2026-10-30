@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 4 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 4 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/04-functions/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 4 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 4</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 4 — Functions</p>
+      <p class="subtitle">Chapter 4 — Functions &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What does <em>pass-by-value</em> mean in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The function receives the address of the caller's variable</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true" /><label>A copy of the argument is made; the caller's variable is unaffected by changes to the parameter</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The argument is evaluated only if the function uses it</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>The function may modify the caller's variable only if it is declared <code>static</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="C passes every argument by value: the parameter is a separate local copy. Assigning to it inside the function leaves the caller's variable unchanged. To modify the caller's data you must pass its address (a pointer)."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What is a <em>forward declaration</em>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>A function body written before <code>main()</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>A call to a function before it is defined, with the result discarded</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true" /><label>Declaring a function's signature (return type, name, parameter types) before its definition</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>A function that is only visible to the file that follows it</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A forward declaration (prototype) such as <code>int add(int a, int b);</code> tells the compiler a function's signature so it can be called before the full definition appears, or from another file."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What is the <em>base case</em> in recursion?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>The first call made to the recursive function from <code>main()</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true" /><label>The condition that stops further recursive calls and returns a result directly</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>The largest input the function can handle</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>The recursive call that has the smallest argument</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The base case returns without making another recursive call. Without it (or if it is never reached), the recursion never ends and the stack overflows."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">Which storage class makes a local variable keep its value between calls to the function?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>auto</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>register</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true" /><label><code>static</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>extern</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A <code>static</code> local variable is initialised once and lives for the whole program run, so its value persists between calls, while its name remains visible only inside the function."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">What is a function pointer?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A pointer to the return value of a function</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true" /><label>A variable that holds the address of a function and can be used to call it</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A function that returns a pointer</label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label>A special keyword that makes a function recursive</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="A function pointer such as <code>int (*op)(int, int);</code> stores the address of a function. Calling <code>op(2, 3)</code> calls whichever function it currently points to. Callbacks and dispatch tables are built from them."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What happens if a non-<code>void</code> function has no <code>return</code> statement and the caller uses its result?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>It returns 0 automatically</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>The compiler always refuses to compile the program</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>It returns the last value computed in the function</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true" /><label>Undefined behaviour</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Reaching the end of a non-void function and then using the returned value is undefined behaviour. (<code>main</code> is the one exception: it implicitly returns 0.) Compile with <code>-Wall</code> to get a warning."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">Which header is needed to write variadic functions such as <code>my_sum(int count, ...)</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>&lt;stdio.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>&lt;stdlib.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true" /><label><code>&lt;stdarg.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>&lt;varargs.h&gt;</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="<code>&lt;stdarg.h&gt;</code> provides <code>va_list</code>, <code>va_start</code>, <code>va_arg</code>, and <code>va_end</code>, which let a function walk through its variable argument list."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What is the call stack?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true" /><label>A region of memory that tracks active function invocations, with one frame per call</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>A list of every function defined in the program</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>The area of memory where <code>malloc</code> allocates blocks</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>The compiler's table of function prototypes</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The call stack holds one stack frame per active function call (parameters, local variables, and the return address). Frames are pushed on call and popped on return, in last-in, first-out order."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

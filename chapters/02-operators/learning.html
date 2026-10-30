@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 2 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 2 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/02-operators/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 2 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,382 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+      <h2>1. Arithmetic operators</h2>
+      <p>C provides five binary arithmetic operators. They work on integer and floating-point types (except <code>%</code>, which requires integers).</p>
+      <table>
+        <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>+</code></td><td>Addition</td><td><code>7 + 2</code></td><td><code>9</code></td></tr>
+          <tr><td><code>-</code></td><td>Subtraction</td><td><code>7 - 2</code></td><td><code>5</code></td></tr>
+          <tr><td><code>*</code></td><td>Multiplication</td><td><code>7 * 2</code></td><td><code>14</code></td></tr>
+          <tr><td><code>/</code></td><td>Division</td><td><code>7 / 2</code></td><td><code>3</code> (both operands <code>int</code>)</td></tr>
+          <tr><td><code>%</code></td><td>Remainder (modulo)</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+        </tbody>
+      </table>
+      <h3>Integer division truncates</h3>
+      <p>When <em>both</em> operands are integers, <code>/</code> performs integer division and discards the fractional part (it truncates toward zero). Make at least one operand floating-point to get a real result.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>arith.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span>    a <span class="pu">=</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>          <span class="cm">/* 3    : int / int -&gt; int, fraction discarded  */</span>
+<span class="ty">double</span> b <span class="pu">=</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>          <span class="cm">/* 3.0  : division happens first, THEN converts */</span>
+<span class="ty">double</span> c <span class="pu">=</span> <span class="nm">7.0</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>        <span class="cm">/* 3.5  : one operand is double                 */</span>
+<span class="ty">double</span> d <span class="pu">=</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span><span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>  <span class="cm">/* 3.5  : cast one operand before dividing      */</span>
+<span class="ty">int</span>    r <span class="pu">=</span> <span class="nm">7</span> <span class="pu">%</span> <span class="nm">2</span><span class="pu">;</span>          <span class="cm">/* 1    : remainder                             */</span></pre>
+    </div>
+    <div class="prose">
+      <h3>Modulo with negative numbers</h3>
+      <p>In <strong>C89</strong>, if either operand of <code>/</code> is negative, whether the quotient rounds toward or away from zero was <em>implementation-defined</em>, so the sign of <code>%</code> was too. Since <strong>C99</strong>, division always truncates toward zero and the result of <code>%</code> takes the <strong>sign of the left operand (the dividend)</strong>. The identity <code>(a / b) * b + a % b == a</code> always holds.</p>
+      <table>
+        <thead><tr><th>Expression</th><th><code>/</code> result</th><th><code>%</code> result (C99+)</th></tr></thead>
+        <tbody>
+          <tr><td><code>7 / 2</code>, <code>7 % 2</code></td><td><code>3</code></td><td><code>1</code></td></tr>
+          <tr><td><code>-7 / 2</code>, <code>-7 % 2</code></td><td><code>-3</code></td><td><code>-1</code></td></tr>
+          <tr><td><code>7 / -2</code>, <code>7 % -2</code></td><td><code>-3</code></td><td><code>1</code></td></tr>
+          <tr><td><code>-7 / -2</code>, <code>-7 % -2</code></td><td><code>3</code></td><td><code>-1</code></td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Division or modulo by zero is <strong>undefined behaviour</strong> for integers. Always check the divisor first. Also note that <code>%</code> is a compile-time error with <code>float</code>/<code>double</code>; use <code>fmod()</code> from <code>&lt;math.h&gt;</code> instead.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>2. Relational operators</h2>
+      <p>Relational (comparison) operators compare two values.</p>
+      <table>
+        <thead><tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>==</code></td><td>Equal to</td><td><code>5 == 5</code></td><td><code>1</code></td></tr>
+          <tr><td><code>!=</code></td><td>Not equal to</td><td><code>5 != 5</code></td><td><code>0</code></td></tr>
+          <tr><td><code>&lt;</code></td><td>Less than</td><td><code>3 &lt; 5</code></td><td><code>1</code></td></tr>
+          <tr><td><code>&gt;</code></td><td>Greater than</td><td><code>3 &gt; 5</code></td><td><code>0</code></td></tr>
+          <tr><td><code>&lt;=</code></td><td>Less than or equal</td><td><code>5 &lt;= 5</code></td><td><code>1</code></td></tr>
+          <tr><td><code>&gt;=</code></td><td>Greater than or equal</td><td><code>3 &gt;= 5</code></td><td><code>0</code></td></tr>
+        </tbody>
+      </table>
+      <p>The result of a relational expression has type <code>int</code> and is always exactly <code>0</code> (false) or <code>1</code> (true). Classic C has no built-in <code>bool</code> type (C99 adds <code>_Bool</code> / <code>&lt;stdbool.h&gt;</code>, but comparisons still yield <code>int</code>). In a condition, <em>any non-zero value</em> counts as true.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>relational.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> a <span class="pu">=</span> <span class="pu">(</span><span class="nm">3</span> <span class="pu">&lt;</span> <span class="nm">5</span><span class="pu">);</span>          <span class="cm">/* a == 1 */</span>
+<span class="ty">int</span> b <span class="pu">=</span> <span class="pu">(</span><span class="nm">3</span> <span class="pu">&gt;</span> <span class="nm">5</span><span class="pu">);</span>          <span class="cm">/* b == 0 */</span>
+<span class="ty">int</span> c <span class="pu">=</span> <span class="pu">(</span><span class="nm">3</span> <span class="pu">&lt;</span> <span class="nm">5</span><span class="pu">)</span> <span class="pu">+</span> <span class="pu">(</span><span class="nm">4</span> <span class="pu">&lt;</span> <span class="nm">9</span><span class="pu">);</span> <span class="cm">/* c == 2 : results are ordinary ints */</span>
+<span class="kw">if</span> <span class="pu">(</span><span class="nm">42</span><span class="pu">)</span> <span class="pu">{</span> <span class="cm">/* true: any non-zero value */</span> <span class="pu">}</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Common mistake: <code>=</code> vs <code>==</code>.</strong> <code>=</code> <em>assigns</em>; <code>==</code> <em>compares</em>. Writing <code>if (x = 5)</code> assigns 5 to <code>x</code> and the condition is always true. Compile with <code>-Wall</code> to get a warning, and consider the "Yoda" style <code>if (5 == x)</code>, which fails to compile if you drop an <code>=</code>.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>eq_bug.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> x <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="kw">if</span> <span class="pu">(</span>x <span class="pu">=</span> <span class="nm">5</span><span class="pu">)</span> <span class="pu">{</span>          <span class="cm">/* BUG: assigns 5 to x; condition is 5 -&gt; true */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"always runs, x is now %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+<span class="pu">}</span>
+<span class="kw">if</span> <span class="pu">(</span>x <span class="pu">==</span> <span class="nm">5</span><span class="pu">)</span> <span class="pu">{</span>         <span class="cm">/* correct comparison */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x equals 5\n"</span><span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="prose">
+      <h2>3. Logical operators</h2>
+      <p>Logical operators combine or invert truth values. Operands are treated as true if non-zero; the result is always <code>0</code> or <code>1</code>.</p>
+      <table>
+        <thead><tr><th>Operator</th><th>Name</th><th>True when…</th></tr></thead>
+        <tbody>
+          <tr><td><code>&amp;&amp;</code></td><td>Logical AND</td><td>both operands are true</td></tr>
+          <tr><td><code>||</code></td><td>Logical OR</td><td>at least one operand is true</td></tr>
+          <tr><td><code>!</code></td><td>Logical NOT</td><td>the operand is false</td></tr>
+        </tbody>
+      </table>
+      <h3>Truth tables</h3>
+      <table>
+        <thead><tr><th>A</th><th>B</th><th>A &amp;&amp; B</th><th>A || B</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead><tr><th>A</th><th>!A</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>1</td></tr>
+          <tr><td>non-zero</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <h3>Short-circuit evaluation</h3>
+      <p><code>&amp;&amp;</code> and <code>||</code> evaluate left to right and <strong>stop as soon as the result is known</strong>:</p>
+      <ul>
+        <li><code>A &amp;&amp; B</code> &mdash; if <code>A</code> is false, <code>B</code> is <em>never evaluated</em>.</li>
+        <li><code>A || B</code> &mdash; if <code>A</code> is true, <code>B</code> is <em>never evaluated</em>.</li>
+      </ul>
+      <p>This is both an optimisation and a safety idiom: the left operand can guard the right one.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>short_circuit.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> NULL<span class="pu">;</span>
+<span class="kw">if</span> <span class="pu">(</span>p <span class="pu">!=</span> NULL <span class="pu">&amp;&amp;</span> <span class="pu">*</span>p <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span> <span class="cm">/* *p is only read when p is not NULL */</span> <span class="pu">}</span>
+
+<span class="ty">int</span> d <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="kw">if</span> <span class="pu">(</span>d <span class="pu">!=</span> <span class="nm">0</span> <span class="pu">&amp;&amp;</span> <span class="nm">10</span> <span class="pu">/</span> d <span class="pu">&gt;</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span> <span class="cm">/* division by zero is never attempted */</span> <span class="pu">}</span>
+
+<span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="ty">int</span> r <span class="pu">=</span> <span class="pu">(</span>i <span class="pu">!=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">&amp;&amp;</span> <span class="pu">(++</span>i <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">);</span>   <span class="cm">/* left is false -&gt; ++i NOT executed; i stays 0 */</span>
+<span class="ty">int</span> s <span class="pu">=</span> <span class="pu">(</span>i <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">||</span> <span class="pu">(++</span>i <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">);</span>   <span class="cm">/* left is true  -&gt; ++i NOT executed; i stays 0 */</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Don't put essential side effects (function calls, <code>++</code>) on the right-hand side of <code>&amp;&amp;</code> or <code>||</code> unless you intend them to be conditional.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>4. Bitwise operators</h2>
+      <p>Bitwise operators work on the individual bits of integer operands. Don't confuse them with the logical operators: <code>&amp;</code> is bitwise AND, <code>&amp;&amp;</code> is logical AND.</p>
+      <table>
+        <thead><tr><th>Operator</th><th>Name</th><th>Rule</th></tr></thead>
+        <tbody>
+          <tr><td><code>&amp;</code></td><td>AND</td><td>1 only if both bits are 1</td></tr>
+          <tr><td><code>|</code></td><td>OR</td><td>1 if either bit is 1</td></tr>
+          <tr><td><code>^</code></td><td>XOR</td><td>1 if the bits differ</td></tr>
+          <tr><td><code>~</code></td><td>NOT (complement)</td><td>flips every bit</td></tr>
+          <tr><td><code>&lt;&lt;</code></td><td>Left shift</td><td>shifts bits left, filling with 0</td></tr>
+          <tr><td><code>&gt;&gt;</code></td><td>Right shift</td><td>shifts bits right (sign bit behaviour of negative values is implementation-defined)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>bitwise.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">unsigned</span> <span class="ty">char</span> a <span class="pu">=</span> <span class="nm">0x0C</span><span class="pu">;</span>     <span class="cm">/* 0000 1100 = 12 */</span>
+<span class="ty">unsigned</span> <span class="ty">char</span> b <span class="pu">=</span> <span class="nm">0x0A</span><span class="pu">;</span>     <span class="cm">/* 0000 1010 = 10 */</span>
+
+a <span class="pu">&amp;</span> b<span class="pu">;</span>                      <span class="cm">/* 0000 1000 =  8  both bits set        */</span>
+a <span class="pu">|</span> b<span class="pu">;</span>                      <span class="cm">/* 0000 1110 = 14  either bit set       */</span>
+a <span class="pu">^</span> b<span class="pu">;</span>                      <span class="cm">/* 0000 0110 =  6  bits differ          */</span>
+<span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span><span class="pu">)~</span>a<span class="pu">;</span>          <span class="cm">/* 1111 0011 = 243 every bit flipped    */</span>
+a <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">;</span>                     <span class="cm">/* 0011 0000 = 48  (12 * 4)             */</span>
+a <span class="pu">&gt;&gt;</span> <span class="nm">2</span><span class="pu">;</span>                     <span class="cm">/* 0000 0011 =  3  (12 / 4)             */</span></pre>
+    </div>
+    <div class="prose">
+      <h3>Use cases</h3>
+      <ul>
+        <li><strong>Flags</strong> &mdash; pack several on/off options into one integer.</li>
+        <li><strong>Masking</strong> &mdash; extract a group of bits with <code>&amp;</code>.</li>
+        <li><strong>Fast multiply/divide by powers of 2</strong> &mdash; <code>x &lt;&lt; n</code> is <code>x * 2<sup>n</sup></code>; <code>x &gt;&gt; n</code> is <code>x / 2<sup>n</sup></code> for non-negative values. Modern compilers do this for you, so prefer readable <code>*</code> and <code>/</code> unless you are really manipulating bits.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>flags.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#define</span> <span class="fn">FLAG_A</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">0</span><span class="pu">)</span>            <span class="cm">/* 0000 0001 */</span>
+<span class="pp">#define</span> <span class="fn">FLAG_B</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">1</span><span class="pu">)</span>            <span class="cm">/* 0000 0010 */</span>
+<span class="pp">#define</span> <span class="fn">FLAG_C</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">)</span>            <span class="cm">/* 0000 0100 */</span>
+
+<span class="ty">unsigned</span> flags <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>                 <span class="cm">/* 0000 0000 */</span>
+flags <span class="pu">|=</span>  FLAG_A<span class="pu">;</span>                   <span class="cm">/* set    : 0000 0001 */</span>
+flags <span class="pu">|=</span>  FLAG_C<span class="pu">;</span>                   <span class="cm">/* set    : 0000 0101 */</span>
+flags <span class="pu">^=</span>  FLAG_B<span class="pu">;</span>                   <span class="cm">/* toggle : 0000 0111 */</span>
+flags <span class="pu">&amp;=</span> <span class="pu">~</span>FLAG_C<span class="pu">;</span>                   <span class="cm">/* clear  : 0000 0011 */</span>
+<span class="kw">if</span> <span class="pu">(</span>flags <span class="pu">&amp;</span> FLAG_A<span class="pu">)</span> <span class="pu">{</span> <span class="cm">/* test: bit 0 is on */</span> <span class="pu">}</span>
+
+<span class="ty">unsigned</span> value <span class="pu">=</span> <span class="nm">0xABCD</span><span class="pu">;</span>
+<span class="ty">unsigned</span> low_byte <span class="pu">=</span> value <span class="pu">&amp;</span> <span class="nm">0xFFu</span><span class="pu">;</span>  <span class="cm">/* mask: 0xCD */</span>
+<span class="ty">unsigned</span> high_byte <span class="pu">=</span> <span class="pu">(</span>value <span class="pu">&gt;&gt;</span> <span class="nm">8</span><span class="pu">)</span> <span class="pu">&amp;</span> <span class="nm">0xFFu</span><span class="pu">;</span> <span class="cm">/* 0xAB */</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Shifting by a negative amount, or by an amount greater than or equal to the width of the (promoted) type, is <strong>undefined behaviour</strong>. Left-shifting a signed value into the sign bit is also problematic. Prefer <code>unsigned</code> types for bit manipulation.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>5. Assignment operators</h2>
+      <p><code>=</code> stores the value of its right operand in its left operand. Each <em>compound assignment</em> operator <code>x op= y</code> is shorthand for <code>x = x op y</code> (with <code>x</code> evaluated only once).</p>
+      <table>
+        <thead><tr><th>Operator</th><th>Equivalent to</th><th>Operator</th><th>Equivalent to</th></tr></thead>
+        <tbody>
+          <tr><td><code>x = y</code></td><td>store <code>y</code> in <code>x</code></td><td><code>x &amp;= y</code></td><td><code>x = x &amp; y</code></td></tr>
+          <tr><td><code>x += y</code></td><td><code>x = x + y</code></td><td><code>x |= y</code></td><td><code>x = x | y</code></td></tr>
+          <tr><td><code>x -= y</code></td><td><code>x = x - y</code></td><td><code>x ^= y</code></td><td><code>x = x ^ y</code></td></tr>
+          <tr><td><code>x *= y</code></td><td><code>x = x * y</code></td><td><code>x &lt;&lt;= y</code></td><td><code>x = x &lt;&lt; y</code></td></tr>
+          <tr><td><code>x /= y</code></td><td><code>x = x / y</code></td><td><code>x &gt;&gt;= y</code></td><td><code>x = x &gt;&gt; y</code></td></tr>
+          <tr><td><code>x %= y</code></td><td><code>x = x % y</code></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>assign.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> x <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+x <span class="pu">+=</span> <span class="nm">5</span><span class="pu">;</span>     <span class="cm">/* 15 */</span>
+x <span class="pu">-=</span> <span class="nm">3</span><span class="pu">;</span>     <span class="cm">/* 12 */</span>
+x <span class="pu">*=</span> <span class="nm">2</span><span class="pu">;</span>     <span class="cm">/* 24 */</span>
+x <span class="pu">/=</span> <span class="nm">5</span><span class="pu">;</span>     <span class="cm">/* 4  (integer division) */</span>
+x <span class="pu">%=</span> <span class="nm">3</span><span class="pu">;</span>     <span class="cm">/* 1  */</span>
+x <span class="pu">&lt;&lt;=</span> <span class="nm">4</span><span class="pu">;</span>    <span class="cm">/* 16 */</span>
+x <span class="pu">|=</span> <span class="nm">1</span><span class="pu">;</span>     <span class="cm">/* 17 */</span>
+
+<span class="ty">int</span> a<span class="pu">,</span> b<span class="pu">,</span> c<span class="pu">;</span>
+a <span class="pu">=</span> b <span class="pu">=</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>   <span class="cm">/* assignment is right-associative: a = (b = (c = 0)) */</span></pre>
+    </div>
+    <div class="prose">
+      <h2>6. Increment and decrement</h2>
+      <p><code>++</code> adds 1 and <code>--</code> subtracts 1. Each comes in two forms that differ in the <em>value of the expression</em>, not in the final value of the variable.</p>
+      <table>
+        <thead><tr><th>Form</th><th>Name</th><th>Expression value</th><th>Side effect on <code>x</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>++x</code></td><td>Pre-increment</td><td>the <strong>new</strong> value</td><td>x is incremented first</td></tr>
+          <tr><td><code>x++</code></td><td>Post-increment</td><td>the <strong>old</strong> value</td><td>x is incremented after the value is taken</td></tr>
+          <tr><td><code>--x</code></td><td>Pre-decrement</td><td>the <strong>new</strong> value</td><td>x is decremented first</td></tr>
+          <tr><td><code>x--</code></td><td>Post-decrement</td><td>the <strong>old</strong> value</td><td>x is decremented after the value is taken</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>incdec.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> x <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+<span class="ty">int</span> a <span class="pu">=</span> x<span class="pu">++;</span>    <span class="cm">/* a = 5, x = 6 : old value used, then increment */</span>
+<span class="ty">int</span> b <span class="pu">=</span> <span class="pu">++</span>x<span class="pu">;</span>    <span class="cm">/* x = 7, b = 7 : increment, then new value used */</span>
+<span class="ty">int</span> c <span class="pu">=</span> x<span class="pu">--;</span>    <span class="cm">/* c = 7, x = 6 */</span>
+<span class="ty">int</span> d <span class="pu">=</span> <span class="pu">--</span>x<span class="pu">;</span>    <span class="cm">/* x = 5, d = 5 */</span></pre>
+    </div>
+    <div class="prose">
+      <h3>Side effects in expressions: the undefined-behaviour trap</h3>
+      <p>Modifying the same variable more than once between two <em>sequence points</em> (or modifying it and also reading it for another purpose) is <strong>undefined behaviour</strong>. The compiler may produce any result.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>ub_trap.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="ty">int</span> a <span class="pu">=</span> i<span class="pu">++</span> <span class="pu">+</span> i<span class="pu">++;</span>       <span class="cm">/* UNDEFINED: i modified twice, unsequenced     */</span>
+<span class="ty">int</span> b <span class="pu">=</span> i <span class="pu">+</span> i<span class="pu">++;</span>         <span class="cm">/* UNDEFINED: i read and modified, unsequenced  */</span>
+i <span class="pu">=</span> i<span class="pu">++;</span>                 <span class="cm">/* UNDEFINED in C99/C11 (unsequenced)           */</span>
+<span class="ty">int</span> arr<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">0</span><span class="pu">};</span>
+arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i<span class="pu">++;</span>            <span class="cm">/* UNDEFINED: which i is used for the index?    */</span>
+
+<span class="cm">/* Fix: one side effect per statement */</span>
+<span class="ty">int</span> j <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="ty">int</span> c <span class="pu">=</span> j <span class="pu">+</span> j<span class="pu">;</span>
+j<span class="pu">++;</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div>The rule of thumb: <strong>never use a variable twice in the same expression if one of the uses modifies it</strong> (<code>++</code>, <code>--</code>, or an assignment). Split the expression across statements. Note that <code>&amp;&amp;</code>, <code>||</code>, <code>?:</code> and the comma operator <em>do</em> introduce a sequence point after evaluating their first operand, so <code>i++ &amp;&amp; i++</code> is well-defined; function-call arguments, however, are not sequenced relative to each other.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>7. Operator precedence and associativity</h2>
+      <p><strong>Precedence</strong> decides which operator binds tighter (<code>*</code> before <code>+</code>). <strong>Associativity</strong> decides the grouping of operators of the <em>same</em> precedence (<code>a - b - c</code> is <code>(a - b) - c</code>). The table lists all C operators from highest to lowest precedence.</p>
+      <table>
+        <thead><tr><th>Level</th><th>Operators</th><th>Description</th><th>Associativity</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>()</code> <code>[]</code> <code>.</code> <code>-&gt;</code> <code>x++</code> <code>x--</code> <code>(type){list}</code></td><td>Call, subscript, member access, postfix inc/dec, compound literal</td><td>left to right</td></tr>
+          <tr><td>2</td><td><code>++x</code> <code>--x</code> <code>+</code> <code>-</code> <code>!</code> <code>~</code> <code>(type)</code> <code>*</code> <code>&amp;</code> <code>sizeof</code> <code>_Alignof</code></td><td>Prefix inc/dec, unary plus/minus, NOT, complement, cast, dereference, address-of, sizeof</td><td>right to left</td></tr>
+          <tr><td>3</td><td><code>*</code> <code>/</code> <code>%</code></td><td>Multiplicative</td><td>left to right</td></tr>
+          <tr><td>4</td><td><code>+</code> <code>-</code></td><td>Additive</td><td>left to right</td></tr>
+          <tr><td>5</td><td><code>&lt;&lt;</code> <code>&gt;&gt;</code></td><td>Bitwise shift</td><td>left to right</td></tr>
+          <tr><td>6</td><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>Relational</td><td>left to right</td></tr>
+          <tr><td>7</td><td><code>==</code> <code>!=</code></td><td>Equality</td><td>left to right</td></tr>
+          <tr><td>8</td><td><code>&amp;</code></td><td>Bitwise AND</td><td>left to right</td></tr>
+          <tr><td>9</td><td><code>^</code></td><td>Bitwise XOR</td><td>left to right</td></tr>
+          <tr><td>10</td><td><code>|</code></td><td>Bitwise OR</td><td>left to right</td></tr>
+          <tr><td>11</td><td><code>&amp;&amp;</code></td><td>Logical AND</td><td>left to right</td></tr>
+          <tr><td>12</td><td><code>||</code></td><td>Logical OR</td><td>left to right</td></tr>
+          <tr><td>13</td><td><code>?:</code></td><td>Ternary conditional</td><td>right to left</td></tr>
+          <tr><td>14</td><td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>&amp;=</code> <code>^=</code> <code>|=</code></td><td>Assignment</td><td>right to left</td></tr>
+          <tr><td>15</td><td><code>,</code></td><td>Comma</td><td>left to right</td></tr>
+        </tbody>
+      </table>
+      <p>Two historical quirks cause many bugs: the bitwise operators <code>&amp;</code>, <code>^</code>, <code>|</code> bind <em>looser</em> than <code>==</code>, and <code>+</code>/<code>-</code> bind <em>tighter</em> than <code>&lt;&lt;</code>/<code>&gt;&gt;</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>precedence.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> a <span class="pu">=</span> <span class="nm">2</span> <span class="pu">+</span> <span class="nm">3</span> <span class="pu">*</span> <span class="nm">4</span><span class="pu">;</span>          <span class="cm">/* 14 : * first                                  */</span>
+<span class="ty">int</span> b <span class="pu">=</span> <span class="nm">10</span> <span class="pu">-</span> <span class="nm">4</span> <span class="pu">-</span> <span class="nm">3</span><span class="pu">;</span>         <span class="cm">/* 3  : left-assoc -&gt; (10 - 4) - 3               */</span>
+<span class="ty">int</span> c <span class="pu">=</span> <span class="nm">6</span> <span class="pu">&amp;</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">2</span><span class="pu">;</span>         <span class="cm">/* 0  : parsed as 6 &amp; (2 == 2) -&gt; 6 &amp; 1          */</span>
+<span class="ty">int</span> d <span class="pu">=</span> <span class="pu">(</span><span class="nm">6</span> <span class="pu">&amp;</span> <span class="nm">2</span><span class="pu">)</span> <span class="pu">==</span> <span class="nm">2</span><span class="pu">;</span>       <span class="cm">/* 1  : parentheses express the intent           */</span>
+<span class="ty">int</span> e <span class="pu">=</span> <span class="nm">1</span> <span class="pu">+</span> <span class="nm">2</span> <span class="pu">&lt;&lt;</span> <span class="nm">3</span><span class="pu">;</span>         <span class="cm">/* 24 : (1 + 2) &lt;&lt; 3                             */</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Use parentheses to make intent explicit.</strong> Nobody should need to memorise 15 levels to read your code. Parenthesise anything that mixes bitwise, shift, logical or comparison operators, even where the precedence would already be correct.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>8. The ternary and comma operators</h2>
+      <h3>Conditional (ternary) operator</h3>
+      <p><code>condition ? expr_if_true : expr_if_false</code> is C's only three-operand operator. It evaluates <code>condition</code>; if non-zero it evaluates and yields the second operand, otherwise the third. Only the chosen branch is evaluated.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>ternary.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> a <span class="pu">=</span> <span class="nm">12</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span>
+<span class="ty">int</span> max <span class="pu">=</span> <span class="pu">(</span>a <span class="pu">&gt;</span> b<span class="pu">)</span> <span class="pu">?</span> a <span class="pu">:</span> b<span class="pu">;</span>               <span class="cm">/* 12 */</span>
+<span class="ty">int</span> abs_v <span class="pu">=</span> <span class="pu">(</span>b <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">?</span> <span class="pu">-</span>b <span class="pu">:</span> b<span class="pu">;</span>            <span class="cm">/* 7  */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"%s\n"</span><span class="pu">,</span> <span class="pu">(</span>a <span class="pu">%</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">?</span> <span class="st">"even"</span> <span class="pu">:</span> <span class="st">"odd"</span><span class="pu">);</span>
+
+<span class="cm">/* Nested -- legal, but hurts readability: */</span>
+<span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>s <span class="pu">=</span> a <span class="pu">&lt;</span> <span class="nm">0</span> <span class="pu">?</span> <span class="st">"negative"</span> <span class="pu">:</span> a <span class="pu">==</span> <span class="nm">0</span> <span class="pu">?</span> <span class="st">"zero"</span> <span class="pu">:</span> <span class="st">"positive"</span><span class="pu">;</span></pre>
+    </div>
+    <div class="prose">
+      <h3>Comma operator</h3>
+      <p>The comma operator evaluates its left operand, discards the result, then evaluates the right operand and yields <em>its</em> value. There is a sequence point between the two. It has the <strong>lowest</strong> precedence of any operator. It is rarely needed outside <code>for</code> loop headers.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>comma.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> x <span class="pu">=</span> <span class="pu">(</span><span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">);</span>                     <span class="cm">/* x == 3 : last value wins           */</span>
+
+<span class="ty">int</span> i<span class="pu">,</span> j<span class="pu">;</span>
+<span class="kw">for</span> <span class="pu">(</span>i <span class="pu">=</span> <span class="nm">0</span><span class="pu">,</span> j <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span> i <span class="pu">&lt;</span> j<span class="pu">;</span> i<span class="pu">++,</span> j<span class="pu">--)</span> <span class="pu">{</span> <span class="cm">/* two variables stepped together     */</span>
+    <span class="cm">/* ... */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> a <span class="pu">=</span> <span class="nm">1</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>     <span class="cm">/* NOT the comma operator: this is a declaration list   */</span>
+<span class="ty">int</span> c <span class="pu">=</span> <span class="pu">(</span>a<span class="pu">++,</span> b<span class="pu">++);</span>   <span class="cm">/* comma operator: a becomes 2, b becomes 3, c == 2     */</span></pre>
+    </div>
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div>The commas separating function arguments (<code>f(a, b)</code>) and declarators (<code>int a, b;</code>) are <em>not</em> comma operators. To pass a comma expression as one argument, wrap it in parentheses: <code>f((a, b))</code>.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>Integer <code>/</code> truncates toward zero; <code>%</code> takes the sign of the dividend (C99+). Never divide by zero.</li>
+        <li>Relational and logical operators yield an <code>int</code> that is exactly <code>0</code> or <code>1</code>; confusing <code>=</code> with <code>==</code> is a classic bug.</li>
+        <li><code>&amp;&amp;</code> and <code>||</code> short-circuit: the right operand may never be evaluated.</li>
+        <li>Bitwise operators (<code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code>) act on individual bits &mdash; use them for flags, masks and shifts, preferably on unsigned types.</li>
+        <li>Compound assignment (<code>+=</code>, <code>&lt;&lt;=</code>, …) is shorthand for <code>x = x op y</code>.</li>
+        <li><code>x++</code> yields the old value, <code>++x</code> the new one; modifying a variable twice in one expression is undefined behaviour.</li>
+        <li>Precedence and associativity decide grouping; use parentheses to make intent explicit.</li>
+        <li><code>?:</code> selects between two expressions; the comma operator sequences them. Use both sparingly.</li>
+      </ul>
+    </div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

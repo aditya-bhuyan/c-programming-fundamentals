@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 6 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 6 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/06-pointers/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 6 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 6</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 6 — Pointers</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 6 — Pointers &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,132 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Pointer Basics &amp; Indirect Modification
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a C program that declares an <code>int</code> variable with value <code>42</code>, a <code>double</code> with value <code>3.14159</code>, and a <code>char</code> with value <code>'Z'</code>. Declare corresponding pointer variables for each. Print the value of each variable, its memory address via the pointer, and then modify each value exclusively using pointer dereferencing.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output (addresses will vary)</span></div>
+          <pre>Initial:
+int val:    42 at address 0x7ffee40
+double val: 3.141590 at address 0x7ffee38
+char val:   Z at address 0x7ffee37
+
+After modification via pointers:
+int val:    100
+double val: 2.718280
+char val:   A</pre>
+        </div>
+        <p>Ensure you cast pointers to <code>(void *)</code> when formatting with <code>%p</code> in <code>printf</code>.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>int *p_i = &amp;val;</code> to store the address, <code>*p_i</code> to read or write the value, and <code>(void *)p_i</code> when printing with <code>%p</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        Array Sum via Pointer Arithmetic
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a function <code>long long sum_array(const int *arr, size_t n)</code> that computes and returns the sum of all elements in an integer array using <strong>pointer arithmetic only</strong>. You are <strong>not allowed to use square brackets (<code>[]</code>)</strong> inside the function body.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Array: [10, 25, 30, 45, 50, 60]
+Sum = 220</pre>
+        </div>
+        <p>In <code>main()</code>, test your function on an array with at least 5 elements.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Create a pointer <code>const int *end = arr + n;</code> and loop while <code>arr &lt; end</code>, accumulating <code>*arr</code> and incrementing with <code>arr++</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Generic and Typed Pointer Swaps
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write two functions: <code>swap_int(int *a, int *b)</code> and <code>swap_double(double *a, double *b)</code>. Then write a generic byte-level swap function <code>swap_generic(void *a, void *b, size_t size)</code> that swaps the memory bytes between any two objects of the given size. Test all three functions in <code>main()</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>int swap:    a = 10, b = 20 -> a = 20, b = 10
+double swap: x = 1.50, y = 9.75 -> x = 9.75, y = 1.50
+generic:     p = 12345, q = 67890 -> p = 67890, q = 12345</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">For <code>swap_generic</code>, cast <code>void *</code> to <code>unsigned char *</code> and loop through <code>size</code> bytes, swapping one byte at a time using a temporary <code>unsigned char</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Reverse Array In-Place (Two-Pointer Technique)
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a function <code>void reverse_array(int *arr, size_t n)</code> that reverses an array of integers <strong>in-place</strong> using the two-pointer technique. One pointer begins at the start of the array and another pointer begins at the last element. The pointers step toward each other, swapping elements, until they meet.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Original: 1 2 3 4 5 6 7
+Reversed: 7 6 5 4 3 2 1</pre>
+        </div>
+        <p>No auxiliary array or indexing brackets (<code>[]</code>) should be used inside <code>reverse_array</code>.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Initialise <code>int *left = arr;</code> and <code>int *right = arr + n - 1;</code>. Loop while <code>left &lt; right</code>, swap <code>*left</code> and <code>*right</code>, then do <code>left++; right--;</code>. Guard against <code>n == 0</code>!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Bounded String Copy Implementation
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement your own safe, bounded string copying function: <code>char *my_strncpy(char *dst, const char *src, size_t n)</code>. The function must copy characters from <code>src</code> to <code>dst</code> using <strong>only pointer arithmetic and dereferencing</strong>. It must ensure the destination is always null-terminated (if <code>n &gt; 0</code>) and prevent writing beyond <code>n - 1</code> characters. The function should return <code>dst</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Source:      "C Programming Fundamentals"
+Copied (30): "C Programming Fundamentals"
+Copied (14): "C Programming" (truncated safely with null terminator)</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Save the original <code>dst</code> in a pointer <code>char *start = dst;</code> to return at the end. Copy up to <code>n - 1</code> non-null characters using <code>*dst++ = *src++</code>, then append <code>*dst = '\0'</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>

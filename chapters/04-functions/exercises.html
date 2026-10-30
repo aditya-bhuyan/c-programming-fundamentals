@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 4 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 4 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/04-functions/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 4 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 4</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 4 — Functions</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 4 — Functions &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,153 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Power Function
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement <code>double power(double base, int exp)</code> that returns <code>base</code> raised to the integer power <code>exp</code>. It must work for <strong>positive</strong>, <strong>zero</strong>, and <strong>negative</strong> exponents. Do not use <code>pow()</code> from <code>&lt;math.h&gt;</code>.</p>
+        <p>Write a <code>main()</code> that tests it with these calls (use <code>%g</code> in <code>printf</code> for compact output):</p>
+        <ul style="font-size:.9rem;margin-left:1.2rem;">
+          <li><code>power(2.0, 10)</code>, <code>power(2.0, -3)</code>, <code>power(5.0, 0)</code>, <code>power(-3.0, 3)</code>, <code>power(10.0, -2)</code>, <code>power(1.5, 2)</code></li>
+        </ul>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>2 ^ 10  = 1024
+2 ^ -3  = 0.125
+5 ^ 0   = 1
+(-3) ^ 3 = -27
+10 ^ -2 = 0.01
+1.5 ^ 2 = 2.25</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Recall that <code>x<sup>-n</sup> = 1 / x<sup>n</sup></code>. Handle <code>exp &lt; 0</code> by computing the positive power and taking the reciprocal. For the positive case, multiply <code>result</code> by <code>base</code> in a loop <code>exp</code> times, starting from <code>result = 1.0</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        String Length
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement <code>size_t my_strlen(const char *str)</code> that returns the number of characters in a C string, <em>not</em> counting the terminating <code>'\0'</code>. You may <strong>not</strong> use <code>&lt;string.h&gt;</code>.</p>
+        <p>Strings are covered fully in Chapter 5. For now, all you need to know is that a string is a sequence of characters ending with a null character (<code>'\0'</code>), and that <code>str[i]</code> gives the <code>i</code>-th character. Test it with <code>"Hello"</code>, <code>""</code>, <code>"C programming"</code>, and <code>"a b"</code>, printing the result with <code>%zu</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>"Hello"         -&gt; 5
+""              -&gt; 0
+"C programming" -&gt; 13
+"a b"           -&gt; 3</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Start a counter at 0 and loop <code>while (str[length] != '\0')</code>, incrementing it each time. When the loop stops, the counter equals the length.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Recursive Sum of Digits
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a <strong>recursive</strong> function <code>int sum_digits(int n)</code> that returns the sum of the decimal digits of <code>n</code>. For example, <code>sum_digits(12345)</code> is <code>1+2+3+4+5 = 15</code>. A negative number should be treated like its absolute value. No loops allowed.</p>
+        <p>Identify the base case and the recursive case before you write any code. Test with <code>12345</code>, <code>0</code>, <code>9</code>, <code>-987</code>, and <code>1000</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>sum_digits(12345) = 15
+sum_digits(0)     = 0
+sum_digits(9)     = 9
+sum_digits(-987)  = 24
+sum_digits(1000)  = 1</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body"><code>n % 10</code> is the last digit and <code>n / 10</code> is the number with its last digit removed. Base case: when <code>n &lt; 10</code> there is only one digit, so return <code>n</code>. Recursive case: <code>(n % 10) + sum_digits(n / 10)</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Function Pointer Calculator
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Build a small calculator whose operations are stored in an <strong>array of function pointers</strong>. Define four functions <code>add</code>, <code>subtract</code>, <code>multiply</code>, <code>divide</code> (each <code>double f(double, double)</code>) and store them in <code>binary_op ops[]</code>, using a <code>typedef</code> for the function pointer type.</p>
+        <p>Since interactive input with <code>scanf</code> comes in a later chapter, process these pre-set requests in a loop, where each request is (operation index, left, right) and index <code>0..3</code> maps to <code>+ - * /</code>:</p>
+        <ul style="font-size:.9rem;margin-left:1.2rem;">
+          <li><code>(0, 12, 4)</code>, <code>(1, 12, 4)</code>, <code>(2, 12, 4)</code>, <code>(3, 12, 4)</code>, <code>(3, 5, 0)</code>, <code>(7, 1, 1)</code></li>
+        </ul>
+        <p>Print an error for an invalid index and for division by zero instead of calling the function. Do <strong>not</strong> use a <code>switch</code> or an <code>if</code> chain to pick the operation.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>12.00 + 4.00 = 16.00
+12.00 - 4.00 = 8.00
+12.00 * 4.00 = 48.00
+12.00 / 4.00 = 3.00
+[ERROR] 5.00 / 0.00: division by zero
+[ERROR] Invalid operation index 7</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Declare <code>typedef double (*binary_op)(double, double);</code>, then <code>binary_op ops[] = { add, subtract, multiply, divide };</code>. After checking that the index is in range, call <code>ops[index](left, right)</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Tower of Hanoi
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Solve the <strong>Tower of Hanoi</strong> puzzle recursively. There are three pegs, <code>A</code>, <code>B</code>, and <code>C</code>, and <code>n</code> disks of different sizes stacked on <code>A</code> with the smallest on top. Move all disks to <code>C</code>, moving one disk at a time and never placing a larger disk on a smaller one.</p>
+        <p>Write <code>unsigned long hanoi(int n, char from, char to, char via)</code> that <strong>prints every move</strong> and <strong>returns the total number of moves</strong>. Call it with <code>n = 3</code> and print the total, together with the formula <code>2<sup>n</sup> - 1</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Tower of Hanoi with 3 disks:
+Move disk 1: A -&gt; C
+Move disk 2: A -&gt; B
+Move disk 1: C -&gt; B
+Move disk 3: A -&gt; C
+Move disk 1: B -&gt; A
+Move disk 2: B -&gt; C
+Move disk 1: A -&gt; C
+Total moves: 7 (formula 2^3 - 1 = 7)</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">To move <code>n</code> disks from <code>from</code> to <code>to</code>: (1) move <code>n-1</code> disks from <code>from</code> to <code>via</code>; (2) print the move of disk <code>n</code> from <code>from</code> to <code>to</code>; (3) move the <code>n-1</code> disks from <code>via</code> to <code>to</code>. Base case: <code>n == 0</code> means nothing to do. Total moves = moves in step 1 + 1 + moves in step 3.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>

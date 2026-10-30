@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 9 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 9 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/09-dynamic-memory/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 9 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,306 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Dynamic Integer Array with <code>malloc</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Allocate an array of N integers at runtime, fill with values, print, and free. Demonstrates the NULL check pattern.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_malloc.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">8</span><span class="pu">;</span>
+
+    <span class="cm">/* Allocate n ints — memory is UNINITIALISED */</span>
+    <span class="ty">int</span> <span class="pu">*</span>arr <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>n <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+
+    <span class="cm">/* ALWAYS check the return value */</span>
+    <span class="kw">if</span> <span class="pu">(</span>arr <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"malloc: out of memory\n"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Fill with squares */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i <span class="pu">*</span> i<span class="pu">;</span>
+
+    <span class="cm">/* Print */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Squares (n=%d): "</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Release heap memory and null the pointer */</span>
+    <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>
+    arr <span class="pu">=</span> NULL<span class="pu">;</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -g -o 01_malloc 01_malloc.c &amp;&amp; ./01_malloc</code><br>Expected output: <code>Squares (n=8): 0 1 4 9 16 25 36 49</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Zero-Filled Struct Array with <code>calloc</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Allocate a struct array with <code>calloc</code>; all fields start at zero. Then fill and print the data.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_calloc.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">double</span> score<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Student</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">4</span><span class="pu">;</span>
+
+    <span class="cm">/* calloc zeros every byte — safe baseline for structs */</span>
+    <span class="ty">Student</span> <span class="pu">*</span>students <span class="pu">=</span> <span class="fn">calloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>n<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Student</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>students<span class="pu">)</span> <span class="pu">{</span> <span class="fn">perror</span><span class="pu">(</span><span class="st">"calloc"</span><span class="pu">);</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span> <span class="pu">}</span>
+
+    <span class="cm">/* Prove zero-initialisation before filling */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Before fill: students[0].id=%d, score=%.1f\n"</span><span class="pu">,</span>
+           students<span class="pu">[</span><span class="nm">0</span><span class="pu">].</span>id<span class="pu">,</span> students<span class="pu">[</span><span class="nm">0</span><span class="pu">].</span>score<span class="pu">);</span>
+
+    <span class="cm">/* Fill data */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        students<span class="pu">[</span>i<span class="pu">].</span>id    <span class="pu">=</span> <span class="nm">1001</span> <span class="pu">+</span> i<span class="pu">;</span>
+        students<span class="pu">[</span>i<span class="pu">].</span>score <span class="pu">=</span> <span class="nm">60.0</span> <span class="pu">+</span> i <span class="pu">*</span> <span class="nm">8.5</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nAfter fill:\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"  id=%d  score=%.1f\n"</span><span class="pu">,</span> students<span class="pu">[</span>i<span class="pu">].</span>id<span class="pu">,</span> students<span class="pu">[</span>i<span class="pu">].</span>score<span class="pu">);</span>
+
+    <span class="fn">free</span><span class="pu">(</span>students<span class="pu">);</span>
+    students <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Use <code>calloc</code> when you need a zeroed baseline — e.g. arrays of structs, flag arrays, or any data where uninitialised garbage could cause subtle bugs before the first write.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Growing Array with <code>realloc</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Start with capacity 4; when full, double the capacity using the safe <code>realloc</code> pattern.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_realloc.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">size_t</span> capacity <span class="pu">=</span> <span class="nm">4</span><span class="pu">;</span>
+    <span class="ty">size_t</span> count    <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span>   <span class="pu">*</span>items   <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>capacity <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+
+    <span class="kw">if</span> <span class="pu">(!</span>items<span class="pu">)</span> <span class="pu">{</span> <span class="fn">perror</span><span class="pu">(</span><span class="st">"malloc"</span><span class="pu">);</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span> <span class="pu">}</span>
+
+    <span class="cm">/* Append 10 values; grow dynamically when full */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> v <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span> v <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> v <span class="pu">+=</span> <span class="nm">10</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>count <span class="pu">==</span> capacity<span class="pu">)</span> <span class="pu">{</span>
+            capacity <span class="pu">*=</span> <span class="nm">2</span><span class="pu">;</span>   <span class="cm">/* double the capacity */</span>
+            <span class="ty">int</span> <span class="pu">*</span>tmp <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>items<span class="pu">,</span> capacity <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+            <span class="kw">if</span> <span class="pu">(!</span>tmp<span class="pu">)</span> <span class="pu">{</span>
+                <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"realloc failed\n"</span><span class="pu">);</span>
+                <span class="fn">free</span><span class="pu">(</span>items<span class="pu">);</span>  <span class="cm">/* original still valid — free it */</span>
+                <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+            <span class="pu">}</span>
+            items <span class="pu">=</span> tmp<span class="pu">;</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"  [grew to capacity %zu]\n"</span><span class="pu">,</span> capacity<span class="pu">);</span>
+        <span class="pu">}</span>
+        items<span class="pu">[</span>count<span class="pu">++]</span> <span class="pu">=</span> v<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Items (%zu): "</span><span class="pu">,</span> count<span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> items<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="fn">free</span><span class="pu">(</span>items<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Doubling capacity on each grow gives amortised O(1) per append — the same strategy used by C++ <code>std::vector</code> and Python's <code>list</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Dynamic 2-D Array (Array of Pointers)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Allocate a rows×cols matrix as an array of row pointers. Fill each cell with <code>row * cols + col</code>, print the grid, then free all rows and the pointer array.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_2d_dynamic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> rows <span class="pu">=</span> <span class="nm">3</span><span class="pu">,</span> cols <span class="pu">=</span> <span class="nm">4</span><span class="pu">;</span>
+
+    <span class="cm">/* Step 1: allocate array of row pointers */</span>
+    <span class="ty">int</span> <span class="pu">**</span>matrix <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>rows <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>matrix<span class="pu">)</span> <span class="pu">{</span> <span class="fn">perror</span><span class="pu">(</span><span class="st">"malloc rows"</span><span class="pu">);</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span> <span class="pu">}</span>
+
+    <span class="cm">/* Step 2: allocate each row */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> rows<span class="pu">;</span> <span class="pu">++</span>r<span class="pu">)</span> <span class="pu">{</span>
+        matrix<span class="pu">[</span>r<span class="pu">]</span> <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>cols <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+        <span class="kw">if</span> <span class="pu">(!</span>matrix<span class="pu">[</span>r<span class="pu">])</span> <span class="pu">{</span>
+            <span class="cm">/* free already-allocated rows before exiting */</span>
+            <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> k <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> k <span class="pu">&lt;</span> r<span class="pu">;</span> <span class="pu">++</span>k<span class="pu">)</span> <span class="fn">free</span><span class="pu">(</span>matrix<span class="pu">[</span>k<span class="pu">]);</span>
+            <span class="fn">free</span><span class="pu">(</span>matrix<span class="pu">);</span>
+            <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Step 3: fill with row * cols + col */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> rows<span class="pu">;</span> <span class="pu">++</span>r<span class="pu">)</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> cols<span class="pu">;</span> <span class="pu">++</span>c<span class="pu">)</span>
+            matrix<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]</span> <span class="pu">=</span> r <span class="pu">*</span> cols <span class="pu">+</span> c<span class="pu">;</span>
+
+    <span class="cm">/* Step 4: print */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Dynamic %dx%d matrix:\n"</span><span class="pu">,</span> rows<span class="pu">,</span> cols<span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> rows<span class="pu">;</span> <span class="pu">++</span>r<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> cols<span class="pu">;</span> <span class="pu">++</span>c<span class="pu">)</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> matrix<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Step 5: free each row, then the pointer array */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> rows<span class="pu">;</span> <span class="pu">++</span>r<span class="pu">)</span>
+        <span class="fn">free</span><span class="pu">(</span>matrix<span class="pu">[</span>r<span class="pu">]);</span>
+    <span class="fn">free</span><span class="pu">(</span>matrix<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Free in reverse allocation order: rows first, then the pointer array. Freeing the pointer array first would lose the row addresses, causing a leak.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Memory Leak: Detection &amp; Fix</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">A deliberate leak, the Valgrind/ASan commands to detect it, and the corrected version side-by-side.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_leak.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="cm">/* --------------------------------------------------
+ * BUGGY VERSION — deliberately leaks heap memory
+ * -------------------------------------------------- */</span>
+<span class="ty">void</span> <span class="fn">compute_buggy</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> <span class="pu">*</span>buf <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>n <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>buf<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> buf<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"computed %d values\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="cm">/* BUG: returns without calling free(buf) — LEAK */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* --------------------------------------------------
+ * FIXED VERSION
+ * -------------------------------------------------- */</span>
+<span class="ty">void</span> <span class="fn">compute_fixed</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> <span class="pu">*</span>buf <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>n <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>buf<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> buf<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"computed %d values\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="fn">free</span><span class="pu">(</span>buf<span class="pu">);</span>   <span class="cm">/* FIX: release memory before returning */</span>
+    buf <span class="pu">=</span> NULL<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">compute_buggy</span><span class="pu">(</span><span class="nm">100</span><span class="pu">);</span>   <span class="cm">/* leaks 400 bytes */</span>
+    <span class="fn">compute_fixed</span><span class="pu">(</span><span class="nm">100</span><span class="pu">);</span>   <span class="cm">/* no leak */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/*
+ * Detect with Valgrind:
+ *   gcc -g -o 05_leak 05_leak.c
+ *   valgrind --leak-check=full ./05_leak
+ *
+ * Detect with AddressSanitizer:
+ *   gcc -g -fsanitize=address -o 05_leak 05_leak.c
+ *   ./05_leak
+ */</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Valgrind will report: <em>"LEAK SUMMARY: definitely lost: 400 bytes in 1 blocks"</em> for <code>compute_buggy</code> and a clean summary for <code>compute_fixed</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Dynamic String Builder</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Start with a 16-byte buffer and double its capacity whenever appending would overflow — a simplified StringBuilder in C.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_dynstring.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>   <span class="pu">*</span>buf<span class="pu">;</span>
+    <span class="ty">size_t</span>  len<span class="pu">;</span>      <span class="cm">/* number of characters (excluding NUL) */</span>
+    <span class="ty">size_t</span>  capacity<span class="pu">;</span>  <span class="cm">/* allocated bytes */</span>
+<span class="pu">}</span> <span class="ty">DynStr</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">ds_init</span><span class="pu">(</span><span class="ty">DynStr</span> <span class="pu">*</span>ds<span class="pu">)</span> <span class="pu">{</span>
+    ds<span class="pu">-&gt;</span>capacity <span class="pu">=</span> <span class="nm">16</span><span class="pu">;</span>
+    ds<span class="pu">-&gt;</span>len      <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    ds<span class="pu">-&gt;</span>buf      <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>ds<span class="pu">-&gt;</span>capacity<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>ds<span class="pu">-&gt;</span>buf<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+    ds<span class="pu">-&gt;</span>buf<span class="pu">[</span><span class="nm">0</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'\0'</span><span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">ds_append</span><span class="pu">(</span><span class="ty">DynStr</span> <span class="pu">*</span>ds<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">size_t</span> slen <span class="pu">=</span> <span class="fn">strlen</span><span class="pu">(</span>s<span class="pu">);</span>
+
+    <span class="cm">/* Grow until there is room for s plus NUL */</span>
+    <span class="kw">while</span> <span class="pu">(</span>ds<span class="pu">-&gt;</span>len <span class="pu">+</span> slen <span class="pu">+</span> <span class="nm">1</span> <span class="pu">&gt;</span> ds<span class="pu">-&gt;</span>capacity<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">size_t</span> newcap <span class="pu">=</span> ds<span class="pu">-&gt;</span>capacity <span class="pu">*</span> <span class="nm">2</span><span class="pu">;</span>
+        <span class="ty">char</span>  <span class="pu">*</span>tmp   <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>ds<span class="pu">-&gt;</span>buf<span class="pu">,</span> newcap<span class="pu">);</span>
+        <span class="kw">if</span> <span class="pu">(!</span>tmp<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+        ds<span class="pu">-&gt;</span>buf      <span class="pu">=</span> tmp<span class="pu">;</span>
+        ds<span class="pu">-&gt;</span>capacity <span class="pu">=</span> newcap<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">memcpy</span><span class="pu">(</span>ds<span class="pu">-&gt;</span>buf <span class="pu">+</span> ds<span class="pu">-&gt;</span>len<span class="pu">,</span> s<span class="pu">,</span> slen <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>  <span class="cm">/* copy including NUL */</span>
+    ds<span class="pu">-&gt;</span>len <span class="pu">+=</span> slen<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">ds_free</span><span class="pu">(</span><span class="ty">DynStr</span> <span class="pu">*</span>ds<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">free</span><span class="pu">(</span>ds<span class="pu">-&gt;</span>buf<span class="pu">);</span>
+    ds<span class="pu">-&gt;</span>buf      <span class="pu">=</span> NULL<span class="pu">;</span>
+    ds<span class="pu">-&gt;</span>len      <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    ds<span class="pu">-&gt;</span>capacity <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">DynStr</span> sb<span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(!</span><span class="fn">ds_init</span><span class="pu">(&amp;</span>sb<span class="pu">))</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="fn">ds_append</span><span class="pu">(&amp;</span>sb<span class="pu">,</span> <span class="st">"Hello, "</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"[cap=%zu] \"%s\"\n"</span><span class="pu">,</span> sb<span class="pu">.</span>capacity<span class="pu">,</span> sb<span class="pu">.</span>buf<span class="pu">);</span>
+
+    <span class="fn">ds_append</span><span class="pu">(&amp;</span>sb<span class="pu">,</span> <span class="st">"dynamic "</span><span class="pu">);</span>
+    <span class="fn">ds_append</span><span class="pu">(&amp;</span>sb<span class="pu">,</span> <span class="st">"strings "</span><span class="pu">);</span>
+    <span class="fn">ds_append</span><span class="pu">(&amp;</span>sb<span class="pu">,</span> <span class="st">"are powerful!"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"[cap=%zu len=%zu] \"%s\"\n"</span><span class="pu">,</span> sb<span class="pu">.</span>capacity<span class="pu">,</span> sb<span class="pu">.</span>len<span class="pu">,</span> sb<span class="pu">.</span>buf<span class="pu">);</span>
+
+    <span class="fn">ds_free</span><span class="pu">(&amp;</span>sb<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Encapsulating allocation logic inside <code>ds_init</code> / <code>ds_append</code> / <code>ds_free</code> creates a clean ownership contract: the caller never touches raw <code>malloc</code>/<code>free</code> directly.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

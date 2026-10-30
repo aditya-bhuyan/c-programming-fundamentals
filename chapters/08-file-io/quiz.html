@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 8 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 8 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/08-file-io/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 8 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 8</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 8 — File I/O</p>
+      <p class="subtitle">Chapter 8 — File I/O &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What does <code>fopen("file.txt", "w")</code> do if <code>file.txt</code> already exists?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>It returns <code>NULL</code> and sets <code>errno</code> to <code>EEXIST</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true"  /><label>It truncates the file to zero length, discarding any previous contents</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>It positions the file pointer at the end for appending</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>It opens the file in read-only mode</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Opening a file in write mode ('w' or 'wb') automatically truncates existing file contents to 0 bytes before writing. To preserve existing data and write to the end, use append mode ('a')."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What is the correct way to check for end-of-file while reading from a stream in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Loop with <code>while (!feof(fp))</code> before calling any read function</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true"  /><label>Check the return value of <code>fgets</code>, <code>fread</code>, <code>fgetc</code>, or <code>fscanf</code> directly in the loop condition</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Check if <code>fp == NULL</code> inside the loop body</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Call <code>ftell(fp) == 0</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Always check the return value of your read function directly (e.g. while (fgets(...) != NULL) or while ((c = fgetc(fp)) != EOF)). feof() only becomes true after a read operation has already failed."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What does <code>fseek(fp, 0, SEEK_END)</code> do?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true"  /><label>Positions the file pointer at the very end of the file</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Resets the file pointer to the beginning of the file</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Deletes all content from current position to end of file</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Closes the stream and saves file size</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="SEEK_END anchors the seek offset to the end of the file. An offset of 0 bytes from SEEK_END places the position indicator immediately past the last byte of the file (commonly combined with ftell() to measure file size)."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">Which C standard library function writes a struct or array of structs to a file in binary mode?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>fputs</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>fprintf</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true"  /><label><code>fwrite</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>putc</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="fwrite(ptr, size, nmemb, fp) writes nmemb elements of size bytes directly from memory into the binary stream without character conversion."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">What does <code>fclose(fp)</code> return if an error occurs while flushing or closing the stream?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>-1</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>NULL</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true"  /><label><code>EOF</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>1</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="fclose() returns 0 on successful closure, or EOF (defined in &lt;stdio.h&gt;, typically -1) if an error occurs while flushing unwritten buffered data or closing the underlying file descriptor."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What is the difference between open modes <code>"r"</code> (text) and <code>"rb"</code> (binary)?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>"rb"</code> automatically encrypts data written to disk</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true"  /><label>On Windows, <code>"rb"</code> prevents CR-LF (<code>\r\n</code> &harr; <code>\n</code>) translation; on POSIX systems (Linux/macOS) they behave identically</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>"r"</code> works only with ASCII text while <code>"rb"</code> works with Unicode UTF-8</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label><code>"rb"</code> creates the file if it does not exist, whereas <code>"r"</code> fails</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="In Windows text mode ('r'), CR-LF pairs (\r\n) on disk are translated into \n in memory. In binary mode ('rb'), raw bytes are read without any newline translation. On POSIX systems, newlines are already \n, so 'r' and 'rb' are identical."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">What does the call <code>perror("Database error")</code> do?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Aborts the program and generates a core dump</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true"  /><label>Prints <code>"Database error: "</code> followed by the system error description for the current <code>errno</code> to <code>stderr</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Writes an error string to <code>output.log</code> and clears <code>errno</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Prints the current stack trace to <code>stdout</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="perror(s) outputs s, a colon and space, and the system error message corresponding to errno (as returned by strerror(errno)) to stderr, followed by a newline."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What is the danger of using <code>while (!feof(fp))</code> to control a file read loop?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>It causes a memory leak by not freeing the internal file buffer</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true"  /><label><code>feof()</code> only becomes true after a read operation has failed, causing the loop body to execute one extra time on stale/invalid data</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>It causes the compiler to generate a syntax error</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>It terminates the loop prematurely before reaching the last line</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="feof() tests an internal stream flag that is only set AFTER an I/O function attempts to read past EOF and fails. In while (!feof(fp)), when the last valid item is read, feof is still false, so the loop runs once more, fails to read new data, and processes the stale previous data again."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

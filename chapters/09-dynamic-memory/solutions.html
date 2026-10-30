@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 9 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 9 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/09-dynamic-memory/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 9 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,415 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- ─── Solution 1 ──────────────────────────────────── -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Dynamic Array of Squares</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="pp">#define</span> N <span class="nm">10</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Allocate N ints on the heap */</span>
+    <span class="ty">int</span> <span class="pu">*</span>arr <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>N <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+
+    <span class="cm">/* Always check for NULL */</span>
+    <span class="kw">if</span> <span class="pu">(</span>arr <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"malloc failed\n"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Fill with squares */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> N<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i <span class="pu">*</span> i<span class="pu">;</span>
+
+    <span class="cm">/* Print */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Squares:"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> N<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" %d"</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Free and null the pointer */</span>
+    <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>
+    arr <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Key Insight:</strong> Nulling the pointer after <code>free</code> ensures that any accidental later dereference of <code>arr</code> will crash immediately with a null-pointer access rather than silently corrupting arbitrary memory (use-after-free).</div></div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Squares: 0 1 4 9 16 25 36 49 64 81</pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- ─── Solution 2 ──────────────────────────────────── -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Grow-able Dynamic Stack</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>  <span class="pu">*</span>data<span class="pu">;</span>
+    <span class="ty">int</span>   top<span class="pu">;</span>       <span class="cm">/* index of next free slot */</span>
+    <span class="ty">int</span>   capacity<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Stack</span><span class="pu">;</span>
+
+<span class="ty">Stack</span> <span class="pu">*</span><span class="fn">stack_create</span><span class="pu">(</span><span class="ty">int</span> initial_capacity<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Stack</span> <span class="pu">*</span>s <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Stack</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>s<span class="pu">)</span> <span class="kw">return</span> NULL<span class="pu">;</span>
+    s<span class="pu">-&gt;</span>data <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>initial_capacity <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>s<span class="pu">-&gt;</span>data<span class="pu">)</span> <span class="pu">{</span> <span class="fn">free</span><span class="pu">(</span>s<span class="pu">);</span> <span class="kw">return</span> NULL<span class="pu">;</span> <span class="pu">}</span>
+    s<span class="pu">-&gt;</span>top      <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    s<span class="pu">-&gt;</span>capacity <span class="pu">=</span> initial_capacity<span class="pu">;</span>
+    <span class="kw">return</span> s<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">stack_push</span><span class="pu">(</span><span class="ty">Stack</span> <span class="pu">*</span>s<span class="pu">,</span> <span class="ty">int</span> value<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>s<span class="pu">-&gt;</span>top <span class="pu">==</span> s<span class="pu">-&gt;</span>capacity<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span>  newcap <span class="pu">=</span> s<span class="pu">-&gt;</span>capacity <span class="pu">*</span> <span class="nm">2</span><span class="pu">;</span>
+        <span class="ty">int</span> <span class="pu">*</span>tmp    <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>s<span class="pu">-&gt;</span>data<span class="pu">,</span> <span class="pu">(</span><span class="ty">size_t</span><span class="pu">)</span>newcap <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+        <span class="kw">if</span> <span class="pu">(!</span>tmp<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>  <span class="cm">/* original s->data still valid */</span>
+        s<span class="pu">-&gt;</span>data     <span class="pu">=</span> tmp<span class="pu">;</span>
+        s<span class="pu">-&gt;</span>capacity <span class="pu">=</span> newcap<span class="pu">;</span>
+    <span class="pu">}</span>
+    s<span class="pu">-&gt;</span>data<span class="pu">[</span>s<span class="pu">-&gt;</span>top<span class="pu">++]</span> <span class="pu">=</span> value<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">stack_pop</span><span class="pu">(</span><span class="ty">Stack</span> <span class="pu">*</span>s<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>out<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>s<span class="pu">-&gt;</span>top <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="pu">*</span>out <span class="pu">=</span> s<span class="pu">-&gt;</span>data<span class="pu">[--</span>s<span class="pu">-&gt;</span>top<span class="pu">];</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">stack_peek</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Stack</span> <span class="pu">*</span>s<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>out<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>s<span class="pu">-&gt;</span>top <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="pu">*</span>out <span class="pu">=</span> s<span class="pu">-&gt;</span>data<span class="pu">[</span>s<span class="pu">-&gt;</span>top <span class="pu">-</span> <span class="nm">1</span><span class="pu">];</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">stack_is_empty</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Stack</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> s<span class="pu">-&gt;</span>top <span class="pu">==</span> <span class="nm">0</span><span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">stack_free</span><span class="pu">(</span><span class="ty">Stack</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">free</span><span class="pu">(</span>s<span class="pu">-&gt;</span>data<span class="pu">);</span>
+    <span class="fn">free</span><span class="pu">(</span>s<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Stack</span> <span class="pu">*</span>st <span class="pu">=</span> <span class="fn">stack_create</span><span class="pu">(</span><span class="nm">4</span><span class="pu">);</span>  <span class="cm">/* initial capacity 4 */</span>
+    <span class="kw">if</span> <span class="pu">(!</span>st<span class="pu">)</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Pushed:"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">12</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">stack_push</span><span class="pu">(</span>st<span class="pu">,</span> i<span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" %d"</span><span class="pu">,</span> i<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Popped:"</span><span class="pu">);</span>
+    <span class="ty">int</span> val<span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">stack_pop</span><span class="pu">(</span>st<span class="pu">,</span> <span class="pu">&amp;</span>val<span class="pu">))</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" %d"</span><span class="pu">,</span> val<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="fn">stack_free</span><span class="pu">(</span>st<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Key Insight:</strong> Allocating the <code>Stack</code> struct itself on the heap (rather than the stack) means the struct survives function returns and ownership can be transferred cleanly. Always free both the <code>data</code> array <em>and</em> the struct itself.</div></div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Pushed: 1 2 3 4 5 6 7 8 9 10 11 12
+Popped: 12 11 10 9 8 7 6 5 4 3 2 1</pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- ─── Solution 3 ──────────────────────────────────── -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Dynamic String Tokeniser</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="cm">/*
+ * split_words — splits `sentence` by spaces into heap-allocated tokens.
+ * Caller must free each token and the returned array.
+ */</span>
+<span class="ty">char</span> <span class="pu">**</span><span class="fn">split_words</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>sentence<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>count<span class="pu">)</span> <span class="pu">{</span>
+    <span class="pu">*</span>count <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="cm">/* Work on a mutable copy because strtok modifies the string */</span>
+    <span class="ty">char</span> <span class="pu">*</span>copy <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="fn">strlen</span><span class="pu">(</span>sentence<span class="pu">)</span> <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>copy<span class="pu">)</span> <span class="kw">return</span> NULL<span class="pu">;</span>
+    <span class="fn">strcpy</span><span class="pu">(</span>copy<span class="pu">,</span> sentence<span class="pu">);</span>
+
+    <span class="cm">/* Initial capacity for the token array */</span>
+    <span class="ty">int</span>    cap  <span class="pu">=</span> <span class="nm">4</span><span class="pu">;</span>
+    <span class="ty">char</span> <span class="pu">**</span>toks <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">((</span><span class="ty">size_t</span><span class="pu">)</span>cap <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>toks<span class="pu">)</span> <span class="pu">{</span> <span class="fn">free</span><span class="pu">(</span>copy<span class="pu">);</span> <span class="kw">return</span> NULL<span class="pu">;</span> <span class="pu">}</span>
+
+    <span class="ty">char</span> <span class="pu">*</span>tok <span class="pu">=</span> <span class="fn">strtok</span><span class="pu">(</span>copy<span class="pu">,</span> <span class="st">" "</span><span class="pu">);</span>
+    <span class="kw">while</span> <span class="pu">(</span>tok <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="cm">/* Grow token array if needed */</span>
+        <span class="kw">if</span> <span class="pu">(*</span>count <span class="pu">==</span> cap<span class="pu">)</span> <span class="pu">{</span>
+            cap <span class="pu">*=</span> <span class="nm">2</span><span class="pu">;</span>
+            <span class="ty">char</span> <span class="pu">**</span>tmp <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>toks<span class="pu">,</span> <span class="pu">(</span><span class="ty">size_t</span><span class="pu">)</span>cap <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*));</span>
+            <span class="kw">if</span> <span class="pu">(!</span>tmp<span class="pu">)</span> <span class="pu">{</span>
+                <span class="cm">/* Free already-duped tokens */</span>
+                <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="pu">*</span>count<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="fn">free</span><span class="pu">(</span>toks<span class="pu">[</span>i<span class="pu">]);</span>
+                <span class="fn">free</span><span class="pu">(</span>toks<span class="pu">);</span> <span class="fn">free</span><span class="pu">(</span>copy<span class="pu">);</span>
+                <span class="pu">*</span>count <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+                <span class="kw">return</span> NULL<span class="pu">;</span>
+            <span class="pu">}</span>
+            toks <span class="pu">=</span> tmp<span class="pu">;</span>
+        <span class="pu">}</span>
+
+        <span class="cm">/* Duplicate the token onto the heap */</span>
+        toks<span class="pu">[(*</span>count<span class="pu">)++]</span> <span class="pu">=</span> <span class="fn">strdup</span><span class="pu">(</span>tok<span class="pu">);</span>
+        tok <span class="pu">=</span> <span class="fn">strtok</span><span class="pu">(</span>NULL<span class="pu">,</span> <span class="st">" "</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">free</span><span class="pu">(</span>copy<span class="pu">);</span>  <span class="cm">/* the mutable working copy is no longer needed */</span>
+    <span class="kw">return</span> toks<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">char</span> <span class="pu">**</span>words <span class="pu">=</span> <span class="fn">split_words</span><span class="pu">(</span><span class="st">"the quick brown fox jumps"</span><span class="pu">,</span> <span class="pu">&amp;</span>n<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>words<span class="pu">)</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Token %d: \"%s\"\n"</span><span class="pu">,</span> i<span class="pu">,</span> words<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Total: %d tokens\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="cm">/* Caller frees each token, then the array */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">free</span><span class="pu">(</span>words<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="fn">free</span><span class="pu">(</span>words<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Key Insight:</strong> <code>strtok</code> modifies the string in-place, so always pass a <em>copy</em> (never the original literal or a <code>const char *</code>). The ownership rule here is explicit: <code>split_words</code> owns and frees <code>copy</code>; the caller owns and must free every token and the pointer array.</div></div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Token 0: "the"
+Token 1: "quick"
+Token 2: "brown"
+Token 3: "fox"
+Token 4: "jumps"
+Total: 5 tokens</pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- ─── Solution 4 ──────────────────────────────────── -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Generic Dynamic Array (<code>void *</code>)</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>   <span class="pu">*</span>buf<span class="pu">;</span>        <span class="cm">/* raw byte storage */</span>
+    <span class="ty">size_t</span>  elem_size<span class="pu">;</span>  <span class="cm">/* size of one element in bytes */</span>
+    <span class="ty">size_t</span>  len<span class="pu">;</span>        <span class="cm">/* current number of elements */</span>
+    <span class="ty">size_t</span>  capacity<span class="pu">;</span>   <span class="cm">/* allocated element slots */</span>
+<span class="pu">}</span> <span class="ty">DynArray</span><span class="pu">;</span>
+
+<span class="ty">DynArray</span> <span class="pu">*</span><span class="fn">da_create</span><span class="pu">(</span><span class="ty">size_t</span> elem_size<span class="pu">,</span> <span class="ty">size_t</span> init_capacity<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">DynArray</span> <span class="pu">*</span>da <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">DynArray</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>da<span class="pu">)</span> <span class="kw">return</span> NULL<span class="pu">;</span>
+    da<span class="pu">-&gt;</span>buf      <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>init_capacity <span class="pu">*</span> elem_size<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>da<span class="pu">-&gt;</span>buf<span class="pu">)</span> <span class="pu">{</span> <span class="fn">free</span><span class="pu">(</span>da<span class="pu">);</span> <span class="kw">return</span> NULL<span class="pu">;</span> <span class="pu">}</span>
+    da<span class="pu">-&gt;</span>elem_size <span class="pu">=</span> elem_size<span class="pu">;</span>
+    da<span class="pu">-&gt;</span>len       <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    da<span class="pu">-&gt;</span>capacity  <span class="pu">=</span> init_capacity<span class="pu">;</span>
+    <span class="kw">return</span> da<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">da_push</span><span class="pu">(</span><span class="ty">DynArray</span> <span class="pu">*</span>da<span class="pu">,</span> <span class="ty">const</span> <span class="ty">void</span> <span class="pu">*</span>elem<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>da<span class="pu">-&gt;</span>len <span class="pu">==</span> da<span class="pu">-&gt;</span>capacity<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">size_t</span>  newcap <span class="pu">=</span> da<span class="pu">-&gt;</span>capacity <span class="pu">*</span> <span class="nm">2</span><span class="pu">;</span>
+        <span class="ty">char</span>   <span class="pu">*</span>tmp   <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>da<span class="pu">-&gt;</span>buf<span class="pu">,</span> newcap <span class="pu">*</span> da<span class="pu">-&gt;</span>elem_size<span class="pu">);</span>
+        <span class="kw">if</span> <span class="pu">(!</span>tmp<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+        da<span class="pu">-&gt;</span>buf      <span class="pu">=</span> tmp<span class="pu">;</span>
+        da<span class="pu">-&gt;</span>capacity <span class="pu">=</span> newcap<span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="fn">memcpy</span><span class="pu">(</span>da<span class="pu">-&gt;</span>buf <span class="pu">+</span> da<span class="pu">-&gt;</span>len <span class="pu">*</span> da<span class="pu">-&gt;</span>elem_size<span class="pu">,</span> elem<span class="pu">,</span> da<span class="pu">-&gt;</span>elem_size<span class="pu">);</span>
+    da<span class="pu">-&gt;</span>len<span class="pu">++;</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="pu">*</span><span class="fn">da_get</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">DynArray</span> <span class="pu">*</span>da<span class="pu">,</span> <span class="ty">size_t</span> idx<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)(</span>da<span class="pu">-&gt;</span>buf <span class="pu">+</span> idx <span class="pu">*</span> da<span class="pu">-&gt;</span>elem_size<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">size_t</span> <span class="fn">da_len</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">DynArray</span> <span class="pu">*</span>da<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> da<span class="pu">-&gt;</span>len<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">da_free</span><span class="pu">(</span><span class="ty">DynArray</span> <span class="pu">*</span>da<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">free</span><span class="pu">(</span>da<span class="pu">-&gt;</span>buf<span class="pu">);</span>
+    <span class="fn">free</span><span class="pu">(</span>da<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Demo 1: int array */</span>
+    <span class="ty">DynArray</span> <span class="pu">*</span>ints <span class="pu">=</span> <span class="fn">da_create</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">5</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="fn">da_push</span><span class="pu">(</span>ints<span class="pu">,</span> <span class="pu">&amp;</span>i<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Ints:   "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="fn">da_len</span><span class="pu">(</span>ints<span class="pu">);</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" %d"</span><span class="pu">,</span> <span class="pu">*(</span><span class="ty">int</span> <span class="pu">*)</span><span class="fn">da_get</span><span class="pu">(</span>ints<span class="pu">,</span> i<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="fn">da_free</span><span class="pu">(</span>ints<span class="pu">);</span>
+
+    <span class="cm">/* Demo 2: double array */</span>
+    <span class="ty">DynArray</span> <span class="pu">*</span>dbls <span class="pu">=</span> <span class="fn">da_create</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">double</span><span class="pu">),</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="ty">double</span> vals<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">1.1</span><span class="pu">,</span> <span class="nm">2.2</span><span class="pu">,</span> <span class="nm">3.3</span><span class="pu">};</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">3</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="fn">da_push</span><span class="pu">(</span>dbls<span class="pu">,</span> <span class="pu">&amp;</span>vals<span class="pu">[</span>i<span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Doubles:"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="fn">da_len</span><span class="pu">(</span>dbls<span class="pu">);</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" %.2f"</span><span class="pu">,</span> <span class="pu">*(</span><span class="ty">double</span> <span class="pu">*)</span><span class="fn">da_get</span><span class="pu">(</span>dbls<span class="pu">,</span> i<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="fn">da_free</span><span class="pu">(</span>dbls<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Key Insight:</strong> Treating the buffer as <code>char *</code> (a byte array) lets you use simple pointer arithmetic (<code>buf + idx * elem_size</code>) to reach any element regardless of type. <code>memcpy</code> does the type-agnostic copy — this is exactly how C's <code>qsort</code> and <code>bsearch</code> work internally.</div></div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Ints:    1 2 3 4 5
+Doubles: 1.10 2.20 3.30</pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- ─── Solution 5 ──────────────────────────────────── -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Fixed-Block Memory Pool</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="cm">/*
+ * Pool — fixed-size block allocator.
+ *
+ * Layout of the arena (each cell = block_size bytes):
+ *   [ block0 | block1 | block2 | ... | blockN-1 ]
+ *
+ * Free blocks store a "next" pointer in their first sizeof(void*) bytes,
+ * forming an intrusive singly-linked free list.
+ * block_size MUST be >= sizeof(void *).
+ */</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">void</span>   <span class="pu">*</span>arena<span class="pu">;</span>       <span class="cm">/* one big malloc'd buffer */</span>
+    <span class="ty">void</span>   <span class="pu">*</span>free_head<span class="pu">;</span>   <span class="cm">/* head of free-list */</span>
+    <span class="ty">size_t</span>  block_size<span class="pu">;</span>
+    <span class="ty">size_t</span>  num_blocks<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Pool</span><span class="pu">;</span>
+
+<span class="ty">Pool</span> <span class="pu">*</span><span class="fn">pool_create</span><span class="pu">(</span><span class="ty">size_t</span> block_size<span class="pu">,</span> <span class="ty">size_t</span> num_blocks<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* block_size must hold at least a pointer */</span>
+    <span class="kw">if</span> <span class="pu">(</span>block_size <span class="pu">&lt;</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*))</span>
+        block_size <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*);</span>
+
+    <span class="ty">Pool</span> <span class="pu">*</span>p <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Pool</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>p<span class="pu">)</span> <span class="kw">return</span> NULL<span class="pu">;</span>
+
+    p<span class="pu">-&gt;</span>arena <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>block_size <span class="pu">*</span> num_blocks<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>p<span class="pu">-&gt;</span>arena<span class="pu">)</span> <span class="pu">{</span> <span class="fn">free</span><span class="pu">(</span>p<span class="pu">);</span> <span class="kw">return</span> NULL<span class="pu">;</span> <span class="pu">}</span>
+
+    p<span class="pu">-&gt;</span>block_size <span class="pu">=</span> block_size<span class="pu">;</span>
+    p<span class="pu">-&gt;</span>num_blocks <span class="pu">=</span> num_blocks<span class="pu">;</span>
+
+    <span class="cm">/* Build the free list: each block stores a pointer to the next free block */</span>
+    <span class="ty">char</span> <span class="pu">*</span>cur <span class="pu">=</span> <span class="pu">(</span><span class="ty">char</span> <span class="pu">*)</span>p<span class="pu">-&gt;</span>arena<span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> num_blocks <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">void</span> <span class="pu">*</span>next <span class="pu">=</span> cur <span class="pu">+</span> block_size<span class="pu">;</span>
+        <span class="fn">memcpy</span><span class="pu">(</span>cur<span class="pu">,</span> <span class="pu">&amp;</span>next<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+        cur <span class="pu">+=</span> block_size<span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="cm">/* Last block's next = NULL */</span>
+    <span class="ty">void</span> <span class="pu">*</span>null_ptr <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="fn">memcpy</span><span class="pu">(</span>cur<span class="pu">,</span> <span class="pu">&amp;</span>null_ptr<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+
+    p<span class="pu">-&gt;</span>free_head <span class="pu">=</span> p<span class="pu">-&gt;</span>arena<span class="pu">;</span>
+    <span class="kw">return</span> p<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="pu">*</span><span class="fn">pool_alloc</span><span class="pu">(</span><span class="ty">Pool</span> <span class="pu">*</span>p<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(!</span>p<span class="pu">-&gt;</span>free_head<span class="pu">)</span> <span class="kw">return</span> NULL<span class="pu">;</span>  <span class="cm">/* pool exhausted */</span>
+    <span class="ty">void</span> <span class="pu">*</span>block <span class="pu">=</span> p<span class="pu">-&gt;</span>free_head<span class="pu">;</span>
+    <span class="cm">/* Advance free_head to the next block (stored in first bytes of block) */</span>
+    <span class="fn">memcpy</span><span class="pu">(&amp;</span>p<span class="pu">-&gt;</span>free_head<span class="pu">,</span> block<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+    <span class="kw">return</span> block<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">pool_free</span><span class="pu">(</span><span class="ty">Pool</span> <span class="pu">*</span>p<span class="pu">,</span> <span class="ty">void</span> <span class="pu">*</span>block<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Write current free_head into the block, then make block the new head */</span>
+    <span class="fn">memcpy</span><span class="pu">(</span>block<span class="pu">,</span> <span class="pu">&amp;</span>p<span class="pu">-&gt;</span>free_head<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+    p<span class="pu">-&gt;</span>free_head <span class="pu">=</span> block<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">pool_destroy</span><span class="pu">(</span><span class="ty">Pool</span> <span class="pu">*</span>p<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">free</span><span class="pu">(</span>p<span class="pu">-&gt;</span>arena<span class="pu">);</span>  <span class="cm">/* one free releases the entire arena */</span>
+    <span class="fn">free</span><span class="pu">(</span>p<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Pool</span> <span class="pu">*</span>pool <span class="pu">=</span> <span class="fn">pool_create</span><span class="pu">(</span><span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">5</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>pool<span class="pu">)</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="cm">/* Allocate 5 blocks and store values 10, 20, ..., 50 */</span>
+    <span class="ty">int</span> <span class="pu">*</span>blocks<span class="pu">[</span><span class="nm">5</span><span class="pu">];</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">5</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        blocks<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> <span class="fn">pool_alloc</span><span class="pu">(</span>pool<span class="pu">);</span>
+        <span class="pu">*</span>blocks<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> <span class="pu">(</span>i <span class="pu">+</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">*</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">5</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Block %d = %d\n"</span><span class="pu">,</span> i<span class="pu">,</span> <span class="pu">*</span>blocks<span class="pu">[</span>i<span class="pu">]);</span>
+
+    <span class="cm">/* Return block 2 to the pool, reallocate and store 99 */</span>
+    <span class="fn">pool_free</span><span class="pu">(</span>pool<span class="pu">,</span> blocks<span class="pu">[</span><span class="nm">2</span><span class="pu">]);</span>
+    blocks<span class="pu">[</span><span class="nm">2</span><span class="pu">]</span> <span class="pu">=</span> <span class="fn">pool_alloc</span><span class="pu">(</span>pool<span class="pu">);</span>
+    <span class="pu">*</span>blocks<span class="pu">[</span><span class="nm">2</span><span class="pu">]</span> <span class="pu">=</span> <span class="nm">99</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Freed block 2, reallocated it = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>blocks<span class="pu">[</span><span class="nm">2</span><span class="pu">]);</span>
+
+    <span class="fn">pool_destroy</span><span class="pu">(</span>pool<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Pool destroyed -- no leaks.\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Key Insight:</strong> A memory pool trades flexibility (blocks must be the same size) for performance and predictability: <code>pool_alloc</code> and <code>pool_free</code> are O(1) with no fragmentation. The entire arena is released with a single <code>free</code> call, so there is no per-object overhead and no risk of leaking individual allocations. This pattern is fundamental in real-time systems, game engines, and OS kernels.</div></div>
+    <div class="code-block">
+      <div class="code-header"><span>Expected output</span></div>
+      <pre>Block 0 = 10
+Block 1 = 20
+Block 2 = 30
+Block 3 = 40
+Block 4 = 50
+Freed block 2, reallocated it = 99
+Pool destroyed -- no leaks.</pre>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../index.html" class="btn btn-primary">&#127937; Back to Home</a>
     </div>
 
   </main>

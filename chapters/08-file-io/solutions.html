@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 8 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 8 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/08-file-io/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 8 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,350 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Line Counter</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">create_sample_file</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"w"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"First line of text\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"Second line with some numbers 12345\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"Third line here\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"Fourth and final line\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">count_file_lines</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open file"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="pu">-</span><span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">int</span> ch<span class="pu">;</span>
+    <span class="ty">int</span> lines <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> last_ch <span class="pu">=</span> <span class="st">'\n'</span><span class="pu">;</span>
+
+    <span class="kw">while</span> <span class="pu">((</span>ch <span class="pu">=</span> <span class="fn">fgetc</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">!=</span> EOF<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>ch <span class="pu">==</span> <span class="st">'\n'</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="pu">++</span>lines<span class="pu">;</span>
+        <span class="pu">}</span>
+        last_ch <span class="pu">=</span> ch<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Count last line if file doesn't end with a newline */</span>
+    <span class="kw">if</span> <span class="pu">(</span>last_ch <span class="pu">!=</span> <span class="st">'\n'</span> <span class="pu">&amp;&amp;</span> lines <span class="pu">&gt;=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="pu">++</span>lines<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="kw">return</span> lines<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename <span class="pu">=</span> <span class="st">"sample.txt"</span><span class="pu">;</span>
+    <span class="fn">create_sample_file</span><span class="pu">(</span>filename<span class="pu">);</span>
+
+    <span class="ty">int</span> total <span class="pu">=</span> <span class="fn">count_file_lines</span><span class="pu">(</span>filename<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"File: %s\n"</span><span class="pu">,</span> filename<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Total lines: %d\n"</span><span class="pu">,</span> total<span class="pu">);</span>
+
+    <span class="fn">remove</span><span class="pu">(</span>filename<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Output:<br><code>File: sample.txt</code><br><code>Total lines: 4</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — File Copy (Character by Character)</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">long</span> <span class="fn">copy_file</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>src_path<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>dst_path<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>src <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>src_path<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>src <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open source file"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="pu">-</span><span class="nm">1L</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">FILE</span> <span class="pu">*</span>dst <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>dst_path<span class="pu">,</span> <span class="st">"wb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>dst <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open destination file"</span><span class="pu">);</span>
+        <span class="fn">fclose</span><span class="pu">(</span>src<span class="pu">);</span>
+        <span class="kw">return</span> <span class="pu">-</span><span class="nm">1L</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">int</span> ch<span class="pu">;</span>
+    <span class="ty">long</span> bytes_copied <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="kw">while</span> <span class="pu">((</span>ch <span class="pu">=</span> <span class="fn">fgetc</span><span class="pu">(</span>src<span class="pu">))</span> <span class="pu">!=</span> EOF<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span><span class="fn">fputc</span><span class="pu">(</span>ch<span class="pu">,</span> dst<span class="pu">)</span> <span class="pu">==</span> EOF<span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">perror</span><span class="pu">(</span><span class="st">"Write error during copy"</span><span class="pu">);</span>
+            <span class="fn">fclose</span><span class="pu">(</span>src<span class="pu">);</span>
+            <span class="fn">fclose</span><span class="pu">(</span>dst<span class="pu">);</span>
+            <span class="kw">return</span> <span class="pu">-</span><span class="nm">1L</span><span class="pu">;</span>
+        <span class="pu">}</span>
+        <span class="pu">++</span>bytes_copied<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>src<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>dst<span class="pu">);</span>
+    <span class="kw">return</span> bytes_copied<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>src_file <span class="pu">=</span> <span class="st">"source.txt"</span><span class="pu">;</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>dst_file <span class="pu">=</span> <span class="st">"destination.txt"</span><span class="pu">;</span>
+
+    <span class="cm">/* Prepare source content */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>src_file<span class="pu">,</span> <span class="st">"w"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fputs</span><span class="pu">(</span><span class="st">"File I/O in C: Character-by-character copy verified.\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+        <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="ty">long</span> copied <span class="pu">=</span> <span class="fn">copy_file</span><span class="pu">(</span>src_file<span class="pu">,</span> dst_file<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>copied <span class="pu">&gt;=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Copied %ld bytes from '%s' to '%s' successfully.\n"</span><span class="pu">,</span>
+               copied<span class="pu">,</span> src_file<span class="pu">,</span> dst_file<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">remove</span><span class="pu">(</span>src_file<span class="pu">);</span>
+    <span class="fn">remove</span><span class="pu">(</span>dst_file<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Using <code>"rb"</code> and <code>"wb"</code> guarantees that all characters (including newlines and binary byte values) are preserved exactly without OS newline modifications.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — CSV Parser &amp; Average GPA Calculator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">create_grades_csv</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"w"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Name,Major,GPA\n"</span><span class="pu">);</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Emma Watson,Computer Science,3.90\n"</span><span class="pu">);</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Liam Neeson,Mathematics,3.40\n"</span><span class="pu">);</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Sophia Chen,Physics,3.80\n"</span><span class="pu">);</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Noah Davis,Engineering,3.70\n"</span><span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename <span class="pu">=</span> <span class="st">"grades.csv"</span><span class="pu">;</span>
+    <span class="fn">create_grades_csv</span><span class="pu">(</span>filename<span class="pu">);</span>
+
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error opening CSV"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">char</span> line<span class="pu">[</span><span class="nm">256</span><span class="pu">];</span>
+    <span class="ty">int</span> student_count <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">double</span> total_gpa <span class="pu">=</span> <span class="nm">0.0</span><span class="pu">;</span>
+
+    <span class="cm">/* Skip header line */</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>line<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>line<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Student Records:\n"</span><span class="pu">);</span>
+
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>line<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>line<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> name<span class="pu">[</span><span class="nm">64</span><span class="pu">];</span>
+        <span class="ty">char</span> major<span class="pu">[</span><span class="nm">64</span><span class="pu">];</span>
+        <span class="ty">double</span> gpa<span class="pu">;</span>
+
+        <span class="kw">if</span> <span class="pu">(</span><span class="fn">sscanf</span><span class="pu">(</span>line<span class="pu">,</span> <span class="st">"%63[^,],%63[^,],%lf"</span><span class="pu">,</span> name<span class="pu">,</span> major<span class="pu">, &amp;</span>gpa<span class="pu">)</span> <span class="pu">==</span> <span class="nm">3</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"- %s (%s): GPA %.2f\n"</span><span class="pu">,</span> name<span class="pu">,</span> major<span class="pu">,</span> gpa<span class="pu">);</span>
+            <span class="pu">++</span>student_count<span class="pu">;</span>
+            total_gpa <span class="pu">+=</span> gpa<span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+
+    <span class="kw">if</span> <span class="pu">(</span>student_count <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nTotal students: %d\n"</span><span class="pu">,</span> student_count<span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Average GPA: %.2f\n"</span><span class="pu">,</span> total_gpa <span class="pu">/</span> student_count<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">remove</span><span class="pu">(</span>filename<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Reads all rows and prints average GPA: <code>(3.90 + 3.40 + 3.80 + 3.70) / 4 = 3.70</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Binary Record Database with Random Access Search</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">double</span> price<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Product</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">find_product_by_index</span><span class="pu">(</span><span class="ty">FILE</span> <span class="pu">*</span>fp<span class="pu">,</span> <span class="ty">int</span> index<span class="pu">,</span> <span class="ty">Product</span> <span class="pu">*</span>out<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL <span class="pu">||</span> out <span class="pu">==</span> NULL <span class="pu">||</span> index <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="ty">long</span> offset <span class="pu">=</span> <span class="pu">(</span><span class="ty">long</span><span class="pu">)</span>index <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Product</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fseek</span><span class="pu">(</span>fp<span class="pu">,</span> offset<span class="pu">,</span> SEEK_SET<span class="pu">)</span> <span class="pu">!=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">size_t</span> n <span class="pu">=</span> <span class="fn">fread</span><span class="pu">(</span>out<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Product</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="kw">return</span> n <span class="pu">==</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>db_path <span class="pu">=</span> <span class="st">"catalog.bin"</span><span class="pu">;</span>
+
+    <span class="ty">Product</span> catalog<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span><span class="nm">101</span><span class="pu">,</span> <span class="st">"Gaming Mouse"</span><span class="pu">,</span>        <span class="nm">49.99</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">102</span><span class="pu">,</span> <span class="st">"4K Monitor"</span><span class="pu">,</span>          <span class="nm">299.99</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">103</span><span class="pu">,</span> <span class="st">"Mechanical Keyboard"</span><span class="pu">,</span> <span class="nm">89.99</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">104</span><span class="pu">,</span> <span class="st">"Noise-Canceling Headset"</span><span class="pu">,</span> <span class="nm">149.00</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">105</span><span class="pu">,</span> <span class="st">"USB-C Hub"</span><span class="pu">,</span>           <span class="nm">29.50</span><span class="pu">}</span>
+    <span class="pu">};</span>
+
+    <span class="cm">/* Write all records */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp_write <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>db_path<span class="pu">,</span> <span class="st">"wb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp_write <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="fn">fwrite</span><span class="pu">(</span>catalog<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Product</span><span class="pu">),</span> <span class="nm">5</span><span class="pu">,</span> fp_write<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp_write<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Database created with 5 products.\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Random-access queries */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp_read <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>db_path<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp_read <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+
+    <span class="ty">Product</span> p<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Looking up product at index 2 (offset 2 * sizeof(Product))...\n"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">find_product_by_index</span><span class="pu">(</span>fp_read<span class="pu">,</span> <span class="nm">2</span><span class="pu">, &amp;</span>p<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Found: ID = %d, Name = %s, Price = $%.2f\n\n"</span><span class="pu">,</span> p<span class="pu">.</span>id<span class="pu">,</span> p<span class="pu">.</span>name<span class="pu">,</span> p<span class="pu">.</span>price<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Looking up product at index 4 (offset 4 * sizeof(Product))...\n"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">find_product_by_index</span><span class="pu">(</span>fp_read<span class="pu">,</span> <span class="nm">4</span><span class="pu">, &amp;</span>p<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Found: ID = %d, Name = %s, Price = $%.2f\n"</span><span class="pu">,</span> p<span class="pu">.</span>id<span class="pu">,</span> p<span class="pu">.</span>name<span class="pu">,</span> p<span class="pu">.</span>price<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp_read<span class="pu">);</span>
+    <span class="fn">remove</span><span class="pu">(</span>db_path<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Random access allows jumping directly to any $O(1)$ record position in files with fixed-size struct records.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Log File Rotator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="pp">#define</span> MAX_LOG_SIZE <span class="nm">1024L</span> <span class="cm">/* 1 KB limit */</span>
+
+<span class="ty">long</span> <span class="fn">get_file_size</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span> <span class="nm">0L</span><span class="pu">;</span>
+    <span class="fn">fseek</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="nm">0L</span><span class="pu">,</span> SEEK_END<span class="pu">);</span>
+    <span class="ty">long</span> size <span class="pu">=</span> <span class="fn">ftell</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="kw">return</span> size<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">log_message</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>msg<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">long</span> current_size <span class="pu">=</span> <span class="fn">get_file_size</span><span class="pu">(</span>filename<span class="pu">);</span>
+
+    <span class="cm">/* Check if appending would exceed MAX_LOG_SIZE */</span>
+    <span class="kw">if</span> <span class="pu">(</span>current_size <span class="pu">&gt;=</span> MAX_LOG_SIZE<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> backup_name<span class="pu">[</span><span class="nm">128</span><span class="pu">];</span>
+        <span class="fn">snprintf</span><span class="pu">(</span>backup_name<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>backup_name<span class="pu">),</span> <span class="st">"%s.bak"</span><span class="pu">,</span> filename<span class="pu">);</span>
+
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Log size exceeded %ld bytes (%ld bytes). Rotating '%s' -&gt; '%s'...\n"</span><span class="pu">,</span>
+               MAX_LOG_SIZE<span class="pu">,</span> current_size<span class="pu">,</span> filename<span class="pu">,</span> backup_name<span class="pu">);</span>
+
+        <span class="fn">remove</span><span class="pu">(</span>backup_name<span class="pu">);</span>            <span class="cm">/* Remove existing backup if present */</span>
+        <span class="kw">if</span> <span class="pu">(</span><span class="fn">rename</span><span class="pu">(</span>filename<span class="pu">,</span> backup_name<span class="pu">)</span> <span class="pu">!=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">perror</span><span class="pu">(</span><span class="st">"Rotation rename failed"</span><span class="pu">);</span>
+            <span class="kw">return</span><span class="pu">;</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Rotation complete. Fresh '%s' created.\n"</span><span class="pu">,</span> filename<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"a"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open log file"</span><span class="pu">);</span>
+        <span class="kw">return</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"[LOG] %s\n"</span><span class="pu">,</span> msg<span class="pu">);</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>log_file <span class="pu">=</span> <span class="st">"app.log"</span><span class="pu">;</span>
+    <span class="fn">remove</span><span class="pu">(</span>log_file<span class="pu">);</span>
+    <span class="fn">remove</span><span class="pu">(</span><span class="st">"app.log.bak"</span><span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Writing log entries...\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Write enough lines to exceed 1 KB */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">25</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> msg<span class="pu">[</span><span class="nm">128</span><span class="pu">];</span>
+        <span class="fn">snprintf</span><span class="pu">(</span>msg<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>msg<span class="pu">),</span> <span class="st">"Event #%02d: System operating within normal parameters"</span><span class="pu">,</span> i<span class="pu">);</span>
+
+        <span class="ty">long</span> size_before <span class="pu">=</span> <span class="fn">get_file_size</span><span class="pu">(</span>log_file<span class="pu">);</span>
+        <span class="fn">log_message</span><span class="pu">(</span>log_file<span class="pu">,</span> msg<span class="pu">);</span>
+
+        <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">==</span> <span class="nm">1</span> <span class="pu">||</span> i <span class="pu">==</span> <span class="nm">22</span> <span class="pu">||</span> i <span class="pu">==</span> <span class="nm">24</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Entry %d written (size: %ld bytes)\n"</span><span class="pu">,</span> i<span class="pu">,</span> <span class="fn">get_file_size</span><span class="pu">(</span>log_file<span class="pu">));</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="fn">remove</span><span class="pu">(</span>log_file<span class="pu">);</span>
+    <span class="fn">remove</span><span class="pu">(</span><span class="st">"app.log.bak"</span><span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Automated log rotation prevents unconstrained disk consumption in production servers and daemons.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/09-dynamic-memory/index.html" class="btn btn-primary">Next Chapter: Chapter 9 &#8594;</a>
     </div>
 
   </main>

@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 5 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 5 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/05-arrays-strings/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 5 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,318 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <!-- Example 1 -->
+    <div class="prose">
+      <h2>Example 1 — Array Basics: Sum and Average</h2>
+      <p>Declare and initialise an integer array, iterate over it with a <code>for</code> loop, then compute its sum and average. Uses the <code>sizeof</code> idiom to avoid hard-coding the element count.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>01_array_basic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> values<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">,</span> <span class="nm">15</span><span class="pu">,</span> <span class="nm">16</span><span class="pu">,</span> <span class="nm">23</span><span class="pu">,</span> <span class="nm">42</span> <span class="pu">};</span>
+    <span class="ty">int</span>    n     <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>values<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>values<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="cm">/* Print all elements */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Array: "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d"</span><span class="pu">,</span> values<span class="pu">[</span>i<span class="pu">]</span><span class="pu">);</span>
+        <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">&lt;</span> n <span class="pu">-</span> <span class="nm">1</span><span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">", "</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Compute sum */</span>
+    <span class="ty">long</span> sum <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span>
+        sum <span class="pu">+=</span> values<span class="pu">[</span>i<span class="pu">];</span>
+
+    <span class="ty">double</span> avg <span class="pu">=</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>sum <span class="pu">/</span> n<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Sum     : %ld\n"</span><span class="pu">,</span> sum<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Count   : %d\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Average : %.2f\n"</span><span class="pu">,</span> avg<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>Array: 4, 8, 15, 16, 23, 42<br>Sum     : 108<br>Count   : 6<br>Average : 18.00</code></div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="prose">
+      <h2>Example 2 — Passing Arrays to Functions: Bubble Sort</h2>
+      <p>Pass an integer array to a function that sorts it in-place using the classic <strong>bubble sort</strong> algorithm. The function receives a pointer and the array length separately.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>02_array_fn.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Sort arr[0..n-1] in ascending order using bubble sort */</span>
+<span class="ty">void</span> <span class="fn">bubble_sort</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> pass <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> pass <span class="pu">&lt;</span> n <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span> pass<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> swapped <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n <span class="pu">-</span> pass <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="kw">if</span> <span class="pu">(</span>arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">&gt;</span> arr<span class="pu">[</span>i <span class="pu">+</span> <span class="nm">1</span><span class="pu">])</span> <span class="pu">{</span>
+                <span class="ty">int</span> tmp   <span class="pu">=</span> arr<span class="pu">[</span>i<span class="pu">];</span>
+                arr<span class="pu">[</span>i<span class="pu">]</span>     <span class="pu">=</span> arr<span class="pu">[</span>i <span class="pu">+</span> <span class="nm">1</span><span class="pu">];</span>
+                arr<span class="pu">[</span>i <span class="pu">+</span> <span class="nm">1</span><span class="pu">]</span> <span class="pu">=</span> tmp<span class="pu">;</span>
+                swapped <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+            <span class="pu">}</span>
+        <span class="pu">}</span>
+        <span class="kw">if</span> <span class="pu">(!</span>swapped<span class="pu">)</span> <span class="kw">break</span><span class="pu">;</span>   <span class="cm">/* early exit if already sorted */</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">print_array</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d%s"</span><span class="pu">,</span> arr<span class="pu">[</span>i<span class="pu">],</span> i <span class="pu">&lt;</span> n <span class="pu">-</span> <span class="nm">1</span> <span class="pu">?</span> <span class="st">", "</span> <span class="pu">:</span> <span class="st">"\n"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> data<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">64</span><span class="pu">,</span> <span class="nm">34</span><span class="pu">,</span> <span class="nm">25</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">22</span><span class="pu">,</span> <span class="nm">11</span><span class="pu">,</span> <span class="nm">90</span> <span class="pu">};</span>
+    <span class="ty">int</span>    n    <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>data<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>data<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Before: "</span><span class="pu">);</span>
+    <span class="fn">print_array</span><span class="pu">(</span>data<span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="fn">bubble_sort</span><span class="pu">(</span>data<span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After : "</span><span class="pu">);</span>
+    <span class="fn">print_array</span><span class="pu">(</span>data<span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>Before: 64, 34, 25, 12, 22, 11, 90<br>After : 11, 12, 22, 25, 34, 64, 90</code></div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Because the array decays to a pointer, <code>bubble_sort</code> modifies the <em>original</em> array in <code>main</code> — there is no copy. The <code>swapped</code> flag is an O(n) optimisation: if a full pass produces no swaps, the array is already sorted and the outer loop exits early.</div>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="prose">
+      <h2>Example 3 — 2-D Array: Matrix Trace</h2>
+      <p>Declare a 3×3 integer matrix, print it in grid format, then compute its <strong>trace</strong> (the sum of the main diagonal elements where row index equals column index).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>03_2d_array.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> N <span class="nm">3</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> m<span class="pu">[</span>N<span class="pu">][</span>N<span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">6</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">,</span> <span class="nm">9</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Matrix:\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> N<span class="pu">;</span> r<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> N<span class="pu">;</span> c<span class="pu">++)</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> m<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]</span><span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Trace = sum of diagonal elements m[0][0] + m[1][1] + m[2][2] */</span>
+    <span class="ty">int</span> trace <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> N<span class="pu">;</span> i<span class="pu">++)</span>
+        trace <span class="pu">+=</span> m<span class="pu">[</span>i<span class="pu">][</span>i<span class="pu">];</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Trace = %d\n"</span><span class="pu">,</span> trace<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>Matrix:<br>&nbsp;&nbsp; 1&nbsp;&nbsp; 2&nbsp;&nbsp; 3<br>&nbsp;&nbsp; 4&nbsp;&nbsp; 5&nbsp;&nbsp; 6<br>&nbsp;&nbsp; 7&nbsp;&nbsp; 8&nbsp;&nbsp; 9<br>Trace = 15</code></div>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div class="prose">
+      <h2>Example 4 — String Basics: Literals, Arrays, and <code>strlen</code></h2>
+      <p>Contrast a string literal (read-only) with a mutable <code>char[]</code>, iterate character-by-character, and measure length with <code>strlen</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>04_strings.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* String literal — read-only, stored in static memory */</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>literal <span class="pu">=</span> <span class="st">"Hello, World!"</span><span class="pu">;</span>
+
+    <span class="cm">/* char array — mutable copy on the stack */</span>
+    <span class="ty">char</span> greeting<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"Hello, World!"</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Literal : %s\n"</span><span class="pu">,</span> literal<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Array   : %s\n"</span><span class="pu">,</span> greeting<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Length  : %zu\n"</span><span class="pu">,</span> <span class="fn">strlen</span><span class="pu">(</span>greeting<span class="pu">)</span><span class="pu">);</span>  <span class="cm">/* 13, '\0' not counted */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Size    : %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>greeting<span class="pu">)</span><span class="pu">);</span>  <span class="cm">/* 14, includes '\0'   */</span>
+
+    <span class="cm">/* Iterate character-by-character until null terminator */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Chars   : "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> greeting<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">!=</span> <span class="st">'\0'</span><span class="pu">;</span> i<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"[%c]"</span><span class="pu">,</span> greeting<span class="pu">[</span>i<span class="pu">]</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Mutate — valid for char[], not for string literal */</span>
+    greeting<span class="pu">[</span><span class="nm">7</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'C'</span><span class="pu">;</span>
+    greeting<span class="pu">[</span><span class="nm">8</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'!'</span><span class="pu">;</span>
+    greeting<span class="pu">[</span><span class="nm">9</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'\0'</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Modified: %s\n"</span><span class="pu">,</span> greeting<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>Literal : Hello, World!<br>Array   : Hello, World!<br>Length  : 13<br>Size    : 14<br>Chars   : [H][e][l][l][o][,][ ][W][o][r][l][d][!]<br>Modified: Hello, C!</code></div>
+      </div>
+    </div>
+
+    <!-- Example 5 -->
+    <div class="prose">
+      <h2>Example 5 — String Operations: <code>strcpy</code>, <code>strcat</code>, <code>strcmp</code>, <code>strstr</code></h2>
+      <p>Demonstrate the most common <code>&lt;string.h&gt;</code> functions with correctly sized buffers. Note the buffer sizing comments — they are not optional.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>05_string_ops.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* --- strcpy --- */</span>
+    <span class="ty">char</span> dst<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>                         <span class="cm">/* large enough for the source */</span>
+    <span class="fn">strcpy</span><span class="pu">(</span>dst<span class="pu">,</span> <span class="st">"Hello"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcpy  : \"%s\"\n"</span><span class="pu">,</span> dst<span class="pu">);</span>
+
+    <span class="cm">/* --- strcat --- */</span>
+    <span class="fn">strcat</span><span class="pu">(</span>dst<span class="pu">,</span> <span class="st">", World!"</span><span class="pu">);</span>              <span class="cm">/* dst has 32 bytes, total is 13 — safe */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcat  : \"%s\"\n"</span><span class="pu">,</span> dst<span class="pu">);</span>
+
+    <span class="cm">/* --- strcmp --- */</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>a <span class="pu">=</span> <span class="st">"apple"</span><span class="pu">;</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>b <span class="pu">=</span> <span class="st">"banana"</span><span class="pu">;</span>
+    <span class="ty">int</span> cmp <span class="pu">=</span> <span class="fn">strcmp</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">);</span>
+    <span class="kw">if</span>      <span class="pu">(</span>cmp <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcmp  : \"%s\" &lt; \"%s\"\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+    <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>cmp <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcmp  : \"%s\" &gt; \"%s\"\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+    <span class="kw">else</span>             <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcmp  : \"%s\" == \"%s\"\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"strcmp  : \"abc\" vs \"abc\" = %d\n"</span><span class="pu">,</span> <span class="fn">strcmp</span><span class="pu">(</span><span class="st">"abc"</span><span class="pu">,</span> <span class="st">"abc"</span><span class="pu">)</span><span class="pu">);</span>  <span class="cm">/* 0 */</span>
+
+    <span class="cm">/* --- strstr --- */</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>haystack <span class="pu">=</span> <span class="st">"the quick brown fox"</span><span class="pu">;</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>found    <span class="pu">=</span> <span class="fn">strstr</span><span class="pu">(</span>haystack<span class="pu">,</span> <span class="st">"brown"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>found<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"strstr  : found \"brown\" at offset %td\n"</span><span class="pu">,</span> found <span class="pu">-</span> haystack<span class="pu">);</span>
+    <span class="kw">else</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"strstr  : not found\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>strcpy  : "Hello"<br>strcat  : "Hello, World!"<br>strcmp  : "apple" &lt; "banana"<br>strcmp  : "abc" vs "abc" = 0<br>strstr  : found "brown" at offset 10</code></div>
+      </div>
+    </div>
+
+    <!-- Example 6 -->
+    <div class="prose">
+      <h2>Example 6 — Safe String Handling: Reversal and Bounded Copy</h2>
+      <p>Two safe string utilities: an in-place string reversal (no library functions) and a safe string copy using <code>snprintf</code> as a bounded alternative to <code>strcpy</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>06_string_danger.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="cm">/* Reverse a mutable char[] in-place without library functions */</span>
+<span class="ty">void</span> <span class="fn">str_reverse</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*</span>s<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(!</span>s <span class="pu">||</span> <span class="pu">*</span>s <span class="pu">==</span> <span class="st">'\0'</span><span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+    <span class="ty">int</span> left  <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> right <span class="pu">=</span> <span class="pu">(</span><span class="ty">int</span><span class="pu">)</span><span class="fn">strlen</span><span class="pu">(</span>s<span class="pu">)</span> <span class="pu">-</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span>left <span class="pu">&lt;</span> right<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> tmp   <span class="pu">=</span> s<span class="pu">[</span>left<span class="pu">];</span>
+        s<span class="pu">[</span>left<span class="pu">]</span>   <span class="pu">=</span> s<span class="pu">[</span>right<span class="pu">];</span>
+        s<span class="pu">[</span>right<span class="pu">]</span>  <span class="pu">=</span> tmp<span class="pu">;</span>
+        left<span class="pu">++;</span>
+        right<span class="pu">--;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Safe copy: snprintf always null-terminates, returns chars written */</span>
+<span class="ty">void</span> <span class="fn">safe_copy</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*</span>dst<span class="pu">,</span> <span class="ty">int</span> dst_size<span class="pu">,</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>src<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> written <span class="pu">=</span> <span class="fn">snprintf</span><span class="pu">(</span>dst<span class="pu">,</span> <span class="pu">(</span><span class="ty">size_t</span><span class="pu">)</span>dst_size<span class="pu">,</span> <span class="st">"%s"</span><span class="pu">,</span> src<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>written <span class="pu">&gt;=</span> dst_size<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"  [WARNING] source was truncated to fit buffer\n"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* --- Reversal --- */</span>
+    <span class="ty">char</span> word<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"racecar"</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Before reverse: %s\n"</span><span class="pu">,</span> word<span class="pu">);</span>
+    <span class="fn">str_reverse</span><span class="pu">(</span>word<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After  reverse: %s\n"</span><span class="pu">,</span> word<span class="pu">);</span>
+
+    <span class="ty">char</span> word2<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"hello"</span><span class="pu">;</span>
+    <span class="fn">str_reverse</span><span class="pu">(</span>word2<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Reversed hello: %s\n"</span><span class="pu">,</span> word2<span class="pu">);</span>
+
+    <span class="cm">/* --- Safe copy (fits) --- */</span>
+    <span class="ty">char</span> buf<span class="pu">[</span><span class="nm">16</span><span class="pu">];</span>
+    <span class="fn">safe_copy</span><span class="pu">(</span>buf<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buf<span class="pu">),</span> <span class="st">"Safe!"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"safe_copy OK  : \"%s\"\n"</span><span class="pu">,</span> buf<span class="pu">);</span>
+
+    <span class="cm">/* --- Safe copy (truncated — source too long for buffer) --- */</span>
+    <span class="fn">safe_copy</span><span class="pu">(</span>buf<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buf<span class="pu">),</span> <span class="st">"This string is definitely longer than 16 bytes"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"safe_copy trunc: \"%s\"\n"</span><span class="pu">,</span> buf<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Expected output:</strong><br><code>Before reverse: racecar<br>After  reverse: racecar<br>Reversed hello: olleh<br>safe_copy OK  : "Safe!"<br>  [WARNING] source was truncated to fit buffer<br>safe_copy trunc: "This string is "</code></div>
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><code>snprintf(dst, size, "%s", src)</code> is the canonical safe-copy idiom. It always null-terminates the destination and returns the number of characters that <em>would</em> have been written — checking the return value against <code>dst_size</code> reveals truncation.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

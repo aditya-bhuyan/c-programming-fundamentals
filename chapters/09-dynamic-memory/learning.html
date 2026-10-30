@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 9 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 9 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/09-dynamic-memory/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 9 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,369 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+
+      <h2>1. Stack vs Heap</h2>
+      <p>Every C process uses two main memory regions for object storage: the <strong>stack</strong> and the <strong>heap</strong>.</p>
+
+      <h3>The Stack (automatic storage)</h3>
+      <p>Local variables and function parameters live on the stack. Memory is allocated automatically when a block is entered and freed automatically when the block exits — you never call any allocation function. This is why local variables are sometimes called <em>automatic</em> variables.</p>
+      <ul>
+        <li>Very fast allocation (single register decrement).</li>
+        <li>Size must be known at compile time (or at function-call time for VLAs).</li>
+        <li>Lifetime is tied to the enclosing scope.</li>
+        <li>Typically limited (often 1–8 MB) — large objects or deep recursion trigger a <strong>stack overflow</strong>.</li>
+      </ul>
+
+      <h3>The Heap (dynamic storage)</h3>
+      <p>The heap is a large pool of memory managed explicitly by the programmer through the standard library allocation functions. You request memory at runtime, use it, and <em>must</em> release it when done.</p>
+      <ul>
+        <li>Size can be determined at runtime.</li>
+        <li>Lifetime is controlled entirely by the programmer (from <code>malloc</code> to <code>free</code>).</li>
+        <li>Much larger than the stack — limited mainly by virtual address space and physical RAM.</li>
+        <li>Slower allocation (involves OS and allocator bookkeeping).</li>
+      </ul>
+
+      <table>
+        <thead><tr><th>Property</th><th>Stack</th><th>Heap</th></tr></thead>
+        <tbody>
+          <tr><td>Allocation</td><td>Automatic on block entry</td><td>Explicit: <code>malloc</code> / <code>calloc</code></td></tr>
+          <tr><td>Deallocation</td><td>Automatic on block exit</td><td>Explicit: <code>free</code></td></tr>
+          <tr><td>Size at compile time?</td><td>Usually yes</td><td>No — runtime determined</td></tr>
+          <tr><td>Speed</td><td>Very fast (O(1))</td><td>Slower (allocator overhead)</td></tr>
+          <tr><td>Typical limit</td><td>~1–8 MB</td><td>Virtual address space (~TBs)</td></tr>
+          <tr><td>Overflow risk</td><td>Stack overflow (deep recursion)</td><td>Memory leak (forgetting to free)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>2. <code>malloc</code> — Allocate Uninitialised Memory</h2>
+      <p><code>malloc</code> (memory allocate) requests a contiguous block of at least <code>size</code> bytes from the heap and returns a pointer to the first byte.</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>malloc_signature.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">void</span> <span class="pu">*</span><span class="fn">malloc</span><span class="pu">(</span><span class="ty">size_t</span> size<span class="pu">);</span>  <span class="cm">/* returns void *, or NULL on failure */</span></pre>
+    </div>
+
+    <div class="prose">
+      <ul>
+        <li>Returns a <code>void *</code>, which implicitly converts to any pointer type in C.</li>
+        <li>The allocated bytes are <strong>uninitialised</strong> — their contents are indeterminate garbage.</li>
+        <li>Returns <code>NULL</code> if the allocation fails (out of memory).</li>
+        <li><strong>Always check the return value for NULL before using the pointer.</strong></li>
+      </ul>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>malloc_example.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="ty">int</span> <span class="pu">*</span>arr <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>n <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>  <span class="cm">/* allocate 5 ints */</span>
+
+    <span class="kw">if</span> <span class="pu">(</span>arr <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"malloc failed\n"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span>
+        arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i <span class="pu">*</span> <span class="nm">10</span><span class="pu">;</span>
+
+    <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>   <span class="cm">/* always free when done */</span>
+    arr <span class="pu">=</span> NULL<span class="pu">;</span>  <span class="cm">/* prevent dangling pointer */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Always write <code>sizeof(Type)</code> or <code>sizeof *ptr</code> in the <code>malloc</code> call — never hardcode byte sizes like <code>malloc(20)</code>. This keeps the code portable across platforms with different type sizes.</div>
+      </div>
+
+      <h2>3. <code>calloc</code> — Allocate Zero-Initialised Memory</h2>
+      <p><code>calloc</code> (counted allocate) allocates memory for <em>n</em> objects of <em>size</em> bytes each and <strong>zero-initialises every byte</strong>.</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>calloc_signature.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">void</span> <span class="pu">*</span><span class="fn">calloc</span><span class="pu">(</span><span class="ty">size_t</span> nmemb<span class="pu">,</span> <span class="ty">size_t</span> size<span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>Compared with <code>malloc(n * size)</code>:</p>
+      <ul>
+        <li><strong>Zero-initialisation</strong>: All allocated bytes are set to <code>0</code>.</li>
+        <li><strong>Overflow-safe counting</strong>: The library checks internally that <code>nmemb * size</code> does not overflow <code>size_t</code>; <code>malloc(n * size)</code> can silently overflow, allocating far too little memory.</li>
+      </ul>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>calloc_example.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span> <span class="ty">int</span> x<span class="pu">;</span> <span class="ty">int</span> y<span class="pu">;</span> <span class="pu">}</span> <span class="ty">Point</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">3</span><span class="pu">;</span>
+    <span class="ty">Point</span> <span class="pu">*</span>pts <span class="pu">=</span> <span class="fn">calloc</span><span class="pu">(</span>n<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Point</span><span class="pu">));</span>  <span class="cm">/* all fields are 0 */</span>
+    <span class="kw">if</span> <span class="pu">(!</span>pts<span class="pu">)</span> <span class="pu">{</span> <span class="fn">perror</span><span class="pu">(</span><span class="st">"calloc"</span><span class="pu">);</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span> <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"pts[0].x = %d (should be 0)\n"</span><span class="pu">,</span> pts<span class="pu">[</span><span class="nm">0</span><span class="pu">].</span>x<span class="pu">);</span>
+
+    <span class="fn">free</span><span class="pu">(</span>pts<span class="pu">);</span>
+    pts <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+
+      <h2>4. <code>realloc</code> — Resize an Allocation</h2>
+      <p><code>realloc</code> changes the size of a previously allocated block. It may move the block to a new location if the original location cannot be extended.</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>realloc_signature.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">void</span> <span class="pu">*</span><span class="fn">realloc</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*</span>ptr<span class="pu">,</span> <span class="ty">size_t</span> new_size<span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>Key rules:</p>
+      <ul>
+        <li>Returns a pointer to the (possibly relocated) block, or <code>NULL</code> on failure.</li>
+        <li>If <code>realloc</code> fails, <strong>the original block is untouched</strong> — it is <em>not</em> freed.</li>
+        <li><code>realloc(NULL, size)</code> behaves exactly like <code>malloc(size)</code>.</li>
+        <li><code>realloc(ptr, 0)</code> behaviour is implementation-defined; treat it as equivalent to <code>free(ptr)</code>.</li>
+      </ul>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Never realloc into the same pointer:</strong> <code>ptr = realloc(ptr, n)</code> leaks the original block if <code>realloc</code> returns <code>NULL</code>. Always use a temporary: <code>void *tmp = realloc(ptr, n); if (tmp) ptr = tmp;</code></div>
+      </div>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>realloc_safe.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> <span class="pu">*</span>arr <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="nm">4</span> <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(!</span>arr<span class="pu">)</span> <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+
+    <span class="cm">/* Safe realloc pattern — NEVER write arr = realloc(arr, ...) */</span>
+    <span class="ty">int</span> <span class="pu">*</span>tmp <span class="pu">=</span> <span class="fn">realloc</span><span class="pu">(</span>arr<span class="pu">,</span> <span class="nm">8</span> <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+    <span class="kw">if</span> <span class="pu">(</span>tmp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"realloc failed\n"</span><span class="pu">);</span>
+        <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>   <span class="cm">/* original block still valid — free it */</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    arr <span class="pu">=</span> tmp<span class="pu">;</span>  <span class="cm">/* now safe to update arr */</span>
+
+    <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>
+    arr <span class="pu">=</span> NULL<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+
+      <h2>5. <code>free</code> — Release Heap Memory</h2>
+      <p><code>free(ptr)</code> returns the block pointed to by <code>ptr</code> to the heap allocator. <code>ptr</code> must have been returned by a prior <code>malloc</code>, <code>calloc</code>, or <code>realloc</code> call.</p>
+
+      <ul>
+        <li><code>free(NULL)</code> is explicitly defined to be a safe no-op.</li>
+        <li>After freeing, <strong>set the pointer to <code>NULL</code></strong> to prevent accidental use.</li>
+      </ul>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Double-free is Undefined Behaviour.</strong> Calling <code>free(p)</code> twice on the same pointer corrupts the allocator's internal data structures and is a common source of security vulnerabilities (heap corruption, arbitrary code execution).</div>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Use-after-free is Undefined Behaviour.</strong> Reading or writing through a pointer after <code>free</code> has been called on it can silently corrupt data or crash the program with unpredictable timing. Always set freed pointers to <code>NULL</code>.</div>
+      </div>
+
+      <h2>6. Memory Layout of a C Process</h2>
+      <p>A typical 64-bit Linux process virtual address space is divided into named segments:</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>process_memory_layout.txt</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">High addresses (e.g. 0xFFFF...)</span>
+<span class="pu">┌────────────────────────────┐</span>
+<span class="pu">│</span>  <span class="kw">Stack</span>  (grows <span class="nm">↓</span> downward)  <span class="pu">│</span>  <span class="cm">← local variables, return addresses</span>
+<span class="pu">├────────────────────────────┤</span>
+<span class="pu">│</span>          <span class="cm">(gap)</span>             <span class="pu">│</span>
+<span class="pu">├────────────────────────────┤</span>
+<span class="pu">│</span>  <span class="kw">Heap</span>   (grows <span class="nm">↑</span> upward)   <span class="pu">│</span>  <span class="cm">← malloc / calloc / realloc</span>
+<span class="pu">├────────────────────────────┤</span>
+<span class="pu">│</span>  <span class="ty">BSS</span>  (uninitialised data)  <span class="pu">│</span>  <span class="cm">← global/static vars = 0</span>
+<span class="pu">├────────────────────────────┤</span>
+<span class="pu">│</span>  <span class="ty">Data</span> (initialised data)   <span class="pu">│</span>  <span class="cm">← global/static vars with values</span>
+<span class="pu">├────────────────────────────┤</span>
+<span class="pu">│</span>  <span class="ty">Text</span> (code / read-only)   <span class="pu">│</span>  <span class="cm">← compiled machine instructions</span>
+<span class="pu">└────────────────────────────┘</span>
+<span class="cm">Low addresses  (e.g. 0x0000...)</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>The heap and stack grow toward each other. Modern OSes map memory on demand using virtual memory, so neither region actually occupies physical RAM until it is touched.</p>
+
+      <h2>7. Common Memory Errors</h2>
+
+      <table>
+        <thead><tr><th>Error</th><th>Example</th><th>Consequence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Memory leak</strong></td>
+            <td><code>p = malloc(n); p = NULL;</code> (without freeing)</td>
+            <td>Heap grows unboundedly; program eventually OOMs</td>
+          </tr>
+          <tr>
+            <td><strong>Use-after-free</strong></td>
+            <td><code>free(p); *p = 5;</code></td>
+            <td>Undefined behaviour; data corruption, crash, or exploit</td>
+          </tr>
+          <tr>
+            <td><strong>Double-free</strong></td>
+            <td><code>free(p); free(p);</code></td>
+            <td>Heap metadata corruption; security vulnerability</td>
+          </tr>
+          <tr>
+            <td><strong>Heap buffer overflow</strong></td>
+            <td><code>int *a = malloc(4); a[4] = 9;</code></td>
+            <td>Overwrites adjacent heap metadata or other allocations</td>
+          </tr>
+          <tr>
+            <td><strong>Uninitialised read</strong></td>
+            <td><code>int *a = malloc(sizeof(int)); printf("%d", *a);</code></td>
+            <td>Prints garbage; may cause logic errors; detected by Valgrind</td>
+          </tr>
+          <tr>
+            <td><strong>NULL dereference</strong></td>
+            <td><code>int *p = malloc(0); *p = 1;</code></td>
+            <td>Segmentation fault / crash</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>8. Detecting Memory Errors</h2>
+
+      <h3>Valgrind</h3>
+      <p>Valgrind is the gold-standard Linux tool for runtime memory analysis. It instruments your binary to track every allocation and every memory access.</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>valgrind_usage.sh</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm"># Compile with debug symbols</span>
+gcc -std=c17 -Wall -g -o myprog myprog.c
+
+<span class="cm"># Run under Valgrind with full leak checking</span>
+valgrind --leak-check=full --track-origins=yes --error-exitcode=1 ./myprog</pre>
+    </div>
+
+    <div class="prose">
+      <p>Valgrind reports: definite leaks, indirect leaks, uninitialised reads, invalid reads/writes, and double-frees.</p>
+
+      <h3>AddressSanitizer (ASan)</h3>
+      <p>AddressSanitizer is a compiler-instrumented sanitiser built into GCC and Clang. It detects heap and stack buffer overflows, use-after-free, and use-after-return at near-native speed.</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>asan_usage.sh</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm"># Enable AddressSanitizer and optional leak check</span>
+gcc -std=c17 -Wall -g -fsanitize=address -fno-omit-frame-pointer -o myprog myprog.c
+./myprog</pre>
+    </div>
+
+    <div class="prose">
+
+      <h3>GCC Stack Protector</h3>
+      <p>The <code>-fstack-protector-strong</code> flag inserts canary values below return addresses to detect stack-based buffer overflows at runtime:</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>stack_protector.sh</span><button class="copy-btn">Copy</button></div>
+      <pre>gcc -std=c17 -Wall -fstack-protector-strong -o myprog myprog.c</pre>
+    </div>
+
+    <div class="prose">
+
+      <h2>9. Best Practices</h2>
+
+      <h3>RAII-style wrappers</h3>
+      <p>In C, there is no automatic destructor, but you can adopt the discipline of writing small allocation and cleanup functions that always come in pairs:</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>raii_style.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Always pair: alloc → use → free before every return path */</span>
+<span class="ty">int</span> <span class="pu">*</span>arr <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span>n <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">));</span>
+<span class="kw">if</span> <span class="pu">(!</span>arr<span class="pu">)</span> <span class="kw">goto</span> cleanup<span class="pu">;</span>
+<span class="cm">/* ... use arr ... */</span>
+cleanup<span class="pu">:</span>
+    <span class="fn">free</span><span class="pu">(</span>arr<span class="pu">);</span>
+    arr <span class="pu">=</span> NULL<span class="pu">;</span></pre>
+    </div>
+
+    <div class="prose">
+
+      <h3>Always-free pattern</h3>
+      <p>Use a single exit path (via <code>goto cleanup</code> or a single <code>return</code> at the end) to ensure <code>free</code> is always called, even on error paths.</p>
+
+      <h3>Ownership semantics</h3>
+      <p>Document clearly which function <em>owns</em> (is responsible for freeing) each allocated block. In large codebases, pass ownership through naming conventions and comments:</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>ownership.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/*
+ * Returns a heap-allocated string — CALLER MUST FREE.
+ */</span>
+<span class="ty">char</span> <span class="pu">*</span><span class="fn">build_greeting</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>name<span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+
+      <h2>Summary</h2>
+      <ul>
+        <li>Stack memory is automatic and fast; heap memory is manual and flexible.</li>
+        <li><code>malloc(n)</code> allocates <code>n</code> uninitialised bytes; always check for <code>NULL</code>.</li>
+        <li><code>calloc(count, size)</code> allocates zero-filled memory and is overflow-safe.</li>
+        <li><code>realloc(ptr, new_size)</code> resizes a block; always use a temporary pointer to detect failure.</li>
+        <li><code>free(ptr)</code> releases heap memory; <code>free(NULL)</code> is safe; set pointer to <code>NULL</code> after freeing.</li>
+        <li>Double-free and use-after-free are undefined behaviour and serious security bugs.</li>
+        <li>Use Valgrind (<code>--leak-check=full</code>) or AddressSanitizer (<code>-fsanitize=address</code>) to catch memory errors.</li>
+        <li>Document ownership clearly; always ensure every allocation has a matching <code>free</code> on every code path.</li>
+      </ul>
+
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Examples &#8594;</a>
     </div>
 
   </main>

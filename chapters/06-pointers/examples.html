@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 6 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 6 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/06-pointers/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 6 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,257 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Pointer Basics &amp; Dereferencing</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Declaring pointers, taking addresses with <code>&amp;</code>, dereferencing with <code>*</code>, and modifying variables indirectly.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_basics.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> count <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="ty">int</span> <span class="pu">*</span>ptr <span class="pu">=</span> <span class="pu">&amp;</span>count<span class="pu">;</span> <span class="cm">/* ptr stores memory address of count */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"count value:              %d\n"</span><span class="pu">,</span> count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"count address (&amp;count):   %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"ptr stored address:       %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>ptr<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"ptr own address (&amp;ptr):    %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>ptr<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"dereference (*ptr):       %d\n"</span><span class="pu">,</span> <span class="pu">*</span>ptr<span class="pu">);</span>
+
+    <span class="cm">/* Modify count through ptr */</span>
+    <span class="pu">*</span>ptr <span class="pu">=</span> <span class="nm">25</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nAfter '*ptr = 25':\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"count value:              %d\n"</span><span class="pu">,</span> count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"dereference (*ptr):       %d\n"</span><span class="pu">,</span> <span class="pu">*</span>ptr<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -o 01_basics 01_basics.c &amp;&amp; ./01_basics</code><br>Notice that <code>&amp;count</code> and <code>ptr</code> print the exact same hexadecimal address.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Pointer Arithmetic vs Array Indexing</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Traversing an array using pointer steps and demonstrating how indexing maps directly to pointer math in compiled assembly.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_arithmetic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> numbers<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">11</span><span class="pu">,</span> <span class="nm">22</span><span class="pu">,</span> <span class="nm">33</span><span class="pu">,</span> <span class="nm">44</span><span class="pu">,</span> <span class="nm">55</span><span class="pu">};</span>
+    <span class="ty">size_t</span> len <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>numbers<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>numbers<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- 1. Traditional Index Loop ---\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> len<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"numbers[%zu] = %d (address: %p)\n"</span><span class="pu">,</span>
+               i<span class="pu">,</span> numbers<span class="pu">[</span>i<span class="pu">],</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>numbers<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n--- 2. Pointer Arithmetic Loop ---\n"</span><span class="pu">);</span>
+    <span class="cm">/* ptr++ advances by sizeof(int) = 4 bytes each step */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> numbers<span class="pu">;</span> p <span class="pu">&lt;</span> numbers <span class="pu">+</span> len<span class="pu">;</span> <span class="pu">++</span>p<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">ptrdiff_t</span> idx <span class="pu">=</span> p <span class="pu">-</span> numbers<span class="pu">;</span> <span class="cm">/* element offset */</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"offset %td: value = %d (address: %p)\n"</span><span class="pu">,</span>
+               idx<span class="pu">,</span> <span class="pu">*</span>p<span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/*
+     * Compiler equivalence:
+     * In x86-64 assembly, numbers[i] and *(numbers + i) compile to:
+     *   mov eax, DWORD PTR [rbp - 32 + rdi*4]
+     * In both cases, the index register (rdi) is scaled by 4 bytes.
+     */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output demonstrates each address incrementing by 4 bytes (e.g. <code>...00</code>, <code>...04</code>, <code>...08</code>, <code>...0C</code>, <code>...10</code>).</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Pass-by-Reference with Pointers (Swap)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Contrasting broken value-copy swap with pointer-based swap that modifies the caller's variables.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_swap.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Broken swap: receives local copies, caller's variables remain untouched */</span>
+<span class="ty">void</span> <span class="fn">swap_by_value</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> temp <span class="pu">=</span> a<span class="pu">;</span>
+    a <span class="pu">=</span> b<span class="pu">;</span>
+    b <span class="pu">=</span> temp<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Correct swap: receives memory addresses and dereferences to swap in-place */</span>
+<span class="ty">void</span> <span class="fn">swap_by_pointer</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">==</span> NULL <span class="pu">||</span> b <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span> <span class="cm">/* Defensive null check */</span>
+    <span class="ty">int</span> temp <span class="pu">=</span> <span class="pu">*</span>a<span class="pu">;</span>
+    <span class="pu">*</span>a <span class="pu">=</span> <span class="pu">*</span>b<span class="pu">;</span>
+    <span class="pu">*</span>b <span class="pu">=</span> temp<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">100</span><span class="pu">,</span> y <span class="pu">=</span> <span class="nm">200</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Initial:        x = %d, y = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="fn">swap_by_value</span><span class="pu">(</span>x<span class="pu">,</span> y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After value:    x = %d, y = %d (no change!)\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="fn">swap_by_pointer</span><span class="pu">(&amp;</span>x<span class="pu">,</span> <span class="pu">&amp;</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After pointer:  x = %d, y = %d (swapped!)\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Because C is strictly pass-by-value, passing addresses (<code>&amp;x</code>, <code>&amp;y</code>) is the canonical way to simulate pass-by-reference.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — The Four <code>const</code> Pointer Variations</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Detailed compile-time demonstration of mutable vs immutable pointer addresses and values.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_const_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> val1 <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="ty">int</span> val2 <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>
+
+    <span class="cm">/* 1. Non-const pointer to non-const int */</span>
+    <span class="ty">int</span> <span class="pu">*</span>p1 <span class="pu">=</span> <span class="pu">&amp;</span>val1<span class="pu">;</span>
+    <span class="pu">*</span>p1 <span class="pu">=</span> <span class="nm">11</span><span class="pu">;</span>        <span class="cm">/* OK: can modify target */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p1: *p1 = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p1<span class="pu">);</span>
+    p1 <span class="pu">=</span> <span class="pu">&amp;</span>val2<span class="pu">;</span>       <span class="cm">/* OK: can reassign pointer */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p1: *p1 = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p1<span class="pu">);</span>
+
+    <span class="cm">/* 2. Pointer to const int (pointer to constant data) */</span>
+    <span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>p2 <span class="pu">=</span> <span class="pu">&amp;</span>val1<span class="pu">;</span>
+    p2 <span class="pu">=</span> <span class="pu">&amp;</span>val2<span class="pu">;</span>       <span class="cm">/* OK: pointer itself can change */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p2: *p2 = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p2<span class="pu">);</span>
+    <span class="cm">/* *p2 = 12; */</span>   <span class="cm">/* COMPILER ERROR: assignment of read-only location */</span>
+
+    <span class="cm">/* 3. Const pointer to non-const int (constant pointer address) */</span>
+    <span class="ty">int</span> <span class="pu">*</span> <span class="ty">const</span> p3 <span class="pu">=</span> <span class="pu">&amp;</span>val1<span class="pu">;</span>
+    <span class="pu">*</span>p3 <span class="pu">=</span> <span class="nm">13</span><span class="pu">;</span>        <span class="cm">/* OK: data can be modified */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p3: *p3 = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p3<span class="pu">);</span>
+    <span class="cm">/* p3 = &amp;val2; */</span> <span class="cm">/* COMPILER ERROR: assignment of read-only variable */</span>
+
+    <span class="cm">/* 4. Const pointer to const int (everything immutable) */</span>
+    <span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span> <span class="ty">const</span> p4 <span class="pu">=</span> <span class="pu">&amp;</span>val1<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p4: *p4 = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p4<span class="pu">);</span>
+    <span class="cm">/* *p4 = 14;   */</span> <span class="cm">/* COMPILER ERROR */</span>
+    <span class="cm">/* p4 = &amp;val2; */</span> <span class="cm">/* COMPILER ERROR */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Rule: read from right to left starting at the variable identifier: <code>const int * const p</code> is "<code>p</code> is a <strong>const pointer</strong> to an <strong>int that is const</strong>".</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Modifying Caller Pointers via Double Pointers</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Using <code>int **</code> so a function can redirect where a pointer variable in the calling function points.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_double_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">static</span> <span class="ty">int</span> primary_buffer<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">10</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">};</span>
+<span class="ty">static</span> <span class="ty">int</span> backup_buffer<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span>  <span class="pu">=</span> <span class="pu">{</span><span class="nm">90</span><span class="pu">,</span> <span class="nm">80</span><span class="pu">,</span> <span class="nm">70</span><span class="pu">};</span>
+
+<span class="cm">/* Fails: modifies local copy of pointer */</span>
+<span class="ty">void</span> <span class="fn">switch_buffer_failed</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>buf<span class="pu">)</span> <span class="pu">{</span>
+    buf <span class="pu">=</span> backup_buffer<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Succeeds: receives address of caller's pointer (*buf_ptr) */</span>
+<span class="ty">void</span> <span class="fn">switch_buffer_success</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">**</span>buf_ptr<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>buf_ptr <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="pu">*</span>buf_ptr <span class="pu">=</span> backup_buffer<span class="pu">;</span> <span class="cm">/* redirect caller's pointer */</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> <span class="pu">*</span>active <span class="pu">=</span> primary_buffer<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Initial active[0]: %d\n"</span><span class="pu">,</span> active<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span> <span class="cm">/* 10 */</span>
+
+    <span class="fn">switch_buffer_failed</span><span class="pu">(</span>active<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After failed switch: %d\n"</span><span class="pu">,</span> active<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span> <span class="cm">/* still 10 */</span>
+
+    <span class="fn">switch_buffer_success</span><span class="pu">(&amp;</span>active<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After double pointer switch: %d\n"</span><span class="pu">,</span> active<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span> <span class="cm">/* now 90 */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>This same <code>Type **</code> pattern is used extensively in dynamic data structures (e.g. linked lists, tree roots, dynamic array resizing).</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Function Pointer Dispatch Table</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Building an extensible mathematical expression evaluator table using function pointers.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_fnptr_table.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="cm">/* Typedef for a binary arithmetic operation */</span>
+<span class="kw">typedef</span> <span class="ty">double</span> <span class="pu">(*</span>calc_op<span class="pu">)(</span><span class="ty">double</span><span class="pu">,</span> <span class="ty">double</span><span class="pu">);</span>
+
+<span class="ty">double</span> <span class="fn">op_add</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">op_sub</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">-</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">op_mul</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">*</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">op_div</span><span class="pu">(</span><span class="ty">double</span> a<span class="ty"></span><span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>b <span class="pu">==</span> <span class="nm">0.0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Error: Division by zero!\n"</span><span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">0.0</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> a <span class="pu">/</span> b<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>    symbol<span class="pu">;</span>
+    <span class="ty">calc_op</span> func<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">DispatchEntry</span><span class="pu">;</span>
+
+<span class="ty">static</span> <span class="ty">const</span> <span class="ty">DispatchEntry</span> table<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span>
+    <span class="pu">{</span><span class="st">'+'</span><span class="pu">,</span> op_add<span class="pu">},</span>
+    <span class="pu">{</span><span class="st">'-'</span><span class="pu">,</span> op_sub<span class="pu">},</span>
+    <span class="pu">{</span><span class="st">'*'</span><span class="pu">,</span> op_mul<span class="pu">},</span>
+    <span class="pu">{</span><span class="st">'/'</span><span class="pu">,</span> op_div<span class="pu">}</span>
+<span class="pu">};</span>
+
+<span class="ty">double</span> <span class="fn">evaluate</span><span class="pu">(</span><span class="ty">char</span> op<span class="pu">,</span> <span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">size_t</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>table<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>table<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>table<span class="pu">[</span>i<span class="pu">].</span>symbol <span class="pu">==</span> op<span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">return</span> table<span class="pu">[</span>i<span class="pu">].</span><span class="fn">func</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">);</span> <span class="cm">/* call via function pointer */</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Unknown operator '%c'\n"</span><span class="pu">,</span> op<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0.0</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"12 + 4 = %.2f\n"</span><span class="pu">,</span> <span class="fn">evaluate</span><span class="pu">(</span><span class="st">'+'</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"12 - 4 = %.2f\n"</span><span class="pu">,</span> <span class="fn">evaluate</span><span class="pu">(</span><span class="st">'-'</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"12 * 4 = %.2f\n"</span><span class="pu">,</span> <span class="fn">evaluate</span><span class="pu">(</span><span class="st">'*'</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"12 / 4 = %.2f\n"</span><span class="pu">,</span> <span class="fn">evaluate</span><span class="pu">(</span><span class="st">'/'</span><span class="pu">,</span> <span class="nm">12</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Dispatch tables eliminate long <code>switch</code> statements and allow adding new operations simply by registering new table rows without altering existing logic.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

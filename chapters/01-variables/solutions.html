@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 1 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 1 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/01-variables/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 1 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,204 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout warn"><span class="callout-icon">&#9888;&#65039;</span><div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly. Each solution compiles cleanly with <code>gcc -std=c17 -Wall -Wextra</code>.</div></div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Type Size Table</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Concepts: <code>sizeof</code> is evaluated at compile time and yields a <code>size_t</code>, so it is printed with <code>%zu</code>. The macro uses the stringising operator <code>#T</code> to print the type name without retyping it.</p>
+<div class="code-block">
+  <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/*
+ * Key concepts: sizeof yields a size_t, so we print it with %zu.
+ * A macro keeps the table rows consistent: #T turns the type name into a
+ * string literal, and sizeof(T) is evaluated at compile time.
+ */</span>
+<span class="pp">#define</span> <span class="fn">ROW</span><span class="pu">(</span>T<span class="pu">)</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-20s %2zu\n"</span><span class="pu">,</span> <span class="pp">#T</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>T<span class="pu">))</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-20s %s\n"</span><span class="pu">,</span> <span class="st">"Type"</span><span class="pu">,</span> <span class="st">"Bytes"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-20s %s\n"</span><span class="pu">,</span> <span class="st">"--------------------"</span><span class="pu">,</span> <span class="st">"-----"</span><span class="pu">);</span>
+
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">char</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">short</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">int</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">long</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">long</span> <span class="ty">long</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">float</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">double</span><span class="pu">);</span>
+    <span class="fn">ROW</span><span class="pu">(</span><span class="ty">long</span> <span class="ty">double</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">Type                 Bytes<br>-------------------- -----<br>char                  1<br>short                 2<br>int                   4<br>long                  8<br>long long             8<br>float                 4<br>double                8<br>long double           8</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>On 64-bit Windows <code>long</code> is 4; on x86-64 Linux <code>long double</code> is 16. Differences from your output are expected and are exactly the point of using <code>sizeof</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Temperature Converter</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Concepts: floating-point arithmetic. <code>9.0 / 5.0</code> forces <code>double</code> division; <code>9 / 5</code> would be integer division (= 1) and give the wrong answer. <code>%.2f</code> prints exactly two decimals.</p>
+<div class="code-block">
+  <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/*
+ * Key concepts: floating-point arithmetic with double, and "9.0 / 5.0".
+ * Writing 9 / 5 would be INTEGER division (= 1) and give a wrong answer.
+ * Using floating-point literals forces the whole expression into double.
+ */</span>
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">double</span> celsius    <span class="pu">=</span> <span class="nm">36.6</span><span class="pu">;</span>
+    <span class="ty">double</span> fahrenheit <span class="pu">=</span> celsius <span class="pu">*</span> <span class="nm">9.0</span> <span class="pu">/</span> <span class="nm">5.0</span> <span class="pu">+</span> <span class="nm">32.0</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Celsius    : %.2f\n"</span><span class="pu">,</span> celsius<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Fahrenheit : %.2f\n"</span><span class="pu">,</span> fahrenheit<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">Celsius    : 36.60<br>Fahrenheit : 97.88</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>36.6 &times; 1.8 + 32 = 97.88.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Limits Explorer</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Concepts: <code>&lt;limits.h&gt;</code> macros have different types, so each needs a matching specifier (<code>%d</code> for <code>int</code> constants, <code>%u</code> for <code>UINT_MAX</code>). The field width <code>%12d</code> right-aligns numbers.</p>
+<div class="code-block">
+  <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>
+
+<span class="cm">/*
+ * Key concepts: &lt;limits.h&gt; constants are macros expanding to integer
+ * constant expressions. Their types differ, so each needs the matching
+ * format specifier: INT_MIN/INT_MAX/CHAR_* are int (%d); UINT_MAX is
+ * unsigned int (%u).
+ */</span>
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12s\n"</span><span class="pu">,</span> <span class="st">"Constant"</span><span class="pu">,</span> <span class="st">"Value"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"-----------+-------------\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12d\n"</span><span class="pu">,</span> <span class="st">"CHAR_BIT"</span><span class="pu">,</span> CHAR_BIT<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12d\n"</span><span class="pu">,</span> <span class="st">"CHAR_MIN"</span><span class="pu">,</span> CHAR_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12d\n"</span><span class="pu">,</span> <span class="st">"CHAR_MAX"</span><span class="pu">,</span> CHAR_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12d\n"</span><span class="pu">,</span> <span class="st">"INT_MIN"</span><span class="pu">,</span>  INT_MIN<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12d\n"</span><span class="pu">,</span> <span class="st">"INT_MAX"</span><span class="pu">,</span>  INT_MAX<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-10s | %12u\n"</span><span class="pu">,</span> <span class="st">"UINT_MAX"</span><span class="pu">,</span> UINT_MAX<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">Constant   |        Value<br>-----------+-------------<br>CHAR_BIT   |            8<br>CHAR_MIN   |         -128<br>CHAR_MAX   |          127<br>INT_MIN    |  -2147483648<br>INT_MAX    |   2147483647<br>UINT_MAX   |   4294967295</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>If <code>CHAR_MIN</code> is <code>0</code> and <code>CHAR_MAX</code> is <code>255</code> on your machine, plain <code>char</code> is unsigned there (common on ARM Linux).</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Overflow Detector</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Concepts: signed overflow is undefined behaviour, unsigned overflow is well defined. The safe pattern tests the operands <em>before</em> the operation: <code>a &gt; INT_MAX - 1</code> can never itself overflow.</p>
+<div class="code-block">
+  <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;limits.h&gt;</span>
+
+<span class="cm">/*
+ * Key concepts: signed integer overflow is UNDEFINED BEHAVIOUR.
+ * The C standard places no requirements on the result: the program might
+ * print INT_MIN (typical two's-complement wrap-around), might crash, or the
+ * optimiser might delete code on the assumption that overflow never happens.
+ *
+ * 'volatile' prevents the compiler from folding the addition at compile
+ * time, so you see what the hardware does. The "safe" version checks BEFORE
+ * adding, which is the only portable way to avoid signed overflow.
+ */</span>
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">volatile</span> <span class="ty">int</span> x <span class="pu">=</span> INT_MAX<span class="pu">;</span>
+    <span class="ty">int</span> y <span class="pu">=</span> x <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>                       <span class="cm">/* undefined behaviour */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x     = %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x + 1 = %d\n"</span><span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="cm">/* Safe version: test first, then add. */</span>
+    <span class="ty">int</span> a <span class="pu">=</span> INT_MAX<span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(</span>a <span class="pu">&gt;</span> INT_MAX <span class="pu">-</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Adding 1 to %d would overflow - skipped.\n"</span><span class="pu">,</span> a<span class="pu">);</span>
+    <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+        a <span class="pu">=</span> a <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">x     = 2147483647<br>x + 1 = -2147483648<br>Adding 1 to 2147483647 would overflow - skipped.</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>The second line is the typical result at <code>-O0</code> on two's-complement hardware, but it is <strong>not guaranteed</strong>. Compiled with optimisation, or by a different compiler, the output may differ or the code may be transformed unpredictably. Compile with <code>-fsanitize=undefined</code> to have the overflow reported at run time.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Type Promotion Puzzle</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Concepts: integer promotion (<code>char</code>/<code>short</code> &rarr; <code>int</code>), usual arithmetic conversions (<code>int</code> &rarr; <code>double</code>, signed &rarr; unsigned), and the fact that <code>int / int</code> is integer division even when the result is stored in a <code>double</code>.</p>
+<div class="code-block">
+  <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+  <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/*
+ * Key concepts: integer promotion and the usual arithmetic conversions.
+ *  - Operands narrower than int are promoted to int first.
+ *  - If one operand is floating-point, the other is converted to it.
+ *  - If an unsigned operand has the same rank as a signed one, the signed
+ *    operand is converted to unsigned (so negative values wrap modulo 2^N).
+ */</span>
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span>          i <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="ty">double</span>       d <span class="pu">=</span> <span class="nm">2.5</span><span class="pu">;</span>
+    <span class="ty">char</span>         c <span class="pu">=</span> <span class="st">'A'</span><span class="pu">;</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> u <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="ty">short</span>        s1 <span class="pu">=</span> <span class="nm">200</span><span class="pu">,</span> s2 <span class="pu">=</span> <span class="nm">300</span><span class="pu">;</span>
+    <span class="ty">float</span>        f <span class="pu">=</span> <span class="nm">1.5f</span><span class="pu">;</span>
+
+    <span class="cm">/* 1. int + double -&gt; double */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1. 5 + 2.5          = %.1f\n"</span><span class="pu">,</span> i <span class="pu">+</span> d<span class="pu">);</span>
+
+    <span class="cm">/* 2. char + int -&gt; int ('A' is 65) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2. 'A' + 1          = %d\n"</span><span class="pu">,</span> c <span class="pu">+</span> <span class="nm">1</span><span class="pu">);</span>
+
+    <span class="cm">/* 3. unsigned int - int -&gt; unsigned int; 5 - 10 wraps around */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"3. 5u - 10          = %u\n"</span><span class="pu">,</span> u <span class="pu">-</span> <span class="nm">10</span><span class="pu">);</span>
+
+    <span class="cm">/* 4. int / int is integer division; the result is then widened */</span>
+    <span class="ty">double</span> q <span class="pu">=</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"4. double q = 7 / 2 = %.1f\n"</span><span class="pu">,</span> q<span class="pu">);</span>
+
+    <span class="cm">/* 5. short * short -&gt; int, so 60000 does NOT overflow a short */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5. 200 * 300        = %d (type size %zu)\n"</span><span class="pu">,</span> s1 <span class="pu">*</span> s2<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>s1 <span class="pu">*</span> s2<span class="pu">));</span>
+
+    <span class="cm">/* 6. float + double -&gt; double */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"6. sizeof(f + d)    = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>f <span class="pu">+</span> d<span class="pu">));</span>
+
+    <span class="cm">/* 7. Evaluation order matters: left-to-right with conversions */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"7. 1 / 2 * 3.0      = %.1f\n"</span><span class="pu">,</span> <span class="nm">1</span> <span class="pu">/</span> <span class="nm">2</span> <span class="pu">*</span> <span class="nm">3.0</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"   3.0 * 1 / 2      = %.1f\n"</span><span class="pu">,</span> <span class="nm">3.0</span> <span class="pu">*</span> <span class="nm">1</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+</div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code style="white-space:pre;">1. 5 + 2.5          = 7.5<br>2. 'A' + 1          = 66<br>3. 5u - 10          = 4294967291<br>4. double q = 7 / 2 = 3.0<br>5. 200 * 300        = 60000 (type size 4)<br>6. sizeof(f + d)    = 8<br>7. 1 / 2 * 3.0      = 0.0<br>   3.0 * 1 / 2      = 1.5</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>Why #3 is 4294967291: <code>10</code> is converted to <code>unsigned int</code>, so the result is 5 &minus; 10 = &minus;5 modulo 2<sup>32</sup> = 4,294,967,291. Why #7 differs: <code>1 / 2</code> is evaluated first (integer division &rarr; 0) and only then multiplied by <code>3.0</code>, while <code>3.0 * 1</code> is already a <code>double</code>.</div></div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../02-operators/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
     </div>
 
   </main>

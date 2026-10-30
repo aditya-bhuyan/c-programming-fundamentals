@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 4 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 4 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/04-functions/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 4 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,330 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Rectangle Area and Perimeter (declaration, definition, call)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Demonstrates function prototypes, definitions placed after <code>main()</code>, return values, and a <code>void</code> function that calls other functions.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_basic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Forward declarations (function prototypes) */</span>
+<span class="ty">double</span> <span class="fn">area</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">);</span>
+<span class="ty">double</span> <span class="fn">perimeter</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">);</span>
+<span class="ty">void</span> <span class="fn">print_rectangle</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">);</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">print_rectangle</span><span class="pu">(</span><span class="nm">5.0</span><span class="pu">,</span> <span class="nm">3.0</span><span class="pu">);</span>
+    <span class="fn">print_rectangle</span><span class="pu">(</span><span class="nm">10.5</span><span class="pu">,</span> <span class="nm">2.0</span><span class="pu">);</span>
+    <span class="fn">print_rectangle</span><span class="pu">(</span><span class="nm">7.25</span><span class="pu">,</span> <span class="nm">7.25</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Definitions: they can appear after main() because of the prototypes above */</span>
+<span class="ty">double</span> <span class="fn">area</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> width <span class="pu">*</span> height<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">double</span> <span class="fn">perimeter</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> <span class="nm">2.0</span> <span class="pu">*</span> <span class="pu">(</span>width <span class="pu">+</span> height<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">print_rectangle</span><span class="pu">(</span><span class="ty">double</span> width<span class="pu">,</span> <span class="ty">double</span> height<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Rectangle %.2f x %.2f\n"</span><span class="pu">,</span> width<span class="pu">,</span> height<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  Area      = %.2f\n"</span><span class="pu">,</span> <span class="fn">area</span><span class="pu">(</span>width<span class="pu">,</span> height<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  Perimeter = %.2f\n"</span><span class="pu">,</span> <span class="fn">perimeter</span><span class="pu">(</span>width<span class="pu">,</span> height<span class="pu">));</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 01_basic 01_basic.c</code> &nbsp;|&nbsp; Run: <code>./01_basic</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">Rectangle 5.00 x 3.00
+  Area      = 15.00
+  Perimeter = 16.00
+Rectangle 10.50 x 2.00
+  Area      = 21.00
+  Perimeter = 25.00
+Rectangle 7.25 x 7.25
+  Area      = 52.56
+  Perimeter = 29.00</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Pass-by-Value: A Swap That Fails, and One That Works</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">A function that receives copies cannot change the caller's variables. Passing addresses (a preview of Chapter 6) makes the swap work.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_passby.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Receives COPIES of x and y: the swap is lost when the function returns */</span>
+<span class="ty">void</span> <span class="fn">swap_fail</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> tmp <span class="pu">=</span> a<span class="pu">;</span>
+    a <span class="pu">=</span> b<span class="pu">;</span>
+    b <span class="pu">=</span> tmp<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  inside swap_fail: a = %d, b = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Receives the ADDRESSES of x and y, so it can modify the caller's variables.
+   (Pointers are covered fully in Chapter 6 - this is just a preview.) */</span>
+<span class="ty">void</span> <span class="fn">swap_ok</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> tmp <span class="pu">=</span> <span class="pu">*</span>a<span class="pu">;</span>
+    <span class="pu">*</span>a <span class="pu">=</span> <span class="pu">*</span>b<span class="pu">;</span>
+    <span class="pu">*</span>b <span class="pu">=</span> tmp<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  inside swap_ok:   *a = %d, *b = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>a<span class="pu">,</span> <span class="pu">*</span>b<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="ty">int</span> y <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Before:        x = %d, y = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="fn">swap_fail</span><span class="pu">(</span>x<span class="pu">,</span> y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After fail:    x = %d, y = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="fn">swap_ok</span><span class="pu">(&amp;</span>x<span class="pu">,</span> <span class="pu">&amp;</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After success: x = %d, y = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 02_passby 02_passby.c</code> &nbsp;|&nbsp; Run: <code>./02_passby</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">Before:        x = 10, y = 20
+  inside swap_fail: a = 20, b = 10
+After fail:    x = 10, y = 20
+  inside swap_ok:   *a = 20, *b = 10
+After success: x = 20, y = 10</code></div></div>
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+        <span class="callout-icon">&#128221;</span>
+        <div><strong>Preview:</strong> C has <em>only</em> pass-by-value. <code>swap_ok</code> still receives copies, but the copies are <em>addresses</em>, so dereferencing them with <code>*</code> reaches the caller's variables. Chapter 6 covers pointers in depth.</div>
+      </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Factorial and Fibonacci (iterative, recursive, memoised)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Compares an iterative and a recursive factorial, then computes Fibonacci numbers recursively with a <code>static</code> array as a memo table.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_recursive.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> FIB_MAX <span class="nm">90</span>   <span class="cm">/* memo table size; fib(93) is the largest value that fits in 64 bits */</span>
+
+<span class="cm">/* Iterative factorial: a simple loop, constant stack usage */</span>
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> <span class="fn">factorial_iter</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> result <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span> i <span class="pu">&lt;=</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        result <span class="pu">*=</span> i<span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> result<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Recursive factorial: base case n &lt;= 1, recursive case n * (n-1)! */</span>
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> <span class="fn">factorial_rec</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>                       <span class="cm">/* base case */</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> n <span class="pu">*</span> <span class="fn">factorial_rec</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">);</span>    <span class="cm">/* recursive case */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Fibonacci with memoisation. The static array is zero-initialised once
+   and keeps its contents between calls, so each value is computed once. */</span>
+<span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> <span class="fn">fib_memo</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">static</span> <span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span> memo<span class="pu">[</span>FIB_MAX <span class="pu">+</span> <span class="nm">1</span><span class="pu">];</span>
+
+    <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">&lt;=</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">long</span> <span class="ty">long</span><span class="pu">)</span>n<span class="pu">;</span>   <span class="cm">/* base cases: fib(0)=0, fib(1)=1 */</span>
+    <span class="pu">}</span>
+    <span class="kw">if</span> <span class="pu">(</span>memo<span class="pu">[</span>n<span class="pu">]</span> <span class="pu">!=</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> memo<span class="pu">[</span>n<span class="pu">];</span>                 <span class="cm">/* already computed */</span>
+    <span class="pu">}</span>
+    memo<span class="pu">[</span>n<span class="pu">]</span> <span class="pu">=</span> <span class="fn">fib_memo</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">+</span> <span class="fn">fib_memo</span><span class="pu">(</span>n <span class="pu">-</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="kw">return</span> memo<span class="pu">[</span>n<span class="pu">];</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-4s %-20s %-20s\n"</span><span class="pu">,</span> <span class="st">"n"</span><span class="pu">,</span> <span class="st">"factorial_iter"</span><span class="pu">,</span> <span class="st">"factorial_rec"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> n <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> n <span class="pu">&lt;=</span> <span class="nm">5</span><span class="pu">;</span> n<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-4d %-20llu %-20llu\n"</span><span class="pu">,</span> n<span class="pu">,</span> <span class="fn">factorial_iter</span><span class="pu">(</span>n<span class="pu">),</span> <span class="fn">factorial_rec</span><span class="pu">(</span>n<span class="pu">));</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-4d %-20llu %-20llu\n"</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="fn">factorial_iter</span><span class="pu">(</span><span class="nm">20</span><span class="pu">),</span> <span class="fn">factorial_rec</span><span class="pu">(</span><span class="nm">20</span><span class="pu">));</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nFibonacci (memoised):\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> n <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> n <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> n<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%llu "</span><span class="pu">,</span> <span class="fn">fib_memo</span><span class="pu">(</span>n<span class="pu">));</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nfib(50) = %llu\n"</span><span class="pu">,</span> <span class="fn">fib_memo</span><span class="pu">(</span><span class="nm">50</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"fib(90) = %llu\n"</span><span class="pu">,</span> <span class="fn">fib_memo</span><span class="pu">(</span><span class="nm">90</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 03_recursive 03_recursive.c</code> &nbsp;|&nbsp; Run: <code>./03_recursive</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">n    factorial_iter       factorial_rec       
+0    1                    1                   
+1    1                    1                   
+2    2                    2                   
+3    6                    6                   
+4    24                   24                  
+5    120                  120                 
+20   2432902008176640000  2432902008176640000 
+
+Fibonacci (memoised):
+0 1 1 2 3 5 8 13 21 34 55 
+fib(50) = 12586269025
+fib(90) = 2880067194370816120</code></div></div>
+    <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Why not <code>fib(100)</code>?</strong> <code>fib(94)</code> already overflows <code>unsigned long long</code> (<code>fib(93)</code> is the largest value that fits), so the memo array is simply sized at 90 for this demo. Also note that the unmemoised recursive version calls itself an exponential number of times, so it takes noticeable time past <code>n = 40</code>.</div>
+      </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Local, Global, and Static-Local Variables</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Three counters incremented on every call show how storage duration differs. A nested block also demonstrates shadowing.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_scope.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> global_counter <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>            <span class="cm">/* file scope, static storage duration */</span>
+
+<span class="ty">void</span> <span class="fn">counters</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> local_counter <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>         <span class="cm">/* automatic: re-created on EVERY call */</span>
+    <span class="kw">static</span> <span class="ty">int</span> static_counter <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> <span class="cm">/* initialised ONCE; persists between calls */</span>
+
+    local_counter<span class="pu">++;</span>
+    static_counter<span class="pu">++;</span>
+    global_counter<span class="pu">++;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  local = %d, static = %d, global = %d\n"</span><span class="pu">,</span>
+           local_counter<span class="pu">,</span> static_counter<span class="pu">,</span> global_counter<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Calling counters() three times:\n"</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">3</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">counters</span><span class="pu">();</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Block scope and shadowing */</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nOuter x = %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="pu">{</span>
+        <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>                 <span class="cm">/* shadows the outer x inside this block */</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Inner x = %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Outer x = %d (unchanged)\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nglobal_counter seen from main = %d\n"</span><span class="pu">,</span> global_counter<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 04_scope 04_scope.c</code> &nbsp;|&nbsp; Run: <code>./04_scope</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">Calling counters() three times:
+  local = 1, static = 1, global = 1
+  local = 1, static = 2, global = 2
+  local = 1, static = 3, global = 3
+
+Outer x = 1
+Inner x = 2
+Outer x = 1 (unchanged)
+
+global_counter seen from main = 3</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Dispatch Table of Function Pointers</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">An array of function pointers replaces a <code>switch</code> statement: the operation is selected by indexing the table.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_fnptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="ty">double</span> <span class="pu">(*</span><span class="ty">binary_op</span><span class="pu">)(</span><span class="ty">double</span><span class="pu">,</span> <span class="ty">double</span><span class="pu">);</span>
+
+<span class="ty">double</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span>      <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">subtract</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">-</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">multiply</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">*</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">double</span> <span class="fn">divide</span><span class="pu">(</span><span class="ty">double</span> a<span class="pu">,</span> <span class="ty">double</span> b<span class="pu">)</span>   <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">/</span> b<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Dispatch table: index -&gt; function */</span>
+    <span class="ty">binary_op</span> ops<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> add<span class="pu">,</span> subtract<span class="pu">,</span> multiply<span class="pu">,</span> divide <span class="pu">};</span>
+    <span class="kw">const</span> <span class="ty">char</span> symbols<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="st">'+'</span><span class="pu">,</span> <span class="st">'-'</span><span class="pu">,</span> <span class="st">'*'</span><span class="pu">,</span> <span class="st">'/'</span> <span class="pu">};</span>
+    <span class="ty">int</span> count <span class="pu">=</span> <span class="pu">(</span><span class="ty">int</span><span class="pu">)(</span><span class="kw">sizeof</span> ops <span class="pu">/</span> <span class="kw">sizeof</span> ops<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="ty">double</span> pairs<span class="pu">[][</span><span class="nm">2</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="pu">{</span><span class="nm">12.0</span><span class="pu">,</span> <span class="nm">4.0</span><span class="pu">},</span> <span class="pu">{</span><span class="nm">7.5</span><span class="pu">,</span> <span class="nm">0.0</span><span class="pu">}</span> <span class="pu">};</span>
+    <span class="ty">int</span> npairs <span class="pu">=</span> <span class="pu">(</span><span class="ty">int</span><span class="pu">)(</span><span class="kw">sizeof</span> pairs <span class="pu">/</span> <span class="kw">sizeof</span> pairs<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> p <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> p <span class="pu">&lt;</span> npairs<span class="pu">;</span> p<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">double</span> x <span class="pu">=</span> pairs<span class="pu">[</span>p<span class="pu">][</span><span class="nm">0</span><span class="pu">];</span>
+        <span class="ty">double</span> y <span class="pu">=</span> pairs<span class="pu">[</span>p<span class="pu">][</span><span class="nm">1</span><span class="pu">];</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"x = %.1f, y = %.1f\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="kw">if</span> <span class="pu">(</span>symbols<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">==</span> <span class="st">'/'</span> <span class="pu">&amp;&amp;</span> y <span class="pu">==</span> <span class="nm">0.0</span><span class="pu">)</span> <span class="pu">{</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"  %.1f / %.1f = skipped (division by zero)\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">);</span>
+                <span class="kw">continue</span><span class="pu">;</span>
+            <span class="pu">}</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"  %.1f %c %.1f = %.2f\n"</span><span class="pu">,</span> x<span class="pu">,</span> symbols<span class="pu">[</span>i<span class="pu">],</span> y<span class="pu">,</span> ops<span class="pu">[</span>i<span class="pu">](</span>x<span class="pu">,</span> y<span class="pu">));</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 05_fnptr 05_fnptr.c</code> &nbsp;|&nbsp; Run: <code>./05_fnptr</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">x = 12.0, y = 4.0
+  12.0 + 4.0 = 16.00
+  12.0 - 4.0 = 8.00
+  12.0 * 4.0 = 48.00
+  12.0 / 4.0 = 3.00
+x = 7.5, y = 0.0
+  7.5 + 0.0 = 7.50
+  7.5 - 0.0 = 7.50
+  7.5 * 0.0 = 0.00
+  7.5 / 0.0 = skipped (division by zero)</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Variadic Function with <code>&lt;stdarg.h&gt;</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Writes <code>my_sum(int count, ...)</code> using <code>va_list</code>, <code>va_start</code>, <code>va_arg</code>, and <code>va_end</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_varargs.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdarg.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Sums `count` int arguments that follow the fixed parameter. */</span>
+<span class="ty">int</span> <span class="fn">my_sum</span><span class="pu">(</span><span class="ty">int</span> count<span class="pu">,</span> <span class="pu">...)</span> <span class="pu">{</span>
+    <span class="ty">va_list</span> args<span class="pu">;</span>
+    <span class="fn">va_start</span><span class="pu">(</span>args<span class="pu">,</span> count<span class="pu">);</span>          <span class="cm">/* start AFTER the last named parameter */</span>
+
+    <span class="ty">int</span> total <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        total <span class="pu">+=</span> <span class="fn">va_arg</span><span class="pu">(</span>args<span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span> <span class="cm">/* fetch next argument, as an int */</span>
+    <span class="pu">}</span>
+
+    <span class="fn">va_end</span><span class="pu">(</span>args<span class="pu">);</span>                   <span class="cm">/* always clean up */</span>
+    <span class="kw">return</span> total<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"my_sum(3, 10, 20, 30)    = %d\n"</span><span class="pu">,</span> <span class="fn">my_sum</span><span class="pu">(</span><span class="nm">3</span><span class="pu">,</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"my_sum(5, 1, 2, 3, 4, 5) = %d\n"</span><span class="pu">,</span> <span class="fn">my_sum</span><span class="pu">(</span><span class="nm">5</span><span class="pu">,</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"my_sum(1, -7)            = %d\n"</span><span class="pu">,</span> <span class="fn">my_sum</span><span class="pu">(</span><span class="nm">1</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">7</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"my_sum(0)                = %d\n"</span><span class="pu">,</span> <span class="fn">my_sum</span><span class="pu">(</span><span class="nm">0</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -Wextra -o 06_varargs 06_varargs.c</code> &nbsp;|&nbsp; Run: <code>./06_varargs</code><br>Output:<code style="display:block;white-space:pre;margin-top:.3rem;">my_sum(3, 10, 20, 30)    = 60
+my_sum(5, 1, 2, 3, 4, 5) = 15
+my_sum(1, -7)            = -7
+my_sum(0)                = 0</code></div></div>
+    <div class="callout danger">
+        <span class="callout-icon">&#10060;</span>
+        <div><strong>No type safety:</strong> the compiler cannot check variadic arguments. If you pass fewer values than <code>count</code>, or a <code>double</code> where <code>va_arg(args, int)</code> expects an <code>int</code>, the behaviour is undefined.</div>
+      </div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 3 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 3 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/03-control-flow/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 3 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,314 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+
+      <h2>1. The <code>if</code> / <code>else if</code> / <code>else</code> Statement</h2>
+      <p>In C, programs execute sequentially line-by-line unless directed otherwise. Conditional statements allow code paths to branch based on Boolean conditions. In C, <strong>0 evaluates to false</strong> and <strong>any non-zero value evaluates to true</strong>.</p>
+
+      <p>The basic syntax forms are:</p>
+    </div><!-- end prose -->
+
+    <div class="code-block">
+      <div class="code-header"><span>if_syntax.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Simple if */</span>
+<span class="kw">if</span> <span class="pu">(</span>condition<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* executes if condition is non-zero (true) */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* if - else */</span>
+<span class="kw">if</span> <span class="pu">(</span>condition<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* executes when true */</span>
+<span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+    <span class="cm">/* executes when false */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Multi-way branch: if - else if - else */</span>
+<span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">90</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade A\n"</span><span class="pu">);</span>
+<span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">80</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade B\n"</span><span class="pu">);</span>
+<span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">70</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade C\n"</span><span class="pu">);</span>
+<span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade F\n"</span><span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>The Dangling Else Problem</h3>
+      <p>When nested <code>if</code> statements are written without curly braces, an ambiguity arises over which <code>if</code> an <code>else</code> belongs to. In C, the rule is strict:</p>
+
+      <blockquote><strong>C Rule:</strong> An <code>else</code> clause always associates with the closest preceding unmatched <code>if</code> at the same nesting level.</blockquote>
+
+      <p>Consider this misleadingly indented code:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>dangling_else.c — dangerous omission of braces</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* WARNING: Indentation does NOT dictate binding in C! */</span>
+<span class="kw">if</span> <span class="pu">(</span>x <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span>
+    <span class="kw">if</span> <span class="pu">(</span>y <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Both are positive\n"</span><span class="pu">);</span>
+<span class="kw">else</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x is not positive (BUG: this executes when x &gt; 0 and y &lt;= 0!)\n"</span><span class="pu">);</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>Even though the <code>else</code> aligns visually with the outer <code>if (x &gt; 0)</code>, the C compiler attaches it to the inner <code>if (y &gt; 0)</code>. If <code>x = 5</code> and <code>y = -1</code>, the program prints <code>"x is not positive"</code>!</p>
+
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Best Practice: Always use braces <code>{}</code></strong> — even for single-statement bodies. Omitting braces is a frequent source of severe security and logic bugs (such as Apple's infamous <em>goto fail</em> bug). Explicit braces make intent clear and future code additions safe.</div>
+      </div>
+
+      <h2>2. The <code>switch</code> / <code>case</code> Statement</h2>
+      <p>When you need to test a single integer expression against multiple discrete constant values, a <code>switch</code> statement is often cleaner and faster than a long chain of <code>if ... else if</code> statements.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>switch_syntax.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">switch</span> <span class="pu">(</span>expression<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">case</span> constant1<span class="pu">:</span>
+        <span class="cm">/* statements */</span>
+        <span class="kw">break</span><span class="pu">;</span>
+    <span class="kw">case</span> constant2<span class="pu">:</span>
+        <span class="cm">/* statements */</span>
+        <span class="kw">break</span><span class="pu">;</span>
+    <span class="kw">default</span><span class="pu">:</span>
+        <span class="cm">/* executes if no case matches */</span>
+        <span class="kw">break</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Fall-Through Behaviour and <code>break</code></h3>
+      <p>Unlike some modern languages, C switch cases <strong>fall through by default</strong>. When a matching <code>case</code> is found, execution begins there and continues straight through all subsequent cases until a <code>break</code> statement or the end of the switch block is encountered.</p>
+
+      <p>This allows deliberate grouping of multiple cases sharing identical behavior:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>grouping_cases.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">char</span> ch <span class="pu">=</span> <span class="st">'e'</span><span class="pu">;</span>
+
+<span class="kw">switch</span> <span class="pu">(</span>ch<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">case</span> <span class="st">'a'</span><span class="pu">:</span>
+    <span class="kw">case</span> <span class="st">'e'</span><span class="pu">:</span>
+    <span class="kw">case</span> <span class="st">'i'</span><span class="pu">:</span>
+    <span class="kw">case</span> <span class="st">'o'</span><span class="pu">:</span>
+    <span class="kw">case</span> <span class="st">'u'</span><span class="pu">:</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"'%c' is a vowel\n"</span><span class="pu">,</span> ch<span class="pu">);</span>
+        <span class="kw">break</span><span class="pu">;</span>
+    <span class="kw">default</span><span class="pu">:</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"'%c' is not a lowercase vowel\n"</span><span class="pu">,</span> ch<span class="pu">);</span>
+        <span class="kw">break</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Accidental Fall-Through:</strong> Forgetting a <code>break</code> statement causes execution to run into the next case silently. Always comment intentional fall-through with <code>/* FALLTHROUGH */</code> to signal intent to compilers and reviewers.</div>
+      </div>
+
+      <div class="callout danger">
+        <span class="callout-icon">&#10060;</span>
+        <div><strong>Integer Types Only:</strong> In C, <code>switch</code> expressions and <code>case</code> labels <strong>must evaluate to integer types</strong> (such as <code>int</code>, <code>char</code>, <code>short</code>, <code>long</code>, or <code>enum</code>). You <strong>cannot</strong> switch on floating-point numbers (<code>float</code>, <code>double</code>), strings, or structs.</div>
+      </div>
+
+      <h3>When to Use <code>switch</code> vs <code>if-else</code></h3>
+      <table>
+        <thead><tr><th>Scenario</th><th>Recommended Construct</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>Discrete integer/enum/character choices</td><td><code>switch</code></td><td>Clean syntax, compiler can generate fast jump tables (O(1))</td></tr>
+          <tr><td>Range checks (e.g. <code>x &gt;= 10 &amp;&amp; x &lt;= 20</code>)</td><td><code>if / else if</code></td><td><code>case</code> labels must be compile-time constants</td></tr>
+          <tr><td>Floating-point comparisons (<code>float</code>, <code>double</code>)</td><td><code>if / else if</code></td><td><code>switch</code> does not support float types</td></tr>
+          <tr><td>Compound conditions (<code>x &gt; 0 &amp;&amp; y == 2</code>)</td><td><code>if / else if</code></td><td><code>switch</code> tests only a single expression value</td></tr>
+        </tbody>
+      </table>
+
+      <h2>3. The <code>while</code> Loop</h2>
+      <p>The <code>while</code> loop is a <strong>pre-condition loop</strong>: the condition expression is evaluated <em>before</em> each iteration. If the condition is false initially, the loop body does not execute at all (0 iterations).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>while_loop.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> count <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+
+<span class="kw">while</span> <span class="pu">(</span>count <span class="pu">&lt;=</span> <span class="nm">5</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Count: %d\n"</span><span class="pu">,</span> count<span class="pu">);</span>
+    count<span class="pu">++;</span>  <span class="cm">/* Update step: essential to avoid infinite loop */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Infinite loop pattern */</span>
+<span class="kw">while</span> <span class="pu">(</span><span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* runs indefinitely until break is called */</span>
+    <span class="kw">if</span> <span class="pu">(</span>some_event<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">break</span><span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>4. The <code>do-while</code> Loop</h2>
+      <p>The <code>do-while</code> loop is a <strong>post-condition loop</strong>: the condition is checked <em>after</em> the loop body executes. Therefore, the body is <strong>guaranteed to run at least once</strong>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>dowhile_loop.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> choice<span class="pu">;</span>
+
+<span class="kw">do</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1. Start Game\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2. High Scores\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"3. Exit\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Enter choice: "</span><span class="pu">);</span>
+    <span class="cm">/* Process input... */</span>
+<span class="pu">}</span> <span class="kw">while</span> <span class="pu">(</span>choice <span class="pu">&lt;</span> <span class="nm">1</span> <span class="pu">||</span> choice <span class="pu">&gt;</span> <span class="nm">3</span><span class="pu">);</span>  <span class="cm">/* NOTE: semicolon required here */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div><strong>Primary Use Case:</strong> Input validation and menu display. You must prompt the user at least once before you can inspect whether their input was valid or not.</div>
+      </div>
+
+      <h2>5. The <code>for</code> Loop</h2>
+      <p>The <code>for</code> loop consolidates loop initialization, condition testing, and iteration updates into a single compact header line:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>for_syntax.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">for</span> <span class="pu">(</span>initialization<span class="pu">;</span> condition<span class="pu">;</span> update<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* loop body */</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Execution Order</h3>
+      <ol>
+        <li><strong>Initialization:</strong> Evaluated exactly once when entering the loop (e.g. <code>int i = 0</code> in C99+).</li>
+        <li><strong>Condition:</strong> Evaluated before every iteration. If non-zero (true), body runs; if 0 (false), loop terminates.</li>
+        <li><strong>Body:</strong> The block of code inside the loop executes.</li>
+        <li><strong>Update:</strong> Evaluated after the body finishes (e.g. <code>i++</code>). Control then loops back to Step 2.</li>
+      </ol>
+
+      <h3>Optional Clauses and Multiple Expressions</h3>
+      <p>All three parts of a <code>for</code> loop are optional:</p>
+      <ul>
+        <li><code>for (;;)</code> — An infinite loop (equivalent to <code>while (1)</code>). In C, an omitted condition defaults to true.</li>
+        <li>Using the comma operator <code>,</code>, you can initialize and update multiple variables simultaneously:</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>multi_var_for.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Iterate with two indices moving in opposite directions */</span>
+<span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">,</span> j <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span> i <span class="pu">&lt;</span> j<span class="pu">;</span> i<span class="pu">++,</span> j<span class="pu">--</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"i = %d, j = %d\n"</span><span class="pu">,</span> i<span class="pu">,</span> j<span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Nested Loops</h3>
+      <p>Loops can be nested inside other loops. For each single iteration of the outer loop, the inner loop completes its full set of iterations:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>nested_grid.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> row <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> row <span class="pu">&lt;=</span> <span class="nm">3</span><span class="pu">;</span> row<span class="pu">++)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> col <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> col <span class="pu">&lt;=</span> <span class="nm">4</span><span class="pu">;</span> col<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"(%d,%d) "</span><span class="pu">,</span> row<span class="pu">,</span> col<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>6. Jump Statements: <code>break</code> and <code>continue</code></h2>
+      <ul>
+        <li><strong><code>break</code></strong> — Immediately terminates the innermost enclosing <code>for</code>, <code>while</code>, <code>do-while</code>, or <code>switch</code> statement. Control transfers to the statement following the block.</li>
+        <li><strong><code>continue</code></strong> — Skips the rest of the current iteration. In <code>while</code> and <code>do-while</code>, control jumps straight to the condition evaluation. In a <code>for</code> loop, control jumps straight to the <strong>update expression</strong> (e.g. <code>i++</code>) before evaluating the condition.</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>No Labeled Breaks in C:</strong> Unlike languages like Java or JavaScript (<code>break outerLoop;</code>), C does <strong>not</strong> support labeled break statements. A <code>break</code> in C only ever exits the single innermost loop or switch.</div>
+      </div>
+
+      <h2>7. The <code>goto</code> Statement</h2>
+      <p>C provides the unconditional jump operator <code>goto</code>, which transfers execution to a named label within the same function:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>goto_cleanup.c — Linux kernel style error handling</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> <span class="fn">process_file</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> status <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>f <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>f<span class="pu">)</span> <span class="kw">return</span> <span class="pu">-</span><span class="nm">1</span><span class="pu">;</span>
+
+    <span class="ty">char</span> <span class="pu">*</span>buffer <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="nm">1024</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(!</span>buffer<span class="pu">)</span> <span class="pu">{</span>
+        status <span class="pu">=</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">;</span>
+        <span class="kw">goto</span> cleanup_file<span class="pu">;</span>  <span class="cm">/* Jump to clean up previously acquired file */</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* ... do work ... */</span>
+
+cleanup_buffer<span class="pu">:</span>
+    <span class="fn">free</span><span class="pu">(</span>buffer<span class="pu">);</span>
+cleanup_file<span class="pu">:</span>
+    <span class="fn">fclose</span><span class="pu">(</span>f<span class="pu">);</span>
+    <span class="kw">return</span> status<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Valid vs Invalid Use Cases for <code>goto</code></h3>
+      <ul>
+        <li><strong>Valid (Standard C idiom):</strong> Centralized cleanup and resource deallocation on error (as shown above in systems and kernel code), or breaking out of deeply nested loops.</li>
+        <li><strong>Avoid:</strong> Jumping backwards, jumping into the middle of loops or blocks, or replacing standard loop constructs. Overuse creates unstructured "spaghetti code" that is difficult to trace and maintain.</li>
+      </ul>
+
+      <h2>8. Loop Performance and Optimization Tips</h2>
+
+      <h3>1. Hoist Invariants Out of Loops</h3>
+      <p>Expressions whose values do not change across iterations should be computed once before the loop begins rather than re-evaluated every cycle:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>hoisting.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* BAD: strlen() runs on EVERY iteration -> O(N^2) complexity */</span>
+<span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="fn">strlen</span><span class="pu">(</span>str<span class="pu">);</span> i<span class="pu">++)</span> <span class="pu">{</span>
+    <span class="cm">/* ... */</span>
+<span class="pu">}</span>
+
+<span class="cm">/* GOOD: Hoist invariant outside loop -> O(N) complexity */</span>
+<span class="ty">size_t</span> len <span class="pu">=</span> <span class="fn">strlen</span><span class="pu">(</span>str<span class="pu">);</span>
+<span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> len<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+    <span class="cm">/* ... */</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>2. Prefer Counting Down to Zero When Order Does Not Matter</h3>
+      <p>CPUs often set zero and sign flags automatically when decrementing a register (e.g. <code>subs</code> / <code>test</code>). Comparing against 0 (e.g. <code>while (--n &gt;= 0)</code> or <code>for (int i = N; i-- &gt; 0;)</code>) can save an explicit comparison instruction on low-level architectures.</p>
+
+      <h2>Summary</h2>
+      <ul>
+        <li><strong>Conditionals:</strong> <code>if/else</code> branches on non-zero (true) vs 0 (false). Always use curly braces to avoid dangling-else ambiguities.</li>
+        <li><strong>Switch:</strong> <code>switch</code> operates on integer types only. Remember <code>break</code> to prevent unintended fall-through.</li>
+        <li><strong>Loops:</strong> <code>while</code> tests at the top (0+ iterations); <code>do-while</code> tests at the bottom (1+ iterations); <code>for</code> integrates initialization, condition, and update.</li>
+        <li><strong>Loop Control:</strong> <code>break</code> exits the innermost loop/switch; <code>continue</code> jumps to the next iteration (to update clause in <code>for</code>).</li>
+        <li><strong>goto:</strong> Limit <code>goto</code> to centralized error/resource cleanup and breaking nested loops.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

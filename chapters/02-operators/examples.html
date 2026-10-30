@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 2 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 2 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/02-operators/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 2 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,298 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout info"><span class="callout-icon">&#128221;</span><div>All examples compile cleanly with <code>gcc -std=c17 -Wall -Wextra</code> (except Example 5, which deliberately omits parentheses and so triggers compiler warnings). Type them in, run them, and change the values to test your understanding.</div></div>
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Arithmetic operators</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">All five arithmetic operators, the integer-division trap, and how <code>%</code> behaves with negative operands (C99+).</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_arithmetic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">17</span><span class="pu">;</span>
+    <span class="ty">int</span> b <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a = %d, b = %d\n\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+
+    <span class="cm">/* The five arithmetic operators */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a + b = %d\n"</span><span class="pu">,</span> a <span class="pu">+</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a - b = %d\n"</span><span class="pu">,</span> a <span class="pu">-</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a * b = %d\n"</span><span class="pu">,</span> a <span class="pu">*</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a / b = %d   &lt;- integer division: fraction discarded\n"</span><span class="pu">,</span> a <span class="pu">/</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a %% b = %d    &lt;- remainder (note %%%% to print a literal %%)\n"</span><span class="pu">,</span> a <span class="pu">%</span> b<span class="pu">);</span>
+
+    <span class="cm">/* The integer-division trap */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n--- Integer division trap ---\n"</span><span class="pu">);</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">7</span><span class="pu">,</span> y <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>
+    <span class="ty">double</span> wrong <span class="pu">=</span> x <span class="pu">/</span> y<span class="pu">;</span>           <span class="cm">/* int / int happens FIRST -&gt; 3, then converted */</span>
+    <span class="ty">double</span> right <span class="pu">=</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>x <span class="pu">/</span> y<span class="pu">;</span>   <span class="cm">/* cast one operand -&gt; floating-point division  */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"7 / 2          = %d\n"</span><span class="pu">,</span> <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double wrong   = %.2f\n"</span><span class="pu">,</span> wrong<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"double right   = %.2f\n"</span><span class="pu">,</span> right<span class="pu">);</span>
+
+    <span class="cm">/* Modulo with negative operands (C99 and later: truncation toward zero) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n--- Modulo with negatives (C99+) ---\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">" 7 / 2 = %2d   7 %% 2  = %2d\n"</span><span class="pu">,</span>  <span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">,</span>  <span class="nm">7</span> <span class="pu">%</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"-7 / 2 = %2d  -7 %% 2  = %2d\n"</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">7</span> <span class="pu">%</span> <span class="nm">2</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">" 7 / -2 = %2d   7 %% -2 = %2d\n"</span><span class="pu">,</span>  <span class="nm">7</span> <span class="pu">/</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">,</span>  <span class="nm">7</span> <span class="pu">%</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"-7 / -2 = %2d  -7 %% -2 = %2d\n"</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">7</span> <span class="pu">/</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">7</span> <span class="pu">%</span> <span class="pu">-</span><span class="nm">2</span><span class="pu">);</span>
+
+    <span class="cm">/* Identity that always holds: (a / b) * b + a % b == a */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nIdentity check: (-7 / 2) * 2 + (-7 %% 2) = %d\n"</span><span class="pu">,</span> <span class="pu">(-</span><span class="nm">7</span> <span class="pu">/</span> <span class="nm">2</span><span class="pu">)</span> <span class="pu">*</span> <span class="nm">2</span> <span class="pu">+</span> <span class="pu">(-</span><span class="nm">7</span> <span class="pu">%</span> <span class="nm">2</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>a = 17, b = 5<br>&nbsp;<br>a + b = 22<br>a - b = 12<br>a * b = 85<br>a / b = 3   &lt;- integer division: fraction discarded<br>a % b = 2    &lt;- remainder (note %% to print a literal %)<br>&nbsp;<br>--- Integer division trap ---<br>7 / 2          = 3<br>double wrong   = 3.00<br>double right   = 3.50<br>&nbsp;<br>--- Modulo with negatives (C99+) ---<br> 7 / 2 =  3   7 % 2  =  1<br>-7 / 2 = -3  -7 % 2  = -1<br> 7 / -2 = -3   7 % -2 =  1<br>-7 / -2 =  3  -7 % -2 = -1<br>&nbsp;<br>Identity check: (-7 / 2) * 2 + (-7 % 2) = -7</code></div></div>
+<div class="callout warn"><span class="callout-icon">&#9888;&#65039;</span><div>Annotation: <code>double wrong = x / y;</code> still yields <code>3.00</code> because the division is performed on two <code>int</code>s <em>before</em> the result is converted. The cast in <code>(double)x / y</code> promotes <code>y</code> too, so the division is done in floating point.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Relational operators</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Every comparison produces the <code>int</code> value <code>0</code> or <code>1</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_relational.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">10</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">20</span><span class="pu">,</span> c <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+
+    <span class="cm">/* Every relational expression yields an int: 1 (true) or 0 (false) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a = %d, b = %d, c = %d\n\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">,</span> c<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a == b : %d\n"</span><span class="pu">,</span> a <span class="pu">==</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a == c : %d\n"</span><span class="pu">,</span> a <span class="pu">==</span> c<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a != b : %d\n"</span><span class="pu">,</span> a <span class="pu">!=</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a &lt;  b : %d\n"</span><span class="pu">,</span> a <span class="pu">&lt;</span>  b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a &gt;  b : %d\n"</span><span class="pu">,</span> a <span class="pu">&gt;</span>  b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a &lt;= c : %d\n"</span><span class="pu">,</span> a <span class="pu">&lt;=</span> c<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a &gt;= b : %d\n"</span><span class="pu">,</span> a <span class="pu">&gt;=</span> b<span class="pu">);</span>
+
+    <span class="cm">/* The result is a plain int, not a special bool type */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nsizeof(a &lt; b)   = %zu bytes\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>a <span class="pu">&lt;</span> b<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"(a &lt; b) + (b &gt; c) = %d\n"</span><span class="pu">,</span> <span class="pu">(</span>a <span class="pu">&lt;</span> b<span class="pu">)</span> <span class="pu">+</span> <span class="pu">(</span>b <span class="pu">&gt;</span> c<span class="pu">));</span>
+
+    <span class="cm">/* Any non-zero value counts as true in a condition */</span>
+    <span class="ty">int</span> n <span class="pu">=</span> <span class="nm">42</span><span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(</span>n<span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"n = 42 is treated as true\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* '=' assigns, '==' compares: the result of an assignment is the assigned value */</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="ty">int</span> r <span class="pu">=</span> <span class="pu">(</span>x <span class="pu">=</span> <span class="nm">0</span><span class="pu">);</span>               <span class="cm">/* assigns 0 to x; r receives 0 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nAfter r = (x = 0): x = %d, r = %d\n"</span><span class="pu">,</span> x<span class="pu">,</span> r<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"x == 0 gives %d\n"</span><span class="pu">,</span> x <span class="pu">==</span> <span class="nm">0</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>a = 10, b = 20, c = 10<br>&nbsp;<br>a == b : 0<br>a == c : 1<br>a != b : 1<br>a &lt;  b : 1<br>a &gt;  b : 0<br>a &lt;= c : 1<br>a &gt;= b : 0<br>&nbsp;<br>sizeof(a &lt; b)   = 4 bytes<br>(a &lt; b) + (b &gt; c) = 2<br>n = 42 is treated as true<br>&nbsp;<br>After r = (x = 0): x = 0, r = 0<br>x == 0 gives 1</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>Annotation: the size of <code>a &lt; b</code> is the size of an <code>int</code>, proving the result is not a special boolean type. Also see how the value of an assignment expression (<code>x = 0</code>) is the value assigned &mdash; which is why <code>if (x = 0)</code> is a bug.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Short-circuit evaluation</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Helper functions with <code>printf</code> side effects reveal exactly which operands are evaluated.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_logical.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Each helper announces itself, so we can see exactly which operands are evaluated */</span>
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">left</span><span class="pu">(</span><span class="ty">int</span> value<span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  left()  evaluated -&gt; %d\n"</span><span class="pu">,</span> value<span class="pu">);</span>
+    <span class="kw">return</span> value<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">right</span><span class="pu">(</span><span class="ty">int</span> value<span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  right() evaluated -&gt; %d\n"</span><span class="pu">,</span> value<span class="pu">);</span>
+    <span class="kw">return</span> value<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> result<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1) left(0) &amp;&amp; right(1)   [AND with false left]\n"</span><span class="pu">);</span>
+    result <span class="pu">=</span> <span class="fn">left</span><span class="pu">(</span><span class="nm">0</span><span class="pu">)</span> <span class="pu">&amp;&amp;</span> <span class="fn">right</span><span class="pu">(</span><span class="nm">1</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  result = %d   (right() was skipped)\n\n"</span><span class="pu">,</span> result<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2) left(1) &amp;&amp; right(1)   [AND with true left]\n"</span><span class="pu">);</span>
+    result <span class="pu">=</span> <span class="fn">left</span><span class="pu">(</span><span class="nm">1</span><span class="pu">)</span> <span class="pu">&amp;&amp;</span> <span class="fn">right</span><span class="pu">(</span><span class="nm">1</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  result = %d   (both evaluated)\n\n"</span><span class="pu">,</span> result<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"3) left(1) || right(0)   [OR with true left]\n"</span><span class="pu">);</span>
+    result <span class="pu">=</span> <span class="fn">left</span><span class="pu">(</span><span class="nm">1</span><span class="pu">)</span> <span class="pu">||</span> <span class="fn">right</span><span class="pu">(</span><span class="nm">0</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  result = %d   (right() was skipped)\n\n"</span><span class="pu">,</span> result<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"4) left(0) || right(0)   [OR with false left]\n"</span><span class="pu">);</span>
+    result <span class="pu">=</span> <span class="fn">left</span><span class="pu">(</span><span class="nm">0</span><span class="pu">)</span> <span class="pu">||</span> <span class="fn">right</span><span class="pu">(</span><span class="nm">0</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  result = %d   (both evaluated)\n\n"</span><span class="pu">,</span> result<span class="pu">);</span>
+
+    <span class="cm">/* Practical use: the guard on the left protects the right-hand side */</span>
+    <span class="ty">int</span> divisor <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> dividend <span class="pu">=</span> <span class="nm">10</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5) divisor != 0 &amp;&amp; dividend / divisor &gt; 1\n"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>divisor <span class="pu">!=</span> <span class="nm">0</span> <span class="pu">&amp;&amp;</span> dividend <span class="pu">/</span> divisor <span class="pu">&gt;</span> <span class="nm">1</span><span class="pu">)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"  quotient is greater than 1\n"</span><span class="pu">);</span>
+    <span class="kw">else</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"  guard stopped the division by zero\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>1) left(0) &amp;&amp; right(1)   [AND with false left]<br>  left()  evaluated -&gt; 0<br>  result = 0   (right() was skipped)<br>&nbsp;<br>2) left(1) &amp;&amp; right(1)   [AND with true left]<br>  left()  evaluated -&gt; 1<br>  right() evaluated -&gt; 1<br>  result = 1   (both evaluated)<br>&nbsp;<br>3) left(1) || right(0)   [OR with true left]<br>  left()  evaluated -&gt; 1<br>  result = 1   (right() was skipped)<br>&nbsp;<br>4) left(0) || right(0)   [OR with false left]<br>  left()  evaluated -&gt; 0<br>  right() evaluated -&gt; 0<br>  result = 0   (both evaluated)<br>&nbsp;<br>5) divisor != 0 &amp;&amp; dividend / divisor &gt; 1<br>  guard stopped the division by zero</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>Annotation: in cases 1 and 3 the message from <code>right()</code> never appears &mdash; it was not called. Case 5 shows the practical payoff: the left-hand test guards the division.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Bit flags: set, clear, toggle, test</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Uses a <code>print_bin</code> helper that loops over the bits from 7 down to 0 with <code>(value &gt;&gt; bit) &amp; 1</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_bitwise.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="pp">#define</span> <span class="fn">FLAG_READ</span>   <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">0</span><span class="pu">)</span>   <span class="cm">/* 0000 0001 */</span>
+<span class="pp">#define</span> <span class="fn">FLAG_WRITE</span>  <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">1</span><span class="pu">)</span>   <span class="cm">/* 0000 0010 */</span>
+<span class="pp">#define</span> <span class="fn">FLAG_EXEC</span>   <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">)</span>   <span class="cm">/* 0000 0100 */</span>
+<span class="pp">#define</span> <span class="fn">FLAG_HIDDEN</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">3</span><span class="pu">)</span>   <span class="cm">/* 0000 1000 */</span>
+
+<span class="cm">/* Print an 8-bit value as binary, most significant bit first */</span>
+<span class="kw">static</span> <span class="ty">void</span> <span class="fn">print_bin</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>label<span class="pu">,</span> <span class="ty">unsigned</span> <span class="ty">char</span> value<span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-22s"</span><span class="pu">,</span> label<span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> bit <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span> bit <span class="pu">&gt;=</span> <span class="nm">0</span><span class="pu">;</span> bit<span class="pu">--)</span> <span class="pu">{</span>
+        <span class="fn">putchar</span><span class="pu">(((</span>value <span class="pu">&gt;&gt;</span> bit<span class="pu">)</span> <span class="pu">&amp;</span> <span class="nm">1u</span><span class="pu">)</span> <span class="pu">?</span> <span class="st">'1'</span> <span class="pu">:</span> <span class="st">'0'</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  (decimal %u)\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span><span class="pu">)</span>value<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> flags <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"start:"</span><span class="pu">,</span> flags<span class="pu">);</span>
+
+    <span class="cm">/* SET: OR with the mask turns the bit on */</span>
+    flags <span class="pu">|=</span> FLAG_READ<span class="pu">;</span>
+    flags <span class="pu">|=</span> FLAG_EXEC<span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"set READ and EXEC:"</span><span class="pu">,</span> flags<span class="pu">);</span>
+
+    <span class="cm">/* TEST: AND with the mask isolates the bit */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"READ  set? %s\n"</span><span class="pu">,</span> <span class="pu">(</span>flags <span class="pu">&amp;</span> FLAG_READ<span class="pu">)</span>  <span class="pu">?</span> <span class="st">"yes"</span> <span class="pu">:</span> <span class="st">"no"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"WRITE set? %s\n"</span><span class="pu">,</span> <span class="pu">(</span>flags <span class="pu">&amp;</span> FLAG_WRITE<span class="pu">)</span> <span class="pu">?</span> <span class="st">"yes"</span> <span class="pu">:</span> <span class="st">"no"</span><span class="pu">);</span>
+
+    <span class="cm">/* TOGGLE: XOR with the mask flips the bit */</span>
+    flags <span class="pu">^=</span> FLAG_WRITE<span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"toggle WRITE:"</span><span class="pu">,</span> flags<span class="pu">);</span>
+    flags <span class="pu">^=</span> FLAG_WRITE<span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"toggle WRITE again:"</span><span class="pu">,</span> flags<span class="pu">);</span>
+
+    <span class="cm">/* CLEAR: AND with the inverted mask turns the bit off */</span>
+    flags <span class="pu">&amp;=</span> <span class="pu">~</span>FLAG_EXEC<span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"clear EXEC:"</span><span class="pu">,</span> flags<span class="pu">);</span>
+
+    <span class="cm">/* Shifts: multiply and divide by powers of two */</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> v <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"v = 5:"</span><span class="pu">,</span> v<span class="pu">);</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"v &lt;&lt; 2 (5 * 4):"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span><span class="pu">)(</span>v <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">));</span>
+    <span class="fn">print_bin</span><span class="pu">(</span><span class="st">"v &gt;&gt; 1 (5 / 2):"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span><span class="pu">)(</span>v <span class="pu">&gt;&gt;</span> <span class="nm">1</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>start:                00000000  (decimal 0)<br>set READ and EXEC:    00000101  (decimal 5)<br>READ  set? yes<br>WRITE set? no<br>toggle WRITE:         00000111  (decimal 7)<br>toggle WRITE again:   00000101  (decimal 5)<br>clear EXEC:           00000001  (decimal 1)<br>v = 5:                00000101  (decimal 5)<br>v &lt;&lt; 2 (5 * 4):       00010100  (decimal 20)<br>v &gt;&gt; 1 (5 / 2):       00000010  (decimal 2)</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>Annotation: <strong>set</strong> = <code>|=</code> mask; <strong>clear</strong> = <code>&amp;= ~mask</code>; <strong>toggle</strong> = <code>^=</code> mask; <strong>test</strong> = <code>&amp;</code> mask. The casts back to <code>unsigned char</code> are needed because the shift result is promoted to <code>int</code>.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Operator precedence</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Expressions that look ambiguous, shown next to their explicitly parenthesised equivalents.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_precedence.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">1</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">0</span><span class="pu">,</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-26s %-26s\n"</span><span class="pu">,</span> <span class="st">"Without parentheses"</span><span class="pu">,</span> <span class="st">"With explicit parentheses"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-26s %-26s\n"</span><span class="pu">,</span> <span class="st">"-------------------"</span><span class="pu">,</span> <span class="st">"-------------------------"</span><span class="pu">);</span>
+
+    <span class="cm">/* * binds tighter than + */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2 + 3 * 4        = %-6d (2 + 3) * 4      = %d\n"</span><span class="pu">,</span> <span class="nm">2</span> <span class="pu">+</span> <span class="nm">3</span> <span class="pu">*</span> <span class="nm">4</span><span class="pu">,</span> <span class="pu">(</span><span class="nm">2</span> <span class="pu">+</span> <span class="nm">3</span><span class="pu">)</span> <span class="pu">*</span> <span class="nm">4</span><span class="pu">);</span>
+
+    <span class="cm">/* - is left-associative */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"10 - 4 - 3       = %-6d 10 - (4 - 3)     = %d\n"</span><span class="pu">,</span> <span class="nm">10</span> <span class="pu">-</span> <span class="nm">4</span> <span class="pu">-</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">10</span> <span class="pu">-</span> <span class="pu">(</span><span class="nm">4</span> <span class="pu">-</span> <span class="nm">3</span><span class="pu">));</span>
+
+    <span class="cm">/* / and * have equal precedence: left to right */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"100 / 10 * 5     = %-6d 100 / (10 * 5)   = %d\n"</span><span class="pu">,</span> <span class="nm">100</span> <span class="pu">/</span> <span class="nm">10</span> <span class="pu">*</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">100</span> <span class="pu">/</span> <span class="pu">(</span><span class="nm">10</span> <span class="pu">*</span> <span class="nm">5</span><span class="pu">));</span>
+
+    <span class="cm">/* + binds tighter than &lt;&lt; */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1 + 2 &lt;&lt; 3       = %-6d 1 + (2 &lt;&lt; 3)     = %d\n"</span><span class="pu">,</span> <span class="nm">1</span> <span class="pu">+</span> <span class="nm">2</span> <span class="pu">&lt;&lt;</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">1</span> <span class="pu">+</span> <span class="pu">(</span><span class="nm">2</span> <span class="pu">&lt;&lt;</span> <span class="nm">3</span><span class="pu">));</span>
+
+    <span class="cm">/* == binds tighter than &amp; : classic bug */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"6 &amp; 2 == 2       = %-6d (6 &amp; 2) == 2     = %d\n"</span><span class="pu">,</span> <span class="nm">6</span> <span class="pu">&amp;</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">2</span><span class="pu">,</span> <span class="pu">(</span><span class="nm">6</span> <span class="pu">&amp;</span> <span class="nm">2</span><span class="pu">)</span> <span class="pu">==</span> <span class="nm">2</span><span class="pu">);</span>
+
+    <span class="cm">/* &amp;&amp; binds tighter than || */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a || b &amp;&amp; c      = %-6d (a || b) &amp;&amp; c    = %d\n"</span><span class="pu">,</span> a <span class="pu">||</span> b <span class="pu">&amp;&amp;</span> c<span class="pu">,</span> <span class="pu">(</span>a <span class="pu">||</span> b<span class="pu">)</span> <span class="pu">&amp;&amp;</span> c<span class="pu">);</span>
+
+    <span class="cm">/* assignment is right-associative */</span>
+    <span class="ty">int</span> x<span class="pu">,</span> y<span class="pu">,</span> z<span class="pu">;</span>
+    x <span class="pu">=</span> y <span class="pu">=</span> z <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\nx = y = z = 7    -&gt; x=%d y=%d z=%d (parsed as x = (y = (z = 7)))\n"</span><span class="pu">,</span> x<span class="pu">,</span> y<span class="pu">,</span> z<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>Without parentheses        With explicit parentheses <br>-------------------        ------------------------- <br>2 + 3 * 4        = 14     (2 + 3) * 4      = 20<br>10 - 4 - 3       = 3      10 - (4 - 3)     = 9<br>100 / 10 * 5     = 50     100 / (10 * 5)   = 2<br>1 + 2 &lt;&lt; 3       = 24     1 + (2 &lt;&lt; 3)     = 17<br>6 &amp; 2 == 2       = 0      (6 &amp; 2) == 2     = 1<br>a || b &amp;&amp; c      = 1      (a || b) &amp;&amp; c    = 0<br>&nbsp;<br>x = y = z = 7    -&gt; x=7 y=7 z=7 (parsed as x = (y = (z = 7)))</code></div></div>
+<div class="callout warn"><span class="callout-icon">&#9888;&#65039;</span><div>Annotation: compilers warn about several lines (<code>-Wparentheses</code>, <code>-Wshift-op-parentheses</code>, <code>-Wlogical-op-parentheses</code>) &mdash; that is the compiler telling you to add the parentheses shown in the right-hand column. Note <code>6 &amp; 2 == 2</code> is <code>6 &amp; (2 == 2)</code> = <code>6 &amp; 1</code> = <code>0</code>, almost never what you meant.</div></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — The ternary operator</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Min, max, absolute value, a nested ternary, and a demonstration that only one branch is evaluated.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_ternary.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">min_of</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">&lt;</span> b <span class="pu">?</span> a <span class="pu">:</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">max_of</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">&gt;</span> b <span class="pu">?</span> a <span class="pu">:</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">abs_of</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span>        <span class="pu">{</span> <span class="kw">return</span> n <span class="pu">&lt;</span> <span class="nm">0</span> <span class="pu">?</span> <span class="pu">-</span>n <span class="pu">:</span> n<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">12</span><span class="pu">,</span> b <span class="pu">=</span> <span class="pu">-</span><span class="nm">7</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"min(%d, %d) = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">,</span> <span class="fn">min_of</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"max(%d, %d) = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">,</span> <span class="fn">max_of</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"abs(%d)    = %d\n"</span><span class="pu">,</span> b<span class="pu">,</span> <span class="fn">abs_of</span><span class="pu">(</span>b<span class="pu">));</span>
+
+    <span class="cm">/* Ternary as an expression inside printf */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> n <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> n <span class="pu">&lt;=</span> <span class="nm">4</span><span class="pu">;</span> n<span class="pu">++)</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d is %s\n"</span><span class="pu">,</span> n<span class="pu">,</span> n <span class="pu">%</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">0</span> <span class="pu">?</span> <span class="st">"even"</span> <span class="pu">:</span> <span class="st">"odd"</span><span class="pu">);</span>
+
+    <span class="cm">/* Nested ternary: sign of a number (right-associative chain) */</span>
+    <span class="ty">int</span> values<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="pu">-</span><span class="nm">5</span><span class="pu">,</span> <span class="nm">0</span><span class="pu">,</span> <span class="nm">9</span> <span class="pu">};</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">3</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> n <span class="pu">=</span> values<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>sign <span class="pu">=</span> n <span class="pu">&lt;</span> <span class="nm">0</span> <span class="pu">?</span> <span class="st">"negative"</span>
+                         <span class="pu">:</span> n <span class="pu">==</span> <span class="nm">0</span> <span class="pu">?</span> <span class="st">"zero"</span>
+                         <span class="pu">:</span> <span class="st">"positive"</span><span class="pu">;</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%2d is %s\n"</span><span class="pu">,</span> n<span class="pu">,</span> sign<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Only the chosen branch is evaluated */</span>
+    <span class="ty">int</span> hits <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> r <span class="pu">=</span> <span class="pu">(</span>a <span class="pu">&gt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">?</span> <span class="pu">++</span>hits <span class="pu">:</span> <span class="pu">(</span>hits <span class="pu">+=</span> <span class="nm">100</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"r = %d, hits = %d (the else branch never ran)\n"</span><span class="pu">,</span> r<span class="pu">,</span> hits<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>min(12, -7) = -7<br>max(12, -7) = 12<br>abs(-7)    = 7<br>1 is odd<br>2 is even<br>3 is odd<br>4 is even<br>-5 is negative<br> 0 is zero<br> 9 is positive<br>r = 1, hits = 1 (the else branch never ran)</code></div></div>
+<div class="callout warn"><span class="callout-icon">&#9888;&#65039;</span><div>Readability warning: the nested ternary above is about the limit of what is comfortable, and only because it is laid out one condition per line. Deeper nesting, or ternaries mixed with side effects, are better written as <code>if</code>/<code>else</code>.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

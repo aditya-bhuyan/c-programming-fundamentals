@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 7 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 7 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/07-structs/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 7 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,377 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Struct Basics: Point and Rectangle</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Define <code>Point</code> and <code>Rectangle</code> structs, nest one inside the other, compute an area and print every member.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_struct_basic.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Point</span> <span class="pu">{</span>
+    <span class="ty">int</span> x<span class="pu">;</span>
+    <span class="ty">int</span> y<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="kw">struct</span> <span class="ty">Rectangle</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> top_left<span class="pu">;</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> bottom_right<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Point</span> p <span class="pu">=</span> <span class="pu">{</span><span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span><span class="pu">};</span>
+    <span class="kw">struct</span> <span class="ty">Rectangle</span> r <span class="pu">=</span> <span class="pu">{</span> <span class="pu">{</span><span class="nm">1</span><span class="pu">,</span> <span class="nm">6</span><span class="pu">},</span> <span class="pu">{</span><span class="nm">7</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">}</span> <span class="pu">};</span>
+
+    <span class="ty">int</span> width  <span class="pu">=</span> r<span class="pu">.</span>bottom_right<span class="pu">.</span>x <span class="pu">-</span> r<span class="pu">.</span>top_left<span class="pu">.</span>x<span class="pu">;</span>
+    <span class="ty">int</span> height <span class="pu">=</span> r<span class="pu">.</span>top_left<span class="pu">.</span>y <span class="pu">-</span> r<span class="pu">.</span>bottom_right<span class="pu">.</span>y<span class="pu">;</span>
+    <span class="ty">int</span> area   <span class="pu">=</span> width <span class="pu">*</span> height<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Point p = (%d, %d)\n"</span><span class="pu">,</span> p<span class="pu">.</span>x<span class="pu">,</span> p<span class="pu">.</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Rectangle top-left     = (%d, %d)\n"</span><span class="pu">,</span> r<span class="pu">.</span>top_left<span class="pu">.</span>x<span class="pu">,</span> r<span class="pu">.</span>top_left<span class="pu">.</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Rectangle bottom-right = (%d, %d)\n"</span><span class="pu">,</span> r<span class="pu">.</span>bottom_right<span class="pu">.</span>x<span class="pu">,</span> r<span class="pu">.</span>bottom_right<span class="pu">.</span>y<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Width = %d, Height = %d, Area = %d\n"</span><span class="pu">,</span> width<span class="pu">,</span> height<span class="pu">,</span> area<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(struct Point)     = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Point</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(struct Rectangle) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Rectangle</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>Point p = (3, 4)
+Rectangle top-left     = (1, 6)
+Rectangle bottom-right = (7, 2)
+Width = 6, Height = 4, Area = 24
+sizeof(struct Point)     = 8
+sizeof(struct Rectangle) = 16</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 01_struct_basic 01_struct_basic.c &amp;&amp; ./01_struct_basic</code><br>A <code>Rectangle</code> is exactly two <code>Point</code>s (2 &times; 8 bytes): nested structs are stored inline, with no extra overhead.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Passing Structs to Functions</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Compare pass-by-value (a copy) with pass-by-pointer (modifies the original), and return a struct from a function.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_struct_fn.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Vec2</span> <span class="pu">{</span>
+    <span class="ty">double</span> x<span class="pu">;</span>
+    <span class="ty">double</span> y<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="cm">/* Pass by value: the function works on a COPY */</span>
+<span class="ty">void</span> <span class="fn">scale_by_value</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Vec2</span> v<span class="pu">,</span> <span class="ty">double</span> k<span class="pu">)</span> <span class="pu">{</span>
+    v<span class="pu">.</span>x <span class="pu">*=</span> k<span class="pu">;</span>
+    v<span class="pu">.</span>y <span class="pu">*=</span> k<span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  inside scale_by_value: (%.1f, %.1f)\n"</span><span class="pu">,</span> v<span class="pu">.</span>x<span class="pu">,</span> v<span class="pu">.</span>y<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Pass by pointer: the function modifies the ORIGINAL */</span>
+<span class="ty">void</span> <span class="fn">scale_by_pointer</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Vec2</span> <span class="pu">*</span>v<span class="pu">,</span> <span class="ty">double</span> k<span class="pu">)</span> <span class="pu">{</span>
+    v<span class="pu">-&gt;</span>x <span class="pu">*=</span> k<span class="pu">;</span>
+    v<span class="pu">-&gt;</span>y <span class="pu">*=</span> k<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Return a struct by value */</span>
+<span class="kw">struct</span> <span class="ty">Vec2</span> <span class="fn">vec_add</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Vec2</span> a<span class="pu">,</span> <span class="kw">struct</span> <span class="ty">Vec2</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Vec2</span> result <span class="pu">=</span> <span class="pu">{</span> a<span class="pu">.</span>x <span class="pu">+</span> b<span class="pu">.</span>x<span class="pu">,</span> a<span class="pu">.</span>y <span class="pu">+</span> b<span class="pu">.</span>y <span class="pu">};</span>
+    <span class="kw">return</span> result<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Vec2</span> v <span class="pu">=</span> <span class="pu">{</span><span class="nm">1.5</span><span class="pu">,</span> <span class="nm">2.0</span><span class="pu">};</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Original:         (%.1f, %.1f)\n"</span><span class="pu">,</span> v<span class="pu">.</span>x<span class="pu">,</span> v<span class="pu">.</span>y<span class="pu">);</span>
+
+    <span class="fn">scale_by_value</span><span class="pu">(</span>v<span class="pu">,</span> <span class="nm">2.0</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After by-value:   (%.1f, %.1f)\n"</span><span class="pu">,</span> v<span class="pu">.</span>x<span class="pu">,</span> v<span class="pu">.</span>y<span class="pu">);</span>
+
+    <span class="fn">scale_by_pointer</span><span class="pu">(&amp;</span>v<span class="pu">,</span> <span class="nm">2.0</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After by-pointer: (%.1f, %.1f)\n"</span><span class="pu">,</span> v<span class="pu">.</span>x<span class="pu">,</span> v<span class="pu">.</span>y<span class="pu">);</span>
+
+    <span class="kw">struct</span> <span class="ty">Vec2</span> w <span class="pu">=</span> <span class="pu">{</span><span class="nm">0.5</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">1.0</span><span class="pu">};</span>
+    <span class="kw">struct</span> <span class="ty">Vec2</span> sum <span class="pu">=</span> <span class="fn">vec_add</span><span class="pu">(</span>v<span class="pu">,</span> w<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"vec_add result:   (%.1f, %.1f)\n"</span><span class="pu">,</span> sum<span class="pu">.</span>x<span class="pu">,</span> sum<span class="pu">.</span>y<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>Original:         (1.5, 2.0)
+  inside scale_by_value: (3.0, 4.0)
+After by-value:   (1.5, 2.0)
+After by-pointer: (3.0, 4.0)
+vec_add result:   (3.5, 3.0)</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 02_struct_fn 02_struct_fn.c &amp;&amp; ./02_struct_fn</code><br>The by-value call doubled its <em>copy</em> (visible in the inner print) but left <code>v</code> unchanged. Only the pointer version changed the original.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — typedef: Struct, Primitive and Function Pointer</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Three kinds of typedef in one program, then used in ordinary declarations.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_typedef.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* 1. typedef for a struct */</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span> name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">int</span>  age<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Person</span><span class="pu">;</span>
+
+<span class="cm">/* 2. typedef for a primitive type */</span>
+<span class="kw">typedef</span> <span class="ty">unsigned</span> <span class="ty">char</span> <span class="ty">byte</span><span class="pu">;</span>
+
+<span class="cm">/* 3. typedef for a function pointer type */</span>
+<span class="kw">typedef</span> <span class="ty">int</span> <span class="pu">(*</span><span class="ty">BinaryOp</span><span class="pu">)(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">int</span> <span class="fn">mul</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">*</span> b<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">apply</span><span class="pu">(</span><span class="ty">BinaryOp</span> op<span class="pu">,</span> <span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> <span class="fn">op</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Person</span> alice <span class="pu">=</span> <span class="pu">{</span> <span class="st">"Alice"</span><span class="pu">,</span> <span class="nm">30</span> <span class="pu">};</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Person: %s, age %d\n"</span><span class="pu">,</span> alice<span class="pu">.</span>name<span class="pu">,</span> alice<span class="pu">.</span>age<span class="pu">);</span>
+
+    <span class="ty">byte</span> flags <span class="pu">=</span> <span class="nm">0xA5</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"byte flags = 0x%02X (sizeof = %zu)\n"</span><span class="pu">,</span> flags<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">byte</span><span class="pu">));</span>
+
+    <span class="ty">BinaryOp</span> ops<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> add<span class="pu">,</span> mul <span class="pu">};</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>names<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="st">"add"</span><span class="pu">,</span> <span class="st">"mul"</span> <span class="pu">};</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="nm">2</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%s(6, 7) = %d\n"</span><span class="pu">,</span> names<span class="pu">[</span>i<span class="pu">],</span> <span class="fn">apply</span><span class="pu">(</span>ops<span class="pu">[</span>i<span class="pu">],</span> <span class="nm">6</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">));</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>Person: Alice, age 30
+byte flags = 0xA5 (sizeof = 1)
+add(6, 7) = 13
+mul(6, 7) = 42</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 03_typedef 03_typedef.c &amp;&amp; ./03_typedef</code><br><code>BinaryOp</code> lets an array hold functions of the same signature and lets <code>apply</code> accept any of them.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Nested Structs: Employee with a Hire Date</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">An <code>Employee</code> contains a <code>Date</code>. Pass a <code>const</code> pointer to print a formatted record.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_nested.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span> day<span class="pu">;</span>
+    <span class="ty">int</span> month<span class="pu">;</span>
+    <span class="ty">int</span> year<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Date</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">Date</span>   hired<span class="pu">;</span>
+    <span class="ty">double</span> salary<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Employee</span><span class="pu">;</span>
+
+<span class="kw">static</span> <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>MONTHS<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span>
+    <span class="st">"January"</span><span class="pu">,</span> <span class="st">"February"</span><span class="pu">,</span> <span class="st">"March"</span><span class="pu">,</span> <span class="st">"April"</span><span class="pu">,</span> <span class="st">"May"</span><span class="pu">,</span> <span class="st">"June"</span><span class="pu">,</span>
+    <span class="st">"July"</span><span class="pu">,</span> <span class="st">"August"</span><span class="pu">,</span> <span class="st">"September"</span><span class="pu">,</span> <span class="st">"October"</span><span class="pu">,</span> <span class="st">"November"</span><span class="pu">,</span> <span class="st">"December"</span>
+<span class="pu">};</span>
+
+<span class="ty">void</span> <span class="fn">print_employee</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Employee</span> <span class="pu">*</span>e<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"ID %d: %s\n"</span><span class="pu">,</span> e<span class="pu">-&gt;</span>id<span class="pu">,</span> e<span class="pu">-&gt;</span>name<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  Hired:  %02d/%02d/%04d (%d %s %d)\n"</span><span class="pu">,</span>
+           e<span class="pu">-&gt;</span>hired<span class="pu">.</span>day<span class="pu">,</span> e<span class="pu">-&gt;</span>hired<span class="pu">.</span>month<span class="pu">,</span> e<span class="pu">-&gt;</span>hired<span class="pu">.</span>year<span class="pu">,</span>
+           e<span class="pu">-&gt;</span>hired<span class="pu">.</span>day<span class="pu">,</span> MONTHS<span class="pu">[</span>e<span class="pu">-&gt;</span>hired<span class="pu">.</span>month <span class="pu">-</span> <span class="nm">1</span><span class="pu">],</span> e<span class="pu">-&gt;</span>hired<span class="pu">.</span>year<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"  Salary: $%.2f\n"</span><span class="pu">,</span> e<span class="pu">-&gt;</span>salary<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Employee</span> staff<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="st">"Alice Johnson"</span><span class="pu">,</span> <span class="nm">101</span><span class="pu">,</span> <span class="pu">{</span> <span class="nm">15</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">2021</span> <span class="pu">},</span> <span class="nm">72500.00</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="st">"Bob Martinez"</span><span class="pu">,</span>  <span class="nm">102</span><span class="pu">,</span> <span class="pu">{</span>  <span class="nm">1</span><span class="pu">,</span> <span class="nm">9</span><span class="pu">,</span> <span class="nm">2019</span> <span class="pu">},</span> <span class="nm">64250.50</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+
+    <span class="ty">size_t</span> n <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>staff<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>staff<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">print_employee</span><span class="pu">(&amp;</span>staff<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="pu">}</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>ID 101: Alice Johnson
+  Hired:  15/03/2021 (15 March 2021)
+  Salary: $72500.00
+ID 102: Bob Martinez
+  Hired:  01/09/2019 (1 September 2019)
+  Salary: $64250.50</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 04_nested 04_nested.c &amp;&amp; ./04_nested</code><br>Note <code>e-&gt;hired.day</code>: arrow to reach the outer struct, then dot for the nested one.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Tagged Union: A Safe Variant Type</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">A <code>DataValue</code> union paired with a <code>ValueType</code> enum tag. Constructors set the tag; printing and access check it.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_union.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">enum</span> <span class="pu">{</span> TYPE_INT<span class="pu">,</span> TYPE_DOUBLE<span class="pu">,</span> TYPE_STRING <span class="pu">}</span> <span class="ty">ValueType</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">union</span> <span class="pu">{</span>
+    <span class="ty">int</span>    i<span class="pu">;</span>
+    <span class="ty">double</span> d<span class="pu">;</span>
+    <span class="ty">char</span>   s<span class="pu">[</span><span class="nm">16</span><span class="pu">];</span>
+<span class="pu">}</span> <span class="ty">DataValue</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">ValueType</span> type<span class="pu">;</span>   <span class="cm">/* the tag: says which member is valid */</span>
+    <span class="ty">DataValue</span> data<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Variant</span><span class="pu">;</span>
+
+<span class="ty">Variant</span> <span class="fn">make_int</span><span class="pu">(</span><span class="ty">int</span> v<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Variant</span> r<span class="pu">;</span>
+    r<span class="pu">.</span>type <span class="pu">=</span> TYPE_INT<span class="pu">;</span>
+    r<span class="pu">.</span>data<span class="pu">.</span>i <span class="pu">=</span> v<span class="pu">;</span>
+    <span class="kw">return</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">Variant</span> <span class="fn">make_double</span><span class="pu">(</span><span class="ty">double</span> v<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Variant</span> r<span class="pu">;</span>
+    r<span class="pu">.</span>type <span class="pu">=</span> TYPE_DOUBLE<span class="pu">;</span>
+    r<span class="pu">.</span>data<span class="pu">.</span>d <span class="pu">=</span> v<span class="pu">;</span>
+    <span class="kw">return</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">Variant</span> <span class="fn">make_string</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>v<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Variant</span> r<span class="pu">;</span>
+    r<span class="pu">.</span>type <span class="pu">=</span> TYPE_STRING<span class="pu">;</span>
+    <span class="fn">strncpy</span><span class="pu">(</span>r<span class="pu">.</span>data<span class="pu">.</span>s<span class="pu">,</span> v<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>r<span class="pu">.</span>data<span class="pu">.</span>s<span class="pu">)</span> <span class="pu">-</span> <span class="nm">1</span><span class="pu">);</span>
+    r<span class="pu">.</span>data<span class="pu">.</span>s<span class="pu">[</span><span class="kw">sizeof</span><span class="pu">(</span>r<span class="pu">.</span>data<span class="pu">.</span>s<span class="pu">)</span> <span class="pu">-</span> <span class="nm">1</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'\0'</span><span class="pu">;</span>
+    <span class="kw">return</span> r<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">print_variant</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Variant</span> <span class="pu">*</span>v<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">switch</span> <span class="pu">(</span>v<span class="pu">-&gt;</span>type<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">case</span> TYPE_INT<span class="pu">:</span>    <span class="fn">printf</span><span class="pu">(</span><span class="st">"int:    %d\n"</span><span class="pu">,</span>     v<span class="pu">-&gt;</span>data<span class="pu">.</span>i<span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+        <span class="kw">case</span> TYPE_DOUBLE<span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"double: %.3f\n"</span><span class="pu">,</span>   v<span class="pu">-&gt;</span>data<span class="pu">.</span>d<span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+        <span class="kw">case</span> TYPE_STRING<span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"string: \"%s\"\n"</span><span class="pu">,</span> v<span class="pu">-&gt;</span>data<span class="pu">.</span>s<span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Safe accessor: succeeds only if the tag matches */</span>
+<span class="ty">int</span> <span class="fn">get_int</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Variant</span> <span class="pu">*</span>v<span class="pu">,</span> <span class="ty">int</span> <span class="pu">*</span>out<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">if</span> <span class="pu">(</span>v<span class="pu">-&gt;</span>type <span class="pu">!=</span> TYPE_INT<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    <span class="pu">*</span>out <span class="pu">=</span> v<span class="pu">-&gt;</span>data<span class="pu">.</span>i<span class="pu">;</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Variant</span> items<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="fn">make_int</span><span class="pu">(</span><span class="nm">42</span><span class="pu">),</span> <span class="fn">make_double</span><span class="pu">(</span><span class="nm">3.14159</span><span class="pu">),</span> <span class="fn">make_string</span><span class="pu">(</span><span class="st">"hello"</span><span class="pu">)</span> <span class="pu">};</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> <span class="kw">sizeof</span><span class="pu">(</span>items<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>items<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">print_variant</span><span class="pu">(&amp;</span>items<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="pu">}</span>
+
+    <span class="ty">int</span> x<span class="pu">;</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">get_int</span><span class="pu">(&amp;</span>items<span class="pu">[</span><span class="nm">0</span><span class="pu">],</span> <span class="pu">&amp;</span>x<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"get_int(items[0]) -&gt; %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="kw">if</span> <span class="pu">(!</span><span class="fn">get_int</span><span class="pu">(&amp;</span>items<span class="pu">[</span><span class="nm">1</span><span class="pu">],</span> <span class="pu">&amp;</span>x<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"get_int(items[1]) -&gt; rejected (tag is not TYPE_INT)\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(DataValue) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">DataValue</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(Variant)   = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Variant</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>int:    42
+double: 3.142
+string: "hello"
+get_int(items[0]) -&gt; 42
+get_int(items[1]) -&gt; rejected (tag is not TYPE_INT)
+sizeof(DataValue) = 16
+sizeof(Variant)   = 24</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 05_union 05_union.c &amp;&amp; ./05_union</code><br>The union is 16 bytes (its largest member, the 16-char array). <code>Variant</code> is 24 on a typical 64-bit platform: 4-byte tag + 4 bytes padding + 16-byte union (the union needs 8-byte alignment because of <code>double</code>).</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Bit-fields: A Permissions Struct</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Three 1-bit fields model read / write / execute. Set, test, clear and toggle each flag.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_bitfield.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> read    <span class="pu">:</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> write   <span class="pu">:</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> execute <span class="pu">:</span> <span class="nm">1</span><span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Permissions</span><span class="pu">;</span>
+
+<span class="ty">void</span> <span class="fn">print_perms</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>label<span class="pu">,</span> <span class="ty">Permissions</span> p<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-16s %c%c%c\n"</span><span class="pu">,</span> label<span class="pu">,</span>
+           p<span class="pu">.</span>read    <span class="pu">?</span> <span class="st">'r'</span> <span class="pu">:</span> <span class="st">'-'</span><span class="pu">,</span>
+           p<span class="pu">.</span>write   <span class="pu">?</span> <span class="st">'w'</span> <span class="pu">:</span> <span class="st">'-'</span><span class="pu">,</span>
+           p<span class="pu">.</span>execute <span class="pu">?</span> <span class="st">'x'</span> <span class="pu">:</span> <span class="st">'-'</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Permissions</span> perms <span class="pu">=</span> <span class="pu">{</span><span class="nm">0</span><span class="pu">};</span>          <span class="cm">/* all bits cleared */</span>
+    <span class="fn">print_perms</span><span class="pu">(</span><span class="st">"Initial:"</span><span class="pu">,</span> perms<span class="pu">);</span>
+
+    perms<span class="pu">.</span>read  <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>                  <span class="cm">/* set */</span>
+    perms<span class="pu">.</span>write <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="fn">print_perms</span><span class="pu">(</span><span class="st">"After set r, w:"</span><span class="pu">,</span> perms<span class="pu">);</span>
+
+    <span class="kw">if</span> <span class="pu">(</span>perms<span class="pu">.</span>write<span class="pu">)</span> <span class="pu">{</span>                <span class="cm">/* test */</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Write permission is set\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    perms<span class="pu">.</span>write <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>                  <span class="cm">/* clear */</span>
+    <span class="fn">print_perms</span><span class="pu">(</span><span class="st">"After clear w:"</span><span class="pu">,</span> perms<span class="pu">);</span>
+
+    perms<span class="pu">.</span>execute <span class="pu">=</span> <span class="pu">!</span>perms<span class="pu">.</span>execute<span class="pu">;</span>   <span class="cm">/* toggle */</span>
+    <span class="fn">print_perms</span><span class="pu">(</span><span class="st">"After toggle x:"</span><span class="pu">,</span> perms<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(Permissions) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Permissions</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>Initial:         ---
+After set r, w:  rw-
+Write permission is set
+After clear w:   r--
+After toggle x:  r-x
+sizeof(Permissions) = 4</pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 06_bitfield 06_bitfield.c &amp;&amp; ./06_bitfield</code><br>Three bits of data still occupy one 4-byte <code>unsigned int</code> storage unit. Sizes and bit order are compiler-dependent.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

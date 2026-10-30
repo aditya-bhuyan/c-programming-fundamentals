@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz — Chapter 9 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Quiz — Chapter 9 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/09-dynamic-memory/quiz.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Quiz — Chapter 9 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -19,7 +29,7 @@
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 9</a> › Quiz</div>
       <h1>Quiz</h1>
-      <p class="subtitle">Chapter 9 — Dynamic Memory Management</p>
+      <p class="subtitle">Chapter 9 — Dynamic Memory Management &bull; 8 questions</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,126 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">What does <code>malloc</code> return if the allocation fails?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>A pointer to a zero-length block</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true"  /><label><code>NULL</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>A pointer to static emergency memory</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>It calls <code>abort()</code> automatically</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="malloc returns NULL when the requested allocation cannot be satisfied (e.g. out of memory). Always check the return value before dereferencing the pointer."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What is the key difference between <code>malloc(n * size)</code> and <code>calloc(n, size)</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>calloc</code> is faster because it skips zeroing</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label><code>malloc</code> zero-initialises; <code>calloc</code> does not</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true"  /><label><code>calloc</code> zero-initialises all bytes and is overflow-safe; <code>malloc</code> leaves memory uninitialised</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>They are identical; only the argument order differs</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="calloc(n, size) zero-fills the allocated block and safely handles the case where n * size would overflow size_t. malloc leaves memory uninitialised and does not guard against overflow in the multiplication."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">What is the name of the undefined behaviour that occurs when you access memory through a pointer after calling <code>free</code> on it?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Null pointer dereference</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Stack overflow</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true"  /><label>Use-after-free</label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label>Heap buffer overflow</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Use-after-free occurs when a program continues to read or write memory through a pointer after that memory has been released with free(). The behaviour is undefined and can cause data corruption, crashes, or security exploits."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">Which of the following is the <strong>safe</strong> pattern for using <code>realloc</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>ptr = realloc(ptr, new_size);</code> — assign directly back</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true"  /><label><code>void *tmp = realloc(ptr, new_size); if (tmp) ptr = tmp;</code> — use a temporary</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>Call <code>free(ptr)</code> first, then call <code>malloc(new_size)</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label><code>realloc</code> never fails so no check is needed</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="If realloc fails it returns NULL — but the original block is NOT freed. Writing ptr = realloc(ptr, n) on failure sets ptr to NULL, permanently losing the only reference to the original allocation (a memory leak). Always use a temporary pointer and check before overwriting the original."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">Which header file declares <code>malloc</code>, <code>calloc</code>, <code>realloc</code>, and <code>free</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;stdio.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;string.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true"  /><label><code>&lt;stdlib.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>&lt;memory.h&gt;</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The four core heap allocation functions (malloc, calloc, realloc, free) are all declared in &lt;stdlib.h&gt; (the standard library header)."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">Which tool detects memory leaks and uninitialised reads at runtime on Linux by running your program in an instrumented environment?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>GDB (GNU Debugger)</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true"  /><label>Valgrind</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>AddressSanitizer (<code>-fsanitize=address</code>)</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>Clang-Tidy</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Valgrind (specifically the Memcheck tool) runs your binary in a fully instrumented virtual machine that tracks every allocation and memory access, detecting leaks, uninitialised reads, and invalid accesses. AddressSanitizer is also correct for many cases but is a compiler flag, not a separate tool."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">Is <code>free(NULL)</code> valid in C?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>No — it causes undefined behaviour</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>No — it crashes with a segmentation fault</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true"  /><label>Yes — the C standard defines <code>free(NULL)</code> as a safe no-op</label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label>Yes, but only on POSIX systems</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The C standard (C11 §7.22.3.3) explicitly states: 'If ptr is a null pointer, no action occurs.' This makes free(NULL) a safe no-op on all conforming C implementations, which simplifies error-handling code — you can call free on a pointer even if it was never successfully allocated."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">Which GCC/Clang compiler flag enables AddressSanitizer to detect heap buffer overflows and use-after-free at runtime?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>-fstack-protector</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>-Waddress</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label><code>-fsanitize=memory</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true"  /><label><code>-fsanitize=address</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="-fsanitize=address enables AddressSanitizer (ASan), which instruments the binary to detect heap/stack buffer overflows, use-after-free, double-free, and similar bugs at near-native speed. Combine with -g for better error messages. -fsanitize=memory is MemorySanitizer (for uninitialised reads)."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
     </div>
 
   </main>

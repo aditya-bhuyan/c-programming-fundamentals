@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 8 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 8 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/08-file-io/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 8 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,343 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Writing Text with <code>fprintf</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Opening a file in write mode (<code>"w"</code>), writing 5 formatted lines with error checks, and closing the stream.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_write_text.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename <span class="pu">=</span> <span class="st">"output_lines.txt"</span><span class="pu">;</span>
+
+    <span class="cm">/* Open file for writing; creates file or truncates if existing */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"w"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open file for writing"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Write 5 formatted lines */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">5</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> written <span class="pu">=</span> <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"Line %d: The square of %d is %d\n"</span><span class="pu">,</span> i<span class="pu">,</span> i<span class="pu">,</span> i <span class="pu">*</span> i<span class="pu">);</span>
+        <span class="kw">if</span> <span class="pu">(</span>written <span class="pu">&lt;</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error writing to file"</span><span class="pu">);</span>
+            <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+            <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">)</span> <span class="pu">==</span> EOF<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error closing file"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Successfully wrote 5 lines to %s\n"</span><span class="pu">,</span> filename<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile &amp; Run: <code>gcc -std=c17 -Wall -Wextra -o 01_write_text 01_write_text.c &amp;&amp; ./01_write_text</code><br>Creates <code>output_lines.txt</code> containing the 5 generated lines.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Reading Text Line-by-Line with <code>fgets</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Opening the file generated in Example 1 in read mode (<code>"r"</code>) and safely printing each line with line numbers.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_read_text.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="pp">#define</span> BUFFER_SIZE <span class="nm">256</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename <span class="pu">=</span> <span class="st">"output_lines.txt"</span><span class="pu">;</span>
+
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Error opening file for reading"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">char</span> buffer<span class="pu">[</span>BUFFER_SIZE<span class="pu">];</span>
+    <span class="ty">int</span> line_num <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="cm">/* fgets returns NULL when EOF is reached or on read error */</span>
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>buffer<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buffer<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="pu">++</span>line_num<span class="pu">;</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"[%d] %s"</span><span class="pu">,</span> line_num<span class="pu">,</span> buffer<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">ferror</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"I/O error occurred during fgets"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output: Reads each line and prints <code>[1] Line 1: The square of 1 is 1</code> through <code>[5] Line 5: The square of 5 is 25</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — CSV File Writing and Parsing</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Writing a CSV dataset of student records, then parsing the CSV line-by-line and printing an aligned tabular summary.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_csv.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">int</span>    age<span class="pu">;</span>
+    <span class="ty">double</span> gpa<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Student</span><span class="pu">;</span>
+
+<span class="ty">void</span> <span class="fn">write_csv</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">,</span> <span class="ty">const</span> <span class="ty">Student</span> <span class="pu">*</span>list<span class="pu">,</span> <span class="ty">size_t</span> count<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"w"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open CSV for writing"</span><span class="pu">);</span>
+        <span class="kw">return</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Header row */</span>
+    <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"name,age,gpa\n"</span><span class="pu">);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>fp<span class="pu">,</span> <span class="st">"%s,%d,%.2f\n"</span><span class="pu">,</span> list<span class="pu">[</span>i<span class="pu">].</span>name<span class="pu">,</span> list<span class="pu">[</span>i<span class="pu">].</span>age<span class="pu">,</span> list<span class="pu">[</span>i<span class="pu">].</span>gpa<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">read_and_print_csv</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"Failed to open CSV for reading"</span><span class="pu">);</span>
+        <span class="kw">return</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">char</span> line<span class="pu">[</span><span class="nm">128</span><span class="pu">];</span>
+
+    <span class="cm">/* Skip header */</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>line<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>line<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+        <span class="kw">return</span><span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-15s %-5s %-5s\n"</span><span class="pu">,</span> <span class="st">"Name"</span><span class="pu">,</span> <span class="st">"Age"</span><span class="pu">,</span> <span class="st">"GPA"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"---------------------------\n"</span><span class="pu">);</span>
+
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>line<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>line<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">char</span> name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+        <span class="ty">int</span> age<span class="pu">;</span>
+        <span class="ty">double</span> gpa<span class="pu">;</span>
+
+        <span class="cm">/* Parse comma-delimited tokens using sscanf */</span>
+        <span class="kw">if</span> <span class="pu">(</span><span class="fn">sscanf</span><span class="pu">(</span>line<span class="pu">,</span> <span class="st">"%31[^,],%d,%lf"</span><span class="pu">,</span> name<span class="pu">, &amp;</span>age<span class="pu">, &amp;</span>gpa<span class="pu">)</span> <span class="pu">==</span> <span class="nm">3</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%-15s %-5d %-5.2f\n"</span><span class="pu">,</span> name<span class="pu">,</span> age<span class="pu">,</span> gpa<span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Student</span> students<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span><span class="st">"Alice Smith"</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">3.92</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="st">"Bob Johnson"</span><span class="pu">,</span> <span class="nm">22</span><span class="pu">,</span> <span class="nm">3.45</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="st">"Charlie Brown"</span><span class="pu">,</span> <span class="nm">19</span><span class="pu">,</span> <span class="nm">3.78</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="st">"Diana Prince"</span><span class="pu">,</span> <span class="nm">21</span><span class="pu">,</span> <span class="nm">4.00</span><span class="pu">}</span>
+    <span class="pu">};</span>
+    <span class="ty">size_t</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>students<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>students<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="fn">write_csv</span><span class="pu">(</span><span class="st">"students.csv"</span><span class="pu">,</span> students<span class="pu">,</span> count<span class="pu">);</span>
+    <span class="fn">read_and_print_csv</span><span class="pu">(</span><span class="st">"students.csv"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>The scanset specifier <code>%31[^,]</code> reads up to 31 characters until encountering a comma.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Binary Struct Array I/O (<code>fwrite</code> / <code>fread</code>)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Writing an entire array of structs in one call with <code>fwrite</code>, and reading it back into memory with <code>fread</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_binary.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span>    id<span class="pu">;</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">32</span><span class="pu">];</span>
+    <span class="ty">double</span> balance<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Account</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>bin_file <span class="pu">=</span> <span class="st">"accounts.bin"</span><span class="pu">;</span>
+
+    <span class="ty">Account</span> out_accounts<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span><span class="nm">1001</span><span class="pu">,</span> <span class="st">"Alice"</span><span class="pu">,</span> <span class="nm">1450.50</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">1002</span><span class="pu">,</span> <span class="st">"Bob"</span><span class="pu">,</span>    <span class="nm">2300.75</span><span class="pu">},</span>
+        <span class="pu">{</span><span class="nm">1003</span><span class="pu">,</span> <span class="st">"Charlie"</span><span class="pu">,</span> <span class="nm">850.00</span><span class="pu">}</span>
+    <span class="pu">};</span>
+
+    <span class="cm">/* 1. Write binary array */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp_out <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>bin_file<span class="pu">,</span> <span class="st">"wb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp_out <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen wb failed"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">size_t</span> items_written <span class="pu">=</span> <span class="fn">fwrite</span><span class="pu">(</span>out_accounts<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Account</span><span class="pu">),</span> <span class="nm">3</span><span class="pu">,</span> fp_out<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Wrote %zu accounts (%zu bytes total)\n"</span><span class="pu">,</span>
+           items_written<span class="pu">,</span> items_written <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Account</span><span class="pu">));</span>
+    <span class="fn">fclose</span><span class="pu">(</span>fp_out<span class="pu">);</span>
+
+    <span class="cm">/* 2. Read back into a new buffer */</span>
+    <span class="ty">Account</span> in_accounts<span class="pu">[</span><span class="nm">3</span><span class="pu">];</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp_in <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>bin_file<span class="pu">,</span> <span class="st">"rb"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp_in <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen rb failed"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="ty">size_t</span> items_read <span class="pu">=</span> <span class="fn">fread</span><span class="pu">(</span>in_accounts<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">Account</span><span class="pu">),</span> <span class="nm">3</span><span class="pu">,</span> fp_in<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read %zu accounts from binary file:\n"</span><span class="pu">,</span> items_read<span class="pu">);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> items_read<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"  ID: %d | Name: %-10s | Balance: $%.2f\n"</span><span class="pu">,</span>
+               in_accounts<span class="pu">[</span>i<span class="pu">].</span>id<span class="pu">,</span> in_accounts<span class="pu">[</span>i<span class="pu">].</span>name<span class="pu">,</span> in_accounts<span class="pu">[</span>i<span class="pu">].</span>balance<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp_in<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Binary I/O preserves precision exactly without string parsing overhead, but requires careful attention to alignment and portability.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Random Access and In-Place Update with <code>fseek</code></h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Writing 10 integers (100–1000), seeking directly to the 5th integer, modifying it in-place using <code>"r+b"</code> mode, and reading back to verify.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_fseek.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>filename <span class="pu">=</span> <span class="st">"numbers.dat"</span><span class="pu">;</span>
+
+    <span class="cm">/* Step 1: Create and write 10 integers: 100, 200, 300, ..., 1000 */</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span>filename<span class="pu">,</span> <span class="st">"wb+"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen failed"</span><span class="pu">);</span>
+        <span class="kw">return</span> EXIT_FAILURE<span class="pu">;</span>
+    <span class="pu">}</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="ty">int</span> val <span class="pu">=</span> i <span class="pu">*</span> <span class="nm">100</span><span class="pu">;</span>
+        <span class="fn">fwrite</span><span class="pu">(&amp;</span>val<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Step 2: Jump to index 4 (the 5th integer, byte offset 4 * sizeof(int)) */</span>
+    <span class="ty">long</span> offset <span class="pu">=</span> <span class="nm">4L</span> <span class="pu">*</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">);</span>
+    <span class="fn">fseek</span><span class="pu">(</span>fp<span class="pu">,</span> offset<span class="pu">,</span> SEEK_SET<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Current file position: byte %ld\n"</span><span class="pu">,</span> <span class="fn">ftell</span><span class="pu">(</span>fp<span class="pu">));</span>
+
+    <span class="ty">int</span> original<span class="pu">;</span>
+    <span class="fn">fread</span><span class="pu">(&amp;</span>original<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Original 5th integer: %d\n"</span><span class="pu">,</span> original<span class="pu">);</span>
+
+    <span class="cm">/* Step 3: Reposition back to 5th integer and update it */</span>
+    <span class="fn">fseek</span><span class="pu">(</span>fp<span class="pu">,</span> offset<span class="pu">,</span> SEEK_SET<span class="pu">);</span>
+    <span class="ty">int</span> updated <span class="pu">=</span> <span class="nm">9999</span><span class="pu">;</span>
+    <span class="fn">fwrite</span><span class="pu">(&amp;</span>updated<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Updated 5th integer to %d\n"</span><span class="pu">,</span> updated<span class="pu">);</span>
+
+    <span class="cm">/* Step 4: Rewind and read all 10 integers to verify */</span>
+    <span class="fn">rewind</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"All elements in file: "</span><span class="pu">);</span>
+    <span class="ty">int</span> val<span class="pu">;</span>
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">fread</span><span class="pu">(&amp;</span>val<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span><span class="pu">),</span> <span class="nm">1</span><span class="pu">,</span> fp<span class="pu">)</span> <span class="pu">==</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> val<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output shows: <code>All elements in file: 100 200 300 400 9999 600 700 800 900 1000</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Robust Error Handling &amp; EOF Diagnosis</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Handling missing files, printing system errors with <code>perror</code>, and distinguishing between natural EOF and I/O corruption with <code>ferror</code>/<code>feof</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_error.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;errno.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;string.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">attempt_missing_file</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- 1. Attempting to open non-existent file ---\n"</span><span class="pu">);</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span><span class="st">"does_not_exist_12345.txt"</span><span class="pu">,</span> <span class="st">"r"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="cm">/* perror prints custom prefix + ": " + strerror(errno) */</span>
+        <span class="fn">perror</span><span class="pu">(</span><span class="st">"fopen error"</span><span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"errno value: %d (%s)\n"</span><span class="pu">,</span> errno<span class="pu">,</span> <span class="fn">strerror</span><span class="pu">(</span>errno<span class="pu">));</span>
+    <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+        <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">void</span> <span class="fn">demonstrate_eof_vs_error</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n--- 2. Reading until EOF with proper status checks ---\n"</span><span class="pu">);</span>
+    <span class="ty">FILE</span> <span class="pu">*</span>fp <span class="pu">=</span> <span class="fn">fopen</span><span class="pu">(</span><span class="st">"temp_test.txt"</span><span class="pu">,</span> <span class="st">"w+"</span><span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>fp <span class="pu">==</span> NULL<span class="pu">)</span> <span class="kw">return</span><span class="pu">;</span>
+
+    <span class="fn">fputs</span><span class="pu">(</span><span class="st">"Alpha\nBeta\n"</span><span class="pu">,</span> fp<span class="pu">);</span>
+    <span class="fn">rewind</span><span class="pu">(</span>fp<span class="pu">);</span>
+
+    <span class="ty">char</span> buf<span class="pu">[</span><span class="nm">64</span><span class="pu">];</span>
+    <span class="kw">while</span> <span class="pu">(</span><span class="fn">fgets</span><span class="pu">(</span>buf<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>buf<span class="pu">),</span> fp<span class="pu">)</span> <span class="pu">!=</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Read line: %s"</span><span class="pu">,</span> buf<span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="cm">/* Why did fgets return NULL? */</span>
+    <span class="kw">if</span> <span class="pu">(</span><span class="fn">ferror</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">fprintf</span><span class="pu">(</span>stderr<span class="pu">,</span> <span class="st">"Stream error encountered!\n"</span><span class="pu">);</span>
+        <span class="fn">clearerr</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span><span class="fn">feof</span><span class="pu">(</span>fp<span class="pu">))</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Reached end-of-file normally (feof is true).\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+
+    <span class="fn">fclose</span><span class="pu">(</span>fp<span class="pu">);</span>
+    <span class="fn">remove</span><span class="pu">(</span><span class="st">"temp_test.txt"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">attempt_missing_file</span><span class="pu">();</span>
+    <span class="fn">demonstrate_eof_vs_error</span><span class="pu">();</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output shows <code>fopen error: No such file or directory</code> followed by the graceful EOF diagnosis.</div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

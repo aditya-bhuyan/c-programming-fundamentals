@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 6 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 6 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/06-pointers/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 6 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,374 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+
+      <h2>1. What is a pointer?</h2>
+      <p>Every variable in a C program resides at a specific location in system memory (RAM). This location is identified by a numerical <strong>memory address</strong>. A <strong>pointer</strong> is simply a variable whose stored value is the memory address of another variable or object.</p>
+      
+      <p>To declare a pointer variable, place an asterisk (<code>*</code>) before the variable name in the declaration:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>pointer_decl.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span>  <span class="pu">*</span>p<span class="pu">;</span>     <span class="cm">/* p is a pointer to an int */</span>
+<span class="ty">char</span> <span class="pu">*</span>cp<span class="pu">;</span>    <span class="cm">/* cp is a pointer to a char */</span>
+<span class="ty">double</span> <span class="pu">*</span>dp<span class="pu">;</span>  <span class="cm">/* dp is a pointer to a double */</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>To print a pointer address using <code>printf</code>, use the <code>%p</code> format specifier. The C standard requires casting the pointer to <code>(void *)</code> when passing it to <code>printf</code> with <code>%p</code>.</p>
+      
+      <h3>The NULL pointer</h3>
+      <p>A pointer that does not point to any valid object or function should be set to <code>NULL</code> (defined in <code>&lt;stddef.h&gt;</code>, <code>&lt;stdio.h&gt;</code>, and <code>&lt;stdlib.h&gt;</code>). In C, <code>NULL</code> is an implementation-defined null pointer constant, typically <code>((void *)0)</code> or <code>0</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>null_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> NULL<span class="pu">;</span>  <span class="cm">/* p points to nothing */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p = %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p<span class="pu">);</span> <span class="cm">/* prints (nil) or 0x0 */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Always initialise pointers when you declare them. If a pointer does not yet have a target object, initialise it to <code>NULL</code>. An uninitialised pointer contains garbage memory garbage and is dangerous.</div>
+      </div>
+
+      <h2>2. Address-of and dereference operators</h2>
+      <p>C provides two fundamental unary operators for working with pointers:</p>
+      <ul>
+        <li><strong>Address-of operator (<code>&amp;</code>)</strong>: Yields the memory address of its operand.</li>
+        <li><strong>Dereference (indirection) operator (<code>*</code>)</strong>: Accesses or modifies the value stored at the address contained in the pointer.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>addrof_deref.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> x <span class="pu">=</span> <span class="nm">42</span><span class="pu">;</span>
+    <span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> <span class="pu">&amp;</span>x<span class="pu">;</span>   <span class="cm">/* p stores the address of x */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Value of x:       %d\n"</span><span class="pu">,</span> x<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Address of x (&amp;x): %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)&amp;</span>x<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Value of p:       %p\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Dereference (*p): %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p<span class="pu">);</span>
+
+    <span class="cm">/* Modifying x through p */</span>
+    <span class="pu">*</span>p <span class="pu">=</span> <span class="nm">99</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"New value of x:   %d\n"</span><span class="pu">,</span> x<span class="pu">);</span> <span class="cm">/* prints 99 */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Memory representation</h3>
+      <p>Conceptually, you can visualise memory as an array of numbered byte cells:</p>
+      <table>
+        <thead><tr><th>Variable</th><th>Address</th><th>Stored Value</th><th>Explanation</th></tr></thead>
+        <tbody>
+          <tr><td><code>x</code></td><td><code>0x7ffee4</code></td><td><code>42</code> (or <code>99</code>)</td><td>An integer variable occupying 4 bytes</td></tr>
+          <tr><td><code>p</code></td><td><code>0x7ffee8</code></td><td><code>0x7ffee4</code></td><td>A pointer variable holding the address of <code>x</code></td></tr>
+        </tbody>
+      </table>
+      <p>When you evaluate <code>*p</code>, the CPU reads the address stored inside <code>p</code> (<code>0x7ffee4</code>) and navigates to that cell to read or write the integer value.</p>
+
+      <h2>3. Pointer types and sizes</h2>
+      <p>Why do pointers have types like <code>int *</code>, <code>char *</code>, and <code>double *</code> if all memory addresses are just numbers? There are two primary reasons:</p>
+      <ol>
+        <li><strong>Dereference width</strong>: When you write <code>*p</code>, the compiler needs to know how many bytes to read/write (e.g. 1 byte for <code>char</code>, 4 bytes for <code>int</code>, 8 bytes for <code>double</code>) and how to interpret those bits.</li>
+        <li><strong>Pointer arithmetic scaling</strong>: Adding 1 to a pointer must advance it by the size of the pointed-to object.</li>
+      </ol>
+      <p>However, <strong>all pointer types on a given platform have the exact same size</strong>, because an address is always the same width regardless of what resides at that location.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>ptr_sizes.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(char *)   = %zu bytes\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">char</span> <span class="pu">*));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(int *)    = %zu bytes\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(double *) = %zu bytes\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">double</span> <span class="pu">*));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(void *)   = %zu bytes\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="ty">void</span> <span class="pu">*));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <table>
+        <thead><tr><th>Architecture</th><th>Address Bus Width</th><th><code>sizeof(void *)</code></th></tr></thead>
+        <tbody>
+          <tr><td>32-bit (x86, ARMv7)</td><td>32 bits (4 bytes)</td><td><code>4</code> bytes</td></tr>
+          <tr><td>64-bit (x86-64, ARM64)</td><td>64 bits (8 bytes)</td><td><code>8</code> bytes</td></tr>
+        </tbody>
+      </table>
+
+      <h2>4. Pointer arithmetic</h2>
+      <p>C allows arithmetic on pointers: addition, subtraction, increment, decrement, and difference. Crucially, pointer arithmetic is <strong>scaled by the size of the pointed-to type</strong>:</p>
+      <ul>
+        <li><code>p + 1</code> advances the address by <code>1 * sizeof(*p)</code> bytes.</li>
+        <li><code>p + n</code> advances the address by <code>n * sizeof(*p)</code> bytes.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>ptr_arith.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> arr<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">10</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">,</span> <span class="nm">40</span><span class="pu">,</span> <span class="nm">50</span><span class="pu">};</span>
+    <span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> arr<span class="pu">;</span> <span class="cm">/* points to arr[0] */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p     = %p, *p     = %d\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)</span>p<span class="pu">,</span> <span class="pu">*</span>p<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p + 1 = %p, *(p+1) = %d\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">void</span> <span class="pu">*)(</span>p <span class="pu">+</span> <span class="nm">1</span><span class="pu">),</span> <span class="pu">*(</span>p <span class="pu">+</span> <span class="nm">1</span><span class="pu">));</span>
+
+    <span class="cm">/* Iterating an array with a pointer */</span>
+    <span class="ty">int</span> <span class="pu">*</span>end <span class="pu">=</span> arr <span class="pu">+</span> <span class="nm">5</span><span class="pu">;</span> <span class="cm">/* pointer to one-past-the-end */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>curr <span class="pu">=</span> arr<span class="pu">;</span> curr <span class="pu">&lt;</span> end<span class="pu">;</span> <span class="pu">++</span>curr<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> <span class="pu">*</span>curr<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Pointer difference */</span>
+    <span class="ty">int</span> <span class="pu">*</span>p0 <span class="pu">=</span> <span class="pu">&amp;</span>arr<span class="pu">[</span><span class="nm">1</span><span class="pu">];</span>
+    <span class="ty">int</span> <span class="pu">*</span>p1 <span class="pu">=</span> <span class="pu">&amp;</span>arr<span class="pu">[</span><span class="nm">4</span><span class="pu">];</span>
+    <span class="ty">ptrdiff_t</span> diff <span class="pu">=</span> p1 <span class="pu">-</span> p0<span class="pu">;</span> <span class="cm">/* yields 3 (number of elements, not bytes) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p1 - p0 = %td elements\n"</span><span class="pu">,</span> diff<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div>Subtracting two pointers to elements of the same array yields a signed integer of type <code>ptrdiff_t</code> (from <code>&lt;stddef.h&gt;</code>). Print it using the <code>%td</code> format specifier.</div>
+      </div>
+
+      <h2>5. Pointers and arrays</h2>
+      <p>In C, array names and pointers are intimately linked through the concept of <strong>array decay</strong>: in most expressions, the name of an array decays into a pointer to its first element (<code>&amp;arr[0]</code>).</p>
+      
+      <h3>The equivalence rule</h3>
+      <p>By definition in the C standard, array indexing <code>a[i]</code> is strictly syntactic sugar for <code>*(a + i)</code>:</p>
+      <ul>
+        <li><code>a[i]</code> is identical to <code>*(a + i)</code></li>
+        <li>Because addition is commutative, <code>*(a + i)</code> is identical to <code>*(i + a)</code>, which means even <code>i[a]</code> is valid C!</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>decay.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> arr<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">100</span><span class="pu">,</span> <span class="nm">200</span><span class="pu">,</span> <span class="nm">300</span><span class="pu">};</span>
+<span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> arr<span class="pu">;</span> <span class="cm">/* decays to &amp;arr[0] */</span>
+
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> arr<span class="pu">[</span><span class="nm">1</span><span class="pu">]);</span>   <span class="cm">/* 200 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="pu">*(</span>arr <span class="pu">+</span> <span class="nm">1</span><span class="pu">));</span> <span class="cm">/* 200 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> p<span class="pu">[</span><span class="nm">1</span><span class="pu">]);</span>     <span class="cm">/* 200 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"%d\n"</span><span class="pu">,</span> <span class="pu">*(</span>p <span class="pu">+</span> <span class="nm">1</span><span class="pu">));</span>   <span class="cm">/* 200 */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Key differences: Array vs Pointer</h3>
+      <table>
+        <thead><tr><th>Property</th><th>Array (<code>int a[5]</code>)</th><th>Pointer (<code>int *p</code>)</th></tr></thead>
+        <tbody>
+          <tr><td>Memory allocation</td><td>Allocates space for 5 contiguous ints (20 bytes)</td><td>Allocates space only for the pointer address (8 bytes)</td></tr>
+          <tr><td><code>sizeof</code> operator</td><td><code>sizeof(a)</code> gives total array size (<code>20</code>)</td><td><code>sizeof(p)</code> gives pointer size (<code>8</code>)</td></tr>
+          <tr><td>Reassignment</td><td>Cannot be reassigned (not a modifiable lvalue)</td><td>Can be reassigned to point elsewhere (<code>p = q</code>)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Pointer to first element vs Pointer to entire array</h3>
+      <ul>
+        <li><code>int *p = arr;</code> &mdash; pointer to an <code>int</code> (first element). <code>p + 1</code> steps by <code>sizeof(int)</code>.</li>
+        <li><code>int (*parr)[5] = &amp;arr;</code> &mdash; pointer to an array of 5 ints. <code>parr + 1</code> steps by <code>5 * sizeof(int)</code> (the whole array).</li>
+      </ul>
+
+      <h2>6. const pointers</h2>
+      <p>The <code>const</code> qualifier can be applied to pointers in four distinct combinations depending on whether the qualifier is placed before or after the asterisk (<code>*</code>). Use the "read right-to-left" rule to understand them:</p>
+      
+      <table>
+        <thead><tr><th>Declaration</th><th>Meaning</th><th>Can Change Pointer?</th><th>Can Change Value?</th></tr></thead>
+        <tbody>
+          <tr><td><code>int *p</code></td><td>Pointer to non-const int</td><td>Yes (<code>p = &amp;b</code>)</td><td>Yes (<code>*p = 10</code>)</td></tr>
+          <tr><td><code>const int *p</code> (or <code>int const *p</code>)</td><td>Pointer to const int (data is read-only)</td><td>Yes (<code>p = &amp;b</code>)</td><td><strong>No</strong> (<code>*p = 10</code> is compile error)</td></tr>
+          <tr><td><code>int * const p</code></td><td>Const pointer to non-const int (pointer is fixed)</td><td><strong>No</strong> (<code>p = &amp;b</code> is compile error)</td><td>Yes (<code>*p = 10</code>)</td></tr>
+          <tr><td><code>const int * const p</code></td><td>Const pointer to const int (both fixed)</td><td><strong>No</strong> (compile error)</td><td><strong>No</strong> (compile error)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>const_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> a <span class="pu">=</span> <span class="nm">10</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>
+
+<span class="cm">/* 1. Pointer to const int: protects the target value */</span>
+<span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>p1 <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+p1 <span class="pu">=</span> <span class="pu">&amp;</span>b<span class="pu">;</span>        <span class="cm">/* OK: can redirect pointer */</span>
+<span class="cm">/* *p1 = 30; */</span> <span class="cm">/* ERROR: read-only location */</span>
+
+<span class="cm">/* 2. Const pointer to int: protects the address */</span>
+<span class="ty">int</span> <span class="pu">*</span> <span class="ty">const</span> p2 <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+<span class="pu">*</span>p2 <span class="pu">=</span> <span class="nm">30</span><span class="pu">;</span>       <span class="cm">/* OK: can modify value */</span>
+<span class="cm">/* p2 = &amp;b; */</span>  <span class="cm">/* ERROR: assignment of read-only variable */</span>
+
+<span class="cm">/* 3. Const pointer to const int: completely immutable */</span>
+<span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span> <span class="ty">const</span> p3 <span class="pu">=</span> <span class="pu">&amp;</span>a<span class="pu">;</span>
+<span class="cm">/* *p3 = 40; */</span> <span class="cm">/* ERROR */</span>
+<span class="cm">/* p3 = &amp;b;  */</span> <span class="cm">/* ERROR */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Whenever you write a function that only reads from a buffer without modifying it (e.g. <code>strlen(const char *s)</code>), always declare the parameter as <code>const Type *</code>. This documents intent and allows string literals and const variables to be safely passed.</div>
+      </div>
+
+      <h2>7. Double pointers (Pointers to pointers)</h2>
+      <p>A pointer variable itself lives at a memory address. A pointer that stores the address of another pointer is called a <strong>pointer to a pointer</strong>, or <strong>double pointer</strong> (<code>Type **</code>).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>double_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> val <span class="pu">=</span> <span class="nm">58</span><span class="pu">;</span>
+<span class="ty">int</span>  <span class="pu">*</span>p  <span class="pu">=</span> <span class="pu">&amp;</span>val<span class="pu">;</span>  <span class="cm">/* p holds address of val */</span>
+<span class="ty">int</span> <span class="pu">**</span>pp <span class="pu">=</span> <span class="pu">&amp;</span>p<span class="pu">;</span>    <span class="cm">/* pp holds address of p */</span>
+
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"val   = %d\n"</span><span class="pu">,</span> val<span class="pu">);</span>   <span class="cm">/* 58 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"*p    = %d\n"</span><span class="pu">,</span> <span class="pu">*</span>p<span class="pu">);</span>    <span class="cm">/* 58 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"**pp  = %d\n"</span><span class="pu">,</span> <span class="pu">**</span>pp<span class="pu">);</span>  <span class="cm">/* 58 */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Why are double pointers needed?</h3>
+      <ol>
+        <li><strong>Modifying a caller's pointer in a function</strong>: In C, all arguments are passed by value. To modify an <code>int</code> in the caller, you pass an <code>int *</code>. Therefore, to modify an <code>int *</code> in the caller (e.g., dynamically allocating or reallocating memory), you must pass an <code>int **</code>.</li>
+        <li><strong>Arrays of pointers / Strings</strong>: Command-line arguments in <code>main(int argc, char **argv)</code> represent an array of strings (where each string is a <code>char *</code>).</li>
+      </ol>
+
+      <h2>8. Generic pointers: <code>void *</code></h2>
+      <p>A <code>void *</code> is a <strong>generic pointer</strong> capable of holding the address of any data type without an explicit cast. In standard C, any data pointer converts implicitly to and from <code>void *</code>.</p>
+      
+      <p>However, because <code>void</code> has no known size:</p>
+      <ul>
+        <li>You <strong>cannot dereference</strong> a <code>void *</code> directly without casting it to a concrete pointer type (e.g. <code>*(int *)ptr</code>).</li>
+        <li>Standard C forbids pointer arithmetic on <code>void *</code> (because <code>sizeof(void)</code> is undefined).</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>void_ptr.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">print_bytes</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">void</span> <span class="pu">*</span>data<span class="pu">,</span> <span class="ty">size_t</span> size<span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Cast void * to const unsigned char * to inspect byte by byte */</span>
+    <span class="ty">const</span> <span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*</span>bytes <span class="pu">=</span> <span class="pu">(</span><span class="ty">const</span> <span class="ty">unsigned</span> <span class="ty">char</span> <span class="pu">*)</span>data<span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">size_t</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> size<span class="pu">;</span> <span class="pu">++</span>i<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%02X "</span><span class="pu">,</span> bytes<span class="pu">[</span>i<span class="pu">]);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> num <span class="pu">=</span> <span class="nm">0x12345678</span><span class="pu">;</span>
+    <span class="ty">double</span> pi <span class="pu">=</span> <span class="nm">3.14159</span><span class="pu">;</span>
+
+    <span class="fn">print_bytes</span><span class="pu">(&amp;</span>num<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>num<span class="pu">));</span>
+    <span class="fn">print_bytes</span><span class="pu">(&amp;</span>pi<span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>pi<span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>9. Function pointers</h2>
+      <p>In C, code instructions also live in memory. The entry point of a compiled function has an address, which can be stored in a <strong>function pointer</strong>. This enables callbacks, dynamic dispatch tables, and plugin architectures.</p>
+      
+      <h3>Syntax</h3>
+      <p>The parentheses around <code>(*fn_name)</code> are mandatory because <code>int *f(int)</code> declares a function returning an <code>int *</code>, whereas <code>int (*f)(int)</code> declares a pointer to a function returning an <code>int</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>fn_pointer.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">add</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">+</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="ty">int</span> <span class="fn">mul</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">*</span> b<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="cm">/* Using typedef makes function pointer types clean and readable */</span>
+<span class="kw">typedef</span> <span class="ty">int</span> <span class="pu">(*</span>bin_op<span class="pu">)(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>
+
+<span class="ty">void</span> <span class="fn">compute_and_print</span><span class="pu">(</span>bin_op op<span class="pu">,</span> <span class="ty">int</span> x<span class="pu">,</span> <span class="ty">int</span> y<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Result: %d\n"</span><span class="pu">,</span> <span class="fn">op</span><span class="pu">(</span>x<span class="pu">,</span> y<span class="pu">));</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">compute_and_print</span><span class="pu">(</span>add<span class="pu">,</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">);</span> <span class="cm">/* prints 15 */</span>
+    <span class="fn">compute_and_print</span><span class="pu">(</span>mul<span class="pu">,</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">);</span> <span class="cm">/* prints 50 */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>10. Common pointer bugs and how to avoid them</h2>
+      <p>Pointers are C's most powerful feature, but incorrect usage leads to bugs, memory corruption, and security vulnerabilities.</p>
+
+      <h3>1. Uninitialised pointer</h3>
+      <p>Declaring a pointer without initialising it creates a <em>wild pointer</em> pointing to random memory.</p>
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><code>int *p; *p = 10;</code> &mdash; Writing to an uninitialised pointer causes undefined behaviour (often an immediate crash / segmentation fault). Always initialise with <code>NULL</code> or a valid address.</div>
+      </div>
+
+      <h3>2. NULL pointer dereference</h3>
+      <p>Attempting to read or write through a <code>NULL</code> pointer is undefined behaviour and will crash your application on modern OSes.</p>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Always verify pointer validity with <code>if (p != NULL)</code> before dereferencing, especially when receiving pointers as function arguments or from memory allocation functions.</div>
+      </div>
+
+      <h3>3. Dangling pointer</h3>
+      <p>A dangling pointer points to memory that is no longer valid, such as a local stack variable from a returned function or heap memory that has been <code>free()</code>'d.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>dangling_bug.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> <span class="pu">*</span><span class="fn">get_bad_pointer</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> local_var <span class="pu">=</span> <span class="nm">42</span><span class="pu">;</span>
+    <span class="kw">return</span> <span class="pu">&amp;</span>local_var<span class="pu">;</span> <span class="cm">/* BUG: local_var is destroyed when function returns! */</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>4. Pointer aliasing and strict aliasing</h3>
+      <p>Two pointers <strong>alias</strong> when they point to the same memory location. The C <strong>strict aliasing rule</strong> states that two pointers of different types (other than <code>char *</code> or <code>void *</code>) cannot point to the same location. Violating this rule by casting arbitrary pointers can lead to aggressive and unexpected compiler optimisation bugs.</p>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>A pointer stores the memory address of an object. Use <code>&amp;</code> to get an address and <code>*</code> to dereference.</li>
+        <li>On a given system, all pointer types have the same size (e.g. 8 bytes on 64-bit systems).</li>
+        <li>Pointer arithmetic is scaled by <code>sizeof(*p)</code> bytes.</li>
+        <li>Array names decay to pointers to their first element in expressions: <code>a[i]</code> is <code>*(a + i)</code>.</li>
+        <li><code>const int *p</code> protects the data; <code>int * const p</code> protects the pointer address.</li>
+        <li>Double pointers (<code>Type **</code>) allow functions to modify caller pointer variables and represent pointer arrays.</li>
+        <li><code>void *</code> is a generic pointer that can hold any address, but must be cast before dereferencing.</li>
+        <li>Always guard against uninitialised pointers, null dereferences, and dangling pointers.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

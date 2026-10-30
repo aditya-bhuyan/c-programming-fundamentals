@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 7 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 7 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/07-structs/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 7 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,567 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+      <h2>1. Defining a struct</h2>
+      <p>Arrays group values of the <em>same</em> type. A <strong>structure</strong> (<code>struct</code>) groups values of <em>different</em> types under one name, so related data travels together. Each value inside a struct is called a <strong>member</strong> (or field).</p>
+      <p>Declare the struct type once, then create variables of that type. Access a member with the <strong>dot operator</strong> (<code>.</code>):</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>struct_syntax.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="kw">struct</span> <span class="ty">Tag</span> <span class="pu">{</span>
+    type1 member1<span class="pu">;</span>
+    type2 member2<span class="pu">;</span>
+    <span class="cm">/* ... */</span>
+<span class="pu">};</span>                          <span class="cm">/* the trailing semicolon is required */</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>define_struct.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stddef.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Student</span> <span class="pu">{</span>
+    <span class="ty">char</span>   name<span class="pu">[</span><span class="nm">20</span><span class="pu">];</span>
+    <span class="ty">int</span>    age<span class="pu">;</span>
+    <span class="ty">double</span> gpa<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Student</span> s<span class="pu">;</span>                 <span class="cm">/* declare a variable of the struct type */</span>
+    s<span class="pu">.</span>age <span class="pu">=</span> <span class="nm">20</span><span class="pu">;</span>                       <span class="cm">/* member access with the dot operator   */</span>
+    s<span class="pu">.</span>gpa <span class="pu">=</span> <span class="nm">3.7</span><span class="pu">;</span>
+    <span class="fn">snprintf</span><span class="pu">(</span>s<span class="pu">.</span>name<span class="pu">,</span> <span class="kw">sizeof</span> s<span class="pu">.</span>name<span class="pu">,</span> <span class="st">"Alice"</span><span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%s, age %d, GPA %.1f\n"</span><span class="pu">,</span> s<span class="pu">.</span>name<span class="pu">,</span> s<span class="pu">.</span>age<span class="pu">,</span> s<span class="pu">.</span>gpa<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"offsetof name = %zu\n"</span><span class="pu">,</span> <span class="fn">offsetof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Student</span><span class="pu">,</span> name<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"offsetof age  = %zu\n"</span><span class="pu">,</span> <span class="fn">offsetof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Student</span><span class="pu">,</span> age<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"offsetof gpa  = %zu\n"</span><span class="pu">,</span> <span class="fn">offsetof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Student</span><span class="pu">,</span> gpa<span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof        = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Student</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="prose">
+      <p>Output (the offsets assume a typical 64-bit platform):</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>Alice, age 20, GPA 3.7
+offsetof name = 0
+offsetof age  = 20
+offsetof gpa  = 24
+sizeof        = 32</pre>
+    </div>
+    <div class="prose">
+      <h3>Memory layout, size and padding</h3>
+      <p>The members of a struct are stored in memory <strong>in declaration order</strong>, at increasing addresses. The first member always starts at offset 0. However, CPUs read most efficiently when a value sits at an address that is a multiple of its size (its <strong>alignment</strong>), so the compiler inserts unused <strong>padding</strong> bytes between members, and sometimes after the last one.</p>
+      <table>
+        <thead><tr><th>Member</th><th>Type</th><th>Offset</th><th>Bytes</th></tr></thead>
+        <tbody>
+          <tr><td><code>name</code></td><td><code>char[20]</code></td><td>0</td><td>20</td></tr>
+          <tr><td><code>age</code></td><td><code>int</code></td><td>20</td><td>4</td></tr>
+          <tr><td><code>gpa</code></td><td><code>double</code></td><td>24</td><td>8</td></tr>
+        </tbody>
+      </table>
+      <p>Here <code>name</code> (20 bytes) ends exactly at offset 20, which is already 4-byte aligned for <code>int</code>, so no padding is needed before <code>age</code>. <code>age</code> ends at offset 24, which is 8-byte aligned for <code>double</code>, so again no padding. This layout happens to be padding-free, and the total of 32 bytes is a multiple of 8, the strictest member alignment. The next example shows padding actually appearing.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>padding_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Padded</span> <span class="pu">{</span>
+    <span class="ty">char</span> a<span class="pu">;</span>     <span class="cm">/* 1 byte  + 3 bytes padding */</span>
+    <span class="ty">int</span>  b<span class="pu">;</span>     <span class="cm">/* 4 bytes                   */</span>
+    <span class="ty">char</span> c<span class="pu">;</span>     <span class="cm">/* 1 byte  + 3 bytes padding */</span>
+<span class="pu">};</span>
+
+<span class="kw">struct</span> <span class="ty">Reordered</span> <span class="pu">{</span>
+    <span class="ty">int</span>  b<span class="pu">;</span>     <span class="cm">/* 4 bytes                   */</span>
+    <span class="ty">char</span> a<span class="pu">;</span>     <span class="cm">/* 1 byte                    */</span>
+    <span class="ty">char</span> c<span class="pu">;</span>     <span class="cm">/* 1 byte  + 2 bytes padding */</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(struct Padded)    = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Padded</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(struct Reordered) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Reordered</span><span class="pu">));</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>sizeof(struct Padded)    = 12
+sizeof(struct Reordered) = 8</pre>
+    </div>
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#8505;&#65039;</span>
+        <div><strong>Padding is real, but it is not portable.</strong> <code>sizeof(struct S)</code> can be larger than the sum of its members, and the exact value depends on the compiler and platform. Always use <code>sizeof</code> and <code>offsetof</code> (from <code>&lt;stddef.h&gt;</code>) instead of hard-coding sizes. Ordering members from largest to smallest alignment usually minimises padding.</div>
+      </div>
+      <p>Never compare two structs with <code>==</code> (it does not compile) and never compare them with <code>memcmp</code> unless you have zeroed the padding bytes, because padding contents are unspecified.</p>
+    </div>
+
+    <div class="prose">
+      <h2>2. Struct initialisation</h2>
+      <p>A struct can be initialised with a brace-enclosed list. There are three styles you should know:</p>
+      <ul>
+        <li><strong>Positional</strong>: values are matched to members in declaration order. Fragile if the struct definition changes.</li>
+        <li><strong>Designated initialisers (C99)</strong>: <code>.member = value</code>, in any order. Self-documenting and robust.</li>
+        <li><strong>Partial initialisation</strong>: any member you leave out is set to zero (<code>0</code>, <code>0.0</code>, or <code>NULL</code>).</li>
+      </ul>
+      <p>The idiom <code>= {0}</code> zero-initialises every member and is the standard way to start from a clean slate. (The standard guarantees the members are zeroed; it does not promise anything about padding bytes.)</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>init_styles.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Config</span> <span class="pu">{</span>
+    <span class="ty">int</span>         width<span class="pu">;</span>
+    <span class="ty">int</span>         height<span class="pu">;</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>title<span class="pu">;</span>
+    <span class="ty">double</span>      scale<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Positional: members are filled in declaration order */</span>
+    <span class="kw">struct</span> <span class="ty">Config</span> a <span class="pu">=</span> <span class="pu">{</span> <span class="nm">640</span><span class="pu">,</span> <span class="nm">480</span><span class="pu">,</span> <span class="st">"Positional"</span><span class="pu">,</span> <span class="nm">1.0</span> <span class="pu">};</span>
+
+    <span class="cm">/* Designated initialisers (C99): any order, name the members */</span>
+    <span class="kw">struct</span> <span class="ty">Config</span> b <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>title <span class="pu">=</span> <span class="st">"Designated"</span><span class="pu">,</span> <span class="pu">.</span>width <span class="pu">=</span> <span class="nm">800</span><span class="pu">,</span> <span class="pu">.</span>height <span class="pu">=</span> <span class="nm">600</span><span class="pu">,</span> <span class="pu">.</span>scale <span class="pu">=</span> <span class="nm">2.0</span> <span class="pu">};</span>
+
+    <span class="cm">/* Partial: unnamed members are zero-initialised */</span>
+    <span class="kw">struct</span> <span class="ty">Config</span> c <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>width <span class="pu">=</span> <span class="nm">1024</span> <span class="pu">};</span>
+
+    <span class="cm">/* Zero-init everything */</span>
+    <span class="kw">struct</span> <span class="ty">Config</span> d <span class="pu">=</span> <span class="pu">{</span><span class="nm">0</span><span class="pu">};</span>
+
+    <span class="cm">/* Arrays of structs can use designated indices too */</span>
+    <span class="kw">struct</span> <span class="ty">Config</span> list<span class="pu">[</span><span class="nm">3</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="pu">[</span><span class="nm">1</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>width <span class="pu">=</span> <span class="nm">320</span><span class="pu">,</span> <span class="pu">.</span>height <span class="pu">=</span> <span class="nm">200</span> <span class="pu">}</span> <span class="pu">};</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a: %d x %d \"%s\" %.1f\n"</span><span class="pu">,</span> a<span class="pu">.</span>width<span class="pu">,</span> a<span class="pu">.</span>height<span class="pu">,</span> a<span class="pu">.</span>title<span class="pu">,</span> a<span class="pu">.</span>scale<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"b: %d x %d \"%s\" %.1f\n"</span><span class="pu">,</span> b<span class="pu">.</span>width<span class="pu">,</span> b<span class="pu">.</span>height<span class="pu">,</span> b<span class="pu">.</span>title<span class="pu">,</span> b<span class="pu">.</span>scale<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"c: %d x %d title=%s scale=%.1f\n"</span><span class="pu">,</span> c<span class="pu">.</span>width<span class="pu">,</span> c<span class="pu">.</span>height<span class="pu">,</span> c<span class="pu">.</span>title <span class="pu">?</span> c<span class="pu">.</span>title <span class="pu">:</span> <span class="st">"(null)"</span><span class="pu">,</span> c<span class="pu">.</span>scale<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"d: %d x %d title=%s scale=%.1f\n"</span><span class="pu">,</span> d<span class="pu">.</span>width<span class="pu">,</span> d<span class="pu">.</span>height<span class="pu">,</span> d<span class="pu">.</span>title <span class="pu">?</span> d<span class="pu">.</span>title <span class="pu">:</span> <span class="st">"(null)"</span><span class="pu">,</span> d<span class="pu">.</span>scale<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"list[0].width=%d list[1].width=%d list[2].width=%d\n"</span><span class="pu">,</span>
+           list<span class="pu">[</span><span class="nm">0</span><span class="pu">].</span>width<span class="pu">,</span> list<span class="pu">[</span><span class="nm">1</span><span class="pu">].</span>width<span class="pu">,</span> list<span class="pu">[</span><span class="nm">2</span><span class="pu">].</span>width<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>a: 640 x 480 "Positional" 1.0
+b: 800 x 600 "Designated" 2.0
+c: 1024 x 0 title=(null) scale=0.0
+d: 0 x 0 title=(null) scale=0.0
+list[0].width=0 list[1].width=320 list[2].width=0</pre>
+    </div>
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>A local struct variable declared <em>without</em> an initialiser holds indeterminate garbage, exactly like a local <code>int</code>. Get into the habit of writing <code>struct S s = {0};</code>. Variables with static storage duration (globals and <code>static</code> locals) are zero-initialised automatically.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>3. Structs and functions</h2>
+      <p>Structs are <strong>first-class values</strong> in C: you can assign one to another, pass one to a function, and return one from a function.</p>
+      <ul>
+        <li><strong>Pass by value</strong>: the whole struct is copied into the parameter. The function cannot change the caller's struct. Fine for small structs; wasteful for large ones.</li>
+        <li><strong>Pass by pointer</strong>: only an address is copied (typically 8 bytes). The function reads and writes the original through <code>-&gt;</code>. Add <code>const</code> when the function must not modify it.</li>
+        <li><strong>Return by value</strong>: the function builds a struct and returns a copy. Convenient for small structs such as points and vectors.</li>
+      </ul>
+      <p>For a pointer <code>p</code> to a struct, <code>p-&gt;member</code> is shorthand for <code>(*p).member</code>. The parentheses are needed because <code>.</code> binds tighter than unary <code>*</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>struct_functions.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Counter</span> <span class="pu">{</span>
+    <span class="ty">int</span> hits<span class="pu">;</span>
+    <span class="ty">int</span> misses<span class="pu">;</span>
+<span class="pu">};</span>
+
+<span class="cm">/* By value: receives a COPY, caller's struct is untouched */</span>
+<span class="ty">void</span> <span class="fn">record_hit_copy</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Counter</span> c<span class="pu">)</span> <span class="pu">{</span>
+    c<span class="pu">.</span>hits<span class="pu">++;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* By pointer: modifies the caller's struct */</span>
+<span class="ty">void</span> <span class="fn">record_hit</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Counter</span> <span class="pu">*</span>c<span class="pu">)</span> <span class="pu">{</span>
+    c<span class="pu">-&gt;</span>hits<span class="pu">++;</span>
+<span class="pu">}</span>
+
+<span class="cm">/* const pointer: read-only access without copying */</span>
+<span class="ty">void</span> <span class="fn">print_counter</span><span class="pu">(</span><span class="ty">const</span> <span class="kw">struct</span> <span class="ty">Counter</span> <span class="pu">*</span>c<span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"hits=%d misses=%d\n"</span><span class="pu">,</span> c<span class="pu">-&gt;</span>hits<span class="pu">,</span> c<span class="pu">-&gt;</span>misses<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="cm">/* Return a struct by value */</span>
+<span class="kw">struct</span> <span class="ty">Counter</span> <span class="fn">make_counter</span><span class="pu">(</span><span class="ty">int</span> hits<span class="pu">,</span> <span class="ty">int</span> misses<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Counter</span> c <span class="pu">=</span> <span class="pu">{</span> hits<span class="pu">,</span> misses <span class="pu">};</span>
+    <span class="kw">return</span> c<span class="pu">;</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Counter</span> c <span class="pu">=</span> <span class="fn">make_counter</span><span class="pu">(</span><span class="nm">0</span><span class="pu">,</span> <span class="nm">0</span><span class="pu">);</span>
+
+    <span class="fn">record_hit_copy</span><span class="pu">(</span>c<span class="pu">);</span>
+    <span class="fn">print_counter</span><span class="pu">(&amp;</span>c<span class="pu">);</span>      <span class="cm">/* hits=0 : the copy was modified */</span>
+
+    <span class="fn">record_hit</span><span class="pu">(&amp;</span>c<span class="pu">);</span>
+    <span class="fn">print_counter</span><span class="pu">(&amp;</span>c<span class="pu">);</span>      <span class="cm">/* hits=1 : the original was modified */</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>hits=0 misses=0
+hits=1 misses=0</pre>
+    </div>
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>Rule of thumb: pass small, read-only structs by value; pass anything large, or anything the function must modify, by pointer (<code>const</code> if read-only). Never return a pointer to a local struct, because the local is destroyed when the function returns (see Chapter 6).</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>4. typedef</h2>
+      <p><code>typedef</code> creates a <strong>new name for an existing type</strong>. It does not create a new type. Common uses:</p>
+      <ul>
+        <li><strong>Struct typedef</strong>: lets you write <code>Point</code> instead of <code>struct Point</code>.</li>
+        <li><strong>Primitive alias</strong>: gives a meaningful name to a basic type and lets you change it in one place.</li>
+        <li><strong>Function pointer typedef</strong>: turns the awkward declarator syntax into a readable name.</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>typedef_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Struct typedef: no need to write "struct" every time */</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">int</span> x<span class="pu">;</span>
+    <span class="ty">int</span> y<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Point</span><span class="pu">;</span>
+
+<span class="cm">/* Primitive alias: documents intent and eases porting */</span>
+<span class="kw">typedef</span> <span class="ty">unsigned</span> <span class="ty">int</span> <span class="ty">uint</span><span class="pu">;</span>
+<span class="kw">typedef</span> <span class="ty">double</span>       <span class="ty">Celsius</span><span class="pu">;</span>
+
+<span class="cm">/* Function pointer typedef: much easier to read */</span>
+<span class="kw">typedef</span> <span class="ty">int</span> <span class="pu">(*</span><span class="ty">Comparator</span><span class="pu">)(</span><span class="ty">int</span><span class="pu">,</span> <span class="ty">int</span><span class="pu">);</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">ascending</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span>  <span class="pu">{</span> <span class="kw">return</span> a <span class="pu">-</span> b<span class="pu">;</span> <span class="pu">}</span>
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">descending</span><span class="pu">(</span><span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span> <span class="kw">return</span> b <span class="pu">-</span> a<span class="pu">;</span> <span class="pu">}</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">compare_with</span><span class="pu">(</span><span class="ty">Comparator</span> cmp<span class="pu">,</span> <span class="ty">int</span> a<span class="pu">,</span> <span class="ty">int</span> b<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">return</span> <span class="fn">cmp</span><span class="pu">(</span>a<span class="pu">,</span> b<span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Point</span> p <span class="pu">=</span> <span class="pu">{</span><span class="nm">2</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">};</span>
+    <span class="ty">uint</span> count <span class="pu">=</span> <span class="nm">3</span><span class="pu">;</span>
+    <span class="ty">Celsius</span> temp <span class="pu">=</span> <span class="nm">21.5</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"p = (%d, %d), count = %u, temp = %.1f\n"</span><span class="pu">,</span> p<span class="pu">.</span>x<span class="pu">,</span> p<span class="pu">.</span>y<span class="pu">,</span> count<span class="pu">,</span> temp<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"ascending(3, 8)  = %d\n"</span><span class="pu">,</span> <span class="fn">compare_with</span><span class="pu">(</span>ascending<span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">));</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"descending(3, 8) = %d\n"</span><span class="pu">,</span> <span class="fn">compare_with</span><span class="pu">(</span>descending<span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">8</span><span class="pu">));</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>p = (2, 5), count = 3, temp = 21.5
+ascending(3, 8)  = -5
+descending(3, 8) = 5</pre>
+    </div>
+    <div class="prose">
+      <p>Without the typedef, a function taking a comparator would be declared as <code>int compare_with(int (*cmp)(int, int), int a, int b)</code>. With <code>Comparator</code> it reads naturally.</p>
+      <p>You can also combine a tag with a typedef: <code>typedef struct Node { ... } Node;</code>. The tag is required if the struct refers to itself (next section). A typedef of an anonymous struct, <code>typedef struct { ... } Point;</code>, has no tag and cannot be forward-declared.</p>
+    </div>
+
+    <div class="prose">
+      <h2>5. Nested and self-referential structs</h2>
+      <p>A struct member can itself be a struct. Chain the dot operator to reach inner members: <code>p.position.x</code>. The inner struct is stored <em>inside</em> the outer one, so the outer struct's size includes it.</p>
+      <p>A struct cannot contain a member of its <em>own</em> type, because its size would be infinite. It <strong>can</strong> contain a <strong>pointer</strong> to its own type, since a pointer has a fixed size. This <strong>self-referential</strong> pattern is the foundation of linked lists, trees and graphs.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>nested_and_node.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">double</span> x<span class="pu">;</span>
+    <span class="ty">double</span> y<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Vec2</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">Vec2</span> position<span class="pu">;</span>      <span class="cm">/* a struct member that is itself a struct */</span>
+    <span class="ty">Vec2</span> velocity<span class="pu">;</span>
+    <span class="ty">int</span>  id<span class="pu">;</span>
+<span class="pu">}</span> <span class="ty">Particle</span><span class="pu">;</span>
+
+<span class="cm">/* Self-referential: a struct may hold a POINTER to its own type */</span>
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="ty">Node</span> <span class="pu">{</span>
+    <span class="ty">int</span>          value<span class="pu">;</span>
+    <span class="kw">struct</span> <span class="ty">Node</span> <span class="pu">*</span>next<span class="pu">;</span>      <span class="cm">/* "Node" is not yet a typedef name here */</span>
+<span class="pu">}</span> <span class="ty">Node</span><span class="pu">;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Particle</span> p <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>position <span class="pu">=</span> <span class="pu">{</span><span class="nm">1.0</span><span class="pu">,</span> <span class="nm">2.0</span><span class="pu">},</span> <span class="pu">.</span>velocity <span class="pu">=</span> <span class="pu">{</span><span class="nm">0.5</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">0.5</span><span class="pu">},</span> <span class="pu">.</span>id <span class="pu">=</span> <span class="nm">7</span> <span class="pu">};</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"particle %d at (%.1f, %.1f)\n"</span><span class="pu">,</span> p<span class="pu">.</span>id<span class="pu">,</span> p<span class="pu">.</span>position<span class="pu">.</span>x<span class="pu">,</span> p<span class="pu">.</span>position<span class="pu">.</span>y<span class="pu">);</span>
+
+    p<span class="pu">.</span>position<span class="pu">.</span>x <span class="pu">+=</span> p<span class="pu">.</span>velocity<span class="pu">.</span>x<span class="pu">;</span>      <span class="cm">/* chain the dot operator */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"after move: (%.1f, %.1f)\n"</span><span class="pu">,</span> p<span class="pu">.</span>position<span class="pu">.</span>x<span class="pu">,</span> p<span class="pu">.</span>position<span class="pu">.</span>y<span class="pu">);</span>
+
+    <span class="cm">/* Build 1 -&gt; 2 -&gt; NULL by hand (full coverage in Chapter 9) */</span>
+    <span class="ty">Node</span> <span class="pu">*</span>second <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span> <span class="pu">*</span>second<span class="pu">);</span>
+    <span class="ty">Node</span> <span class="pu">*</span>first  <span class="pu">=</span> <span class="fn">malloc</span><span class="pu">(</span><span class="kw">sizeof</span> <span class="pu">*</span>first<span class="pu">);</span>
+    <span class="kw">if</span> <span class="pu">(</span>first <span class="pu">==</span> NULL <span class="pu">||</span> second <span class="pu">==</span> NULL<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">free</span><span class="pu">(</span>first<span class="pu">);</span>
+        <span class="fn">free</span><span class="pu">(</span>second<span class="pu">);</span>
+        <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="pu">}</span>
+    second<span class="pu">-&gt;</span>value <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>  second<span class="pu">-&gt;</span>next <span class="pu">=</span> NULL<span class="pu">;</span>
+    first<span class="pu">-&gt;</span>value  <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>  first<span class="pu">-&gt;</span>next  <span class="pu">=</span> second<span class="pu">;</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">const</span> <span class="ty">Node</span> <span class="pu">*</span>cur <span class="pu">=</span> first<span class="pu">;</span> cur <span class="pu">!=</span> NULL<span class="pu">;</span> cur <span class="pu">=</span> cur<span class="pu">-&gt;</span>next<span class="pu">)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d -&gt; "</span><span class="pu">,</span> cur<span class="pu">-&gt;</span>value<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"NULL\n"</span><span class="pu">);</span>
+
+    <span class="fn">free</span><span class="pu">(</span>second<span class="pu">);</span>
+    <span class="fn">free</span><span class="pu">(</span>first<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>particle 7 at (1.0, 2.0)
+after move: (1.5, 2.0)
+1 -&gt; 2 -&gt; NULL</pre>
+    </div>
+    <div class="prose">
+      <div class="callout info">
+        <span class="callout-icon">&#8505;&#65039;</span>
+        <div>This is only a preview of linked lists. Allocating nodes with <code>malloc</code> and freeing them is covered in depth in Chapter 9 (Dynamic Memory), and you will build one in Exercise 3.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <h2>6. Unions</h2>
+      <p>A <strong>union</strong> is declared like a struct, but all of its members <strong>share the same memory</strong>. Only <strong>one member is active at a time</strong>: writing one member overwrites the others. The size of a union is the size of its <strong>largest member</strong> (rounded up to satisfy alignment).</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>union_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">union</span> <span class="ty">Value</span> <span class="pu">{</span>
+    <span class="ty">int</span>    i<span class="pu">;</span>
+    <span class="ty">float</span>  f<span class="pu">;</span>
+    <span class="ty">char</span>   bytes<span class="pu">[</span><span class="nm">8</span><span class="pu">];</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">union</span> <span class="ty">Value</span> v<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(union Value) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">union</span> <span class="ty">Value</span><span class="pu">));</span>
+
+    v<span class="pu">.</span>i <span class="pu">=</span> <span class="nm">65</span><span class="pu">;</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"v.i = %d\n"</span><span class="pu">,</span> v<span class="pu">.</span>i<span class="pu">);</span>
+
+    v<span class="pu">.</span>f <span class="pu">=</span> <span class="nm">1.0f</span><span class="pu">;</span>                           <span class="cm">/* overwrites the same bytes */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"v.f = %.1f\n"</span><span class="pu">,</span> v<span class="pu">.</span>f<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"v.i = 0x%08X  (bit pattern of 1.0f reinterpreted as int)\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span><span class="pu">)</span>v<span class="pu">.</span>i<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>sizeof(union Value) = 8
+v.i = 65
+v.f = 1.0
+v.i = 0x3F800000  (bit pattern of 1.0f reinterpreted as int)</pre>
+    </div>
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Union aliasing.</strong> Reading a union member other than the one last written reinterprets the stored bytes. In C99 and later this "type punning" through a union is permitted, but the resulting value depends on endianness, representation and padding, and the value can be a <em>trap representation</em>. Reading the wrong member is a classic source of bugs. Use a tag to remember which member is valid.</div>
+      </div>
+
+      <h3>Tagged unions</h3>
+      <p>The safe way to use a union is to pair it with a <strong>tag</strong>, usually an <code>enum</code>, stored next to it in a struct. Code checks the tag before touching the payload. This pattern, a <em>tagged union</em> (or variant), is how C programs model "this value is either an int or a float or ...".</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>tagged_union.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">typedef</span> <span class="kw">enum</span> <span class="pu">{</span> NUM_INT<span class="pu">,</span> NUM_FLOAT <span class="pu">}</span> <span class="ty">NumKind</span><span class="pu">;</span>
+
+<span class="kw">typedef</span> <span class="kw">struct</span> <span class="pu">{</span>
+    <span class="ty">NumKind</span> kind<span class="pu">;</span>               <span class="cm">/* the tag */</span>
+    <span class="kw">union</span> <span class="pu">{</span>
+        <span class="ty">int</span>   i<span class="pu">;</span>
+        <span class="ty">float</span> f<span class="pu">;</span>
+    <span class="pu">}</span> as<span class="pu">;</span>                       <span class="cm">/* the payload */</span>
+<span class="pu">}</span> <span class="ty">Number</span><span class="pu">;</span>
+
+<span class="kw">static</span> <span class="ty">void</span> <span class="fn">print_number</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">Number</span> <span class="pu">*</span>n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">switch</span> <span class="pu">(</span>n<span class="pu">-&gt;</span>kind<span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">case</span> NUM_INT<span class="pu">:</span>   <span class="fn">printf</span><span class="pu">(</span><span class="st">"int %d\n"</span><span class="pu">,</span>     n<span class="pu">-&gt;</span>as<span class="pu">.</span>i<span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+        <span class="kw">case</span> NUM_FLOAT<span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"float %.2f\n"</span><span class="pu">,</span> n<span class="pu">-&gt;</span>as<span class="pu">.</span>f<span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">Number</span> a <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>kind <span class="pu">=</span> NUM_INT<span class="pu">,</span>   <span class="pu">.</span>as<span class="pu">.</span>i <span class="pu">=</span> <span class="nm">7</span> <span class="pu">};</span>
+    <span class="ty">Number</span> b <span class="pu">=</span> <span class="pu">{</span> <span class="pu">.</span>kind <span class="pu">=</span> NUM_FLOAT<span class="pu">,</span> <span class="pu">.</span>as<span class="pu">.</span>f <span class="pu">=</span> <span class="nm">2.5f</span> <span class="pu">};</span>
+
+    <span class="fn">print_number</span><span class="pu">(&amp;</span>a<span class="pu">);</span>
+    <span class="fn">print_number</span><span class="pu">(&amp;</span>b<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>int 7
+float 2.50</pre>
+    </div>
+    <div class="prose">
+      <p>The nested <code>union { ... } as;</code> is an anonymous-type member named <code>as</code>, so you write <code>n-&gt;as.i</code>. Always <code>switch</code> on the tag, and handle every enumerator.</p>
+    </div>
+
+    <div class="prose">
+      <h2>7. Enumerations (<code>enum</code>)</h2>
+      <p>An <strong>enumeration</strong> defines a set of named integer constants. By default the first enumerator is <code>0</code> and each following one is the previous plus one. You can assign explicit values, and numbering continues from the last explicit value.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>enum_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">enum</span> <span class="ty">Weekday</span> <span class="pu">{</span> MON<span class="pu">,</span> TUE<span class="pu">,</span> WED<span class="pu">,</span> THU<span class="pu">,</span> FRI<span class="pu">,</span> SAT<span class="pu">,</span> SUN <span class="pu">};</span>      <span class="cm">/* 0, 1, 2, ... 6 */</span>
+
+<span class="kw">enum</span> <span class="ty">Level</span> <span class="pu">{</span> LOW <span class="pu">=</span> <span class="nm">10</span><span class="pu">,</span> MEDIUM <span class="pu">=</span> <span class="nm">20</span><span class="pu">,</span> HIGH <span class="pu">=</span> <span class="nm">30</span> <span class="pu">};</span>         <span class="cm">/* explicit values */</span>
+
+<span class="kw">enum</span> <span class="ty">Mixed</span> <span class="pu">{</span> A<span class="pu">,</span> B<span class="pu">,</span> C <span class="pu">=</span> <span class="nm">10</span><span class="pu">,</span> D<span class="pu">,</span> E <span class="pu">};</span>                       <span class="cm">/* 0, 1, 10, 11, 12 */</span>
+
+<span class="pp">#define</span> OLD_RED   <span class="nm">0</span>                                       <span class="cm">/* macro: no type, no scope */</span>
+<span class="pp">#define</span> OLD_GREEN <span class="nm">1</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">enum</span> <span class="ty">Weekday</span> today <span class="pu">=</span> WED<span class="pu">;</span>
+    <span class="kw">enum</span> <span class="ty">Level</span>   lvl   <span class="pu">=</span> HIGH<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"today = %d, lvl = %d\n"</span><span class="pu">,</span> today<span class="pu">,</span> lvl<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"A=%d B=%d C=%d D=%d E=%d\n"</span><span class="pu">,</span> A<span class="pu">,</span> B<span class="pu">,</span> C<span class="pu">,</span> D<span class="pu">,</span> E<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(enum Weekday) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">enum</span> <span class="ty">Weekday</span><span class="pu">));</span>
+
+    <span class="ty">int</span> n <span class="pu">=</span> today <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>                  <span class="cm">/* enums are integers: arithmetic compiles */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"today + 1 = %d\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"OLD_GREEN = %d\n"</span><span class="pu">,</span> OLD_GREEN<span class="pu">);</span>
+    <span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>OLD_RED<span class="pu">;</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>today = 2, lvl = 30
+A=0 B=1 C=10 D=11 E=12
+sizeof(enum Weekday) = 4
+today + 1 = 3
+OLD_GREEN = 1</pre>
+    </div>
+    <div class="prose">
+      <h3>Underlying type</h3>
+      <p>In C, the <em>enumeration constants</em> (<code>MON</code>, <code>HIGH</code>, ...) always have type <code>int</code>. The enumerated <em>type</em> itself (<code>enum Weekday</code>) is compatible with an implementation-defined integer type that can represent all its values. In practice that is <code>unsigned int</code> or <code>int</code>, hence <code>sizeof(enum Weekday)</code> is typically 4. C does not stop you assigning any integer to an enum variable, so range-checking is your job.</p>
+
+      <h3><code>enum</code> versus <code>#define</code></h3>
+      <table>
+        <thead><tr><th></th><th><code>enum</code></th><th><code>#define</code></th></tr></thead>
+        <tbody>
+          <tr><td>Handled by</td><td>Compiler</td><td>Preprocessor (text substitution)</td></tr>
+          <tr><td>Scope</td><td>Normal block / file scope</td><td>None; global from the point of definition</td></tr>
+          <tr><td>Auto-numbering</td><td>Yes</td><td>No, each value written by hand</td></tr>
+          <tr><td>Debugger visibility</td><td>Name is visible</td><td>Usually just the number</td></tr>
+          <tr><td>Non-integer values</td><td>No (integers only)</td><td>Yes (floats, strings, expressions)</td></tr>
+        </tbody>
+      </table>
+      <p>Prefer <code>enum</code> for related integer constants and <code>#define</code> (or <code>const</code>) for everything else. Because enumerators share the surrounding scope, prefix them (<code>NUM_INT</code>, <code>NUM_FLOAT</code>) to avoid name clashes.</p>
+    </div>
+
+    <div class="prose">
+      <h2>8. Bit-fields</h2>
+      <p>A <strong>bit-field</strong> is a struct member with an explicit width in bits, written <code>type name : width;</code>. Bit-fields pack several small values into one storage unit, which is useful for hardware registers, protocol headers and flag sets.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>bitfield_demo.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">struct</span> <span class="ty">Flags</span> <span class="pu">{</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> ready <span class="pu">:</span> <span class="nm">1</span><span class="pu">;</span>     <span class="cm">/* 1 bit : 0..1  */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> error <span class="pu">:</span> <span class="nm">1</span><span class="pu">;</span>     <span class="cm">/* 1 bit : 0..1  */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> mode  <span class="pu">:</span> <span class="nm">3</span><span class="pu">;</span>     <span class="cm">/* 3 bits: 0..7  */</span>
+    <span class="ty">unsigned</span> <span class="ty">int</span> count <span class="pu">:</span> <span class="nm">4</span><span class="pu">;</span>     <span class="cm">/* 4 bits: 0..15 */</span>
+<span class="pu">};</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">struct</span> <span class="ty">Flags</span> f <span class="pu">=</span> <span class="pu">{</span><span class="nm">0</span><span class="pu">};</span>
+
+    f<span class="pu">.</span>ready <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span>
+    f<span class="pu">.</span>mode  <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+    f<span class="pu">.</span>count <span class="pu">=</span> <span class="nm">9</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"ready=%u error=%u mode=%u count=%u\n"</span><span class="pu">,</span> f<span class="pu">.</span>ready<span class="pu">,</span> f<span class="pu">.</span>error<span class="pu">,</span> f<span class="pu">.</span>mode<span class="pu">,</span> f<span class="pu">.</span>count<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(struct Flags) = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span><span class="kw">struct</span> <span class="ty">Flags</span><span class="pu">));</span>
+
+    <span class="cm">/* &amp;f.ready would be a compile error: bit-fields have no address */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>Output</span></div>
+      <pre>ready=1 error=0 mode=5 count=9
+sizeof(struct Flags) = 4</pre>
+    </div>
+    <div class="prose">
+      <p>The four fields use 1 + 1 + 3 + 4 = 9 bits, but they live inside one 4-byte <code>unsigned int</code> storage unit, so the struct is 4 bytes.</p>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Portability caveats.</strong> The C standard leaves much about bit-fields implementation-defined: the order of bits within a storage unit (low-to-high or high-to-low), whether a field may straddle a storage-unit boundary, and whether a plain <code>int</code> bit-field is signed. You cannot take the address of a bit-field (<code>&amp;f.ready</code> is an error), and <code>sizeof</code> and layout vary between compilers. Use <code>unsigned int</code> explicitly, and never rely on bit-fields to match an on-disk or on-wire format. For that, use explicit shifts and masks.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>A <code>struct</code> groups members of different types; access them with <code>.</code>, or with <code>-&gt;</code> through a pointer (<code>p-&gt;m</code> is <code>(*p).m</code>).</li>
+        <li>Members are stored in declaration order; the compiler adds <strong>padding</strong> for alignment, so <code>sizeof</code> can exceed the sum of the members.</li>
+        <li>Prefer designated initialisers; <code>= {0}</code> zero-initialises everything.</li>
+        <li>Structs are copied on assignment, on pass-by-value and on return. Pass by (const) pointer to avoid copies or to modify the original.</li>
+        <li><code>typedef</code> creates aliases for structs, primitives and function pointers; it does not create a new type.</li>
+        <li>A struct may contain other structs, and pointers to its own type (the basis of linked lists), but not itself.</li>
+        <li>A <code>union</code> shares one block of memory among its members, sized for the largest. Pair it with an <code>enum</code> tag to make a safe tagged union.</li>
+        <li>An <code>enum</code> defines named integer constants; they are scoped and auto-numbered, unlike <code>#define</code>.</li>
+        <li>Bit-fields pack small values into bits, but their layout is implementation-defined, so avoid them for external data formats.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

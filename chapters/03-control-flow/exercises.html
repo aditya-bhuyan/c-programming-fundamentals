@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 3 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 3 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/03-control-flow/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 3 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 3</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 3 — Control Flow</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 3 — Control Flow &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,169 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        FizzBuzz
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a program that prints the numbers from 1 to 100, each on its own line. For multiples of 3, print <code>Fizz</code> instead of the number, for multiples of 5, print <code>Buzz</code>, and for numbers that are multiples of both 3 and 5, print <code>FizzBuzz</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output (first 16 lines)</span></div>
+          <pre>1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+FizzBuzz
+16</pre>
+        </div>
+        <p>Use a <code>for</code> loop and an <code>if / else if / else</code> chain with the modulo <code>%</code> operator.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Check for the most specific condition first: test whether <code>i % 15 == 0</code> (or <code>i % 3 == 0 &amp;&amp; i % 5 == 0</code>) before checking 3 or 5 individually.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        Number / Star Triangle
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a C program that prints a right-angled triangle pattern of asterisks (<code>*</code>) of height <code>N = 5</code> using nested <code>for</code> loops.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>*
+**
+***
+****
+*****</pre>
+        </div>
+        <p>The outer loop should control the current row (from 1 to N), and the inner loop should print the appropriate number of stars for that row followed by a newline <code>\n</code>.</p>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Outer loop: <code>for (int r = 1; r &lt;= 5; r++)</code>. Inner loop: <code>for (int c = 1; c &lt;= r; c++) printf("*");</code> followed by <code>printf("\n");</code> outside the inner loop.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Prime Sieve (Sieve of Eratosthenes)
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Implement the <strong>Sieve of Eratosthenes</strong> to find and print all prime numbers up to 100.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Primes up to 100:
+2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</pre>
+        </div>
+        <p><strong>Instructions:</strong></p>
+        <ul style="font-size:.9rem;margin-left:1.2rem;">
+          <li>Create an array <code>int is_prime[101]</code> and initialize all elements to <code>1</code> (prime), except indices 0 and 1 set to <code>0</code> (not prime).</li>
+          <li>Use a <code>for</code> loop starting from <code>p = 2</code> while <code>p * p &lt;= 100</code>.</li>
+          <li>If <code>is_prime[p]</code> is true, use an inner loop to mark all multiples of <code>p</code> (starting at <code>p * p</code> with step <code>p</code>) as <code>0</code>.</li>
+          <li>Finally, loop through numbers 2 to 100 and print all indices where <code>is_prime[i] == 1</code>.</li>
+        </ul>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Inner loop step: <code>for (int m = p * p; m &lt;= 100; m += p) is_prime[m] = 0;</code></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Menu Simulator
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a program that uses a <code>switch</code> statement inside a loop to simulate a bank ATM menu system. Since interactive input with <code>scanf</code> is introduced in later chapters, process a fixed array of pre-set user choices: <code>{ 1, 2, 4, 3, 9, 5 }</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>--- ATM System Initialized ---
+[Action] Choice 1 -> Action: Checking Balance ($1,250.00)
+[Action] Choice 2 -> Action: Deposit Funds ($200.00 deposited)
+[Action] Choice 4 -> Action: Account Statement Generated
+[Action] Choice 3 -> Action: Withdraw Funds ($50.00 dispensed)
+[Action] Choice 9 -> [ERROR] Invalid menu choice. Please select 1-5.
+[Action] Choice 5 -> Action: Exiting system. Thank you!
+Session ended successfully.</pre>
+        </div>
+        <p>Requirements:</p>
+        <ul style="font-size:.9rem;margin-left:1.2rem;">
+          <li>Handle choices 1 (Balance), 2 (Deposit), 3 (Withdraw), 4 (Statement), 5 (Exit).</li>
+          <li>Use a <code>default</code> case for invalid menu entries (like 9).</li>
+          <li>Exit the loop when option 5 is encountered.</li>
+        </ul>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use a boolean running flag <code>bool running = true;</code> in a <code>while (running)</code> loop, and set <code>running = false;</code> inside <code>case 5:</code> before <code>break;</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Palindrome Number Checker
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Write a C program that tests whether given integer numbers are <strong>palindromes</strong> (read the exact same forwards and backwards, e.g. 12321 or 4554) by reversing their digits using a mathematical loop (no string conversion).</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Checking numbers:
+12321 -> PALINDROME (reversed: 12321)
+12345 -> NOT a palindrome (reversed: 54321)
+ 1001 -> PALINDROME (reversed: 1001)
+    7 -> PALINDROME (reversed: 7)
+  -44 -> NOT a palindrome (negative numbers cannot be palindromes)</pre>
+        </div>
+        <p>Algorithm hint:</p>
+        <ul style="font-size:.9rem;margin-left:1.2rem;">
+          <li>Negative numbers are immediately not palindromes.</li>
+          <li>Store the original number in a variable <code>original</code>.</li>
+          <li>In a <code>while (temp &gt; 0)</code> loop: extract the last digit using <code>digit = temp % 10</code>, build the reversed number with <code>reversed = reversed * 10 + digit</code>, and truncate the last digit with <code>temp /= 10</code>.</li>
+          <li>Compare <code>original == reversed</code>.</li>
+        </ul>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Be sure to use a copy <code>int temp = num;</code> so you don't destroy the original number needed for the final comparison!</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>

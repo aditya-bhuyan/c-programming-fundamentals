@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Code Examples — Chapter 3 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Code Examples — Chapter 3 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/03-control-flow/examples.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Code Examples — Chapter 3 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,238 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Grade Classifier (if / else if chain)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Demonstrates multi-branch decision making with boundary checks and error validation using <code>if</code>, <code>else if</code>, and <code>else</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_ifelse.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> scores<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">95</span><span class="pu">,</span> <span class="nm">82</span><span class="pu">,</span> <span class="nm">74</span><span class="pu">,</span> <span class="nm">61</span><span class="pu">,</span> <span class="nm">48</span><span class="pu">,</span> <span class="pu">-</span><span class="nm">5</span><span class="pu">,</span> <span class="nm">105</span><span class="pu">};</span>
+    <span class="ty">int</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>scores<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>scores<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> score <span class="pu">=</span> scores<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Score: %3d -> "</span><span class="pu">,</span> score<span class="pu">);</span>
+
+        <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&lt;</span> <span class="nm">0</span> <span class="pu">||</span> score <span class="pu">&gt;</span> <span class="nm">100</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Invalid score!\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">90</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade A (Excellent)\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">80</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade B (Good)\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">70</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade C (Satisfactory)\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="pu">(</span>score <span class="pu">&gt;=</span> <span class="nm">60</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade D (Pass)\n"</span><span class="pu">);</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade F (Fail)\n"</span><span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -o 01_ifelse 01_ifelse.c</code> &nbsp;|&nbsp; Run: <code>./01_ifelse</code><br>Output:<br><code>Score:  95 -> Grade A (Excellent)<br>Score:  82 -> Grade B (Good)<br>Score:  74 -> Grade C (Satisfactory)<br>Score:  61 -> Grade D (Pass)<br>Score:  48 -> Grade F (Fail)<br>Score:  -5 -> Invalid score!<br>Score: 105 -> Invalid score!</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Day of Week Printer (switch with fall-through)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Demonstrates <code>switch</code>, <code>case</code>, <code>default</code>, and deliberate case fall-through to classify weekdays and weekends.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_switch.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> test_days<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span><span class="nm">1</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">6</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">9</span><span class="pu">};</span>
+    <span class="ty">int</span> count <span class="pu">=</span> <span class="kw">sizeof</span><span class="pu">(</span>test_days<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>test_days<span class="pu">[</span><span class="nm">0</span><span class="pu">]);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> count<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">int</span> day <span class="pu">=</span> test_days<span class="pu">[</span>i<span class="pu">];</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Day %d: "</span><span class="pu">,</span> day<span class="pu">);</span>
+
+        <span class="cm">/* Print day name */</span>
+        <span class="kw">switch</span> <span class="pu">(</span>day<span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">case</span> <span class="nm">1</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Monday"</span><span class="pu">);</span>    <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">2</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Tuesday"</span><span class="pu">);</span>   <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">3</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Wednesday"</span><span class="pu">);</span> <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">4</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Thursday"</span><span class="pu">);</span>  <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">5</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Friday"</span><span class="pu">);</span>    <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">6</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Saturday"</span><span class="pu">);</span>  <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">7</span><span class="pu">:</span> <span class="fn">printf</span><span class="pu">(</span><span class="st">"Sunday"</span><span class="pu">);</span>    <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">default</span><span class="pu">:</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">"Unknown Day\n"</span><span class="pu">);</span>
+                <span class="kw">continue</span><span class="pu">;</span> <span class="cm">/* Skip category check for invalid days */</span>
+        <span class="pu">}</span>
+
+        <span class="cm">/* Classify type using deliberate fall-through */</span>
+        <span class="kw">switch</span> <span class="pu">(</span>day<span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">case</span> <span class="nm">1</span><span class="pu">:</span>
+            <span class="kw">case</span> <span class="nm">2</span><span class="pu">:</span>
+            <span class="kw">case</span> <span class="nm">3</span><span class="pu">:</span>
+            <span class="kw">case</span> <span class="nm">4</span><span class="pu">:</span>
+            <span class="kw">case</span> <span class="nm">5</span><span class="pu">:</span>
+                <span class="cm">/* Deliberate fall-through: cases 1-5 share same handler */</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">" (Weekday - Time to work)\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+            <span class="kw">case</span> <span class="nm">6</span><span class="pu">:</span>
+            <span class="kw">case</span> <span class="nm">7</span><span class="pu">:</span>
+                <span class="cm">/* Deliberate fall-through: weekend days */</span>
+                <span class="fn">printf</span><span class="pu">(</span><span class="st">" (Weekend - Time to relax)\n"</span><span class="pu">);</span>
+                <span class="kw">break</span><span class="pu">;</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>Day 1: Monday (Weekday - Time to work)<br>Day 3: Wednesday (Weekday - Time to work)<br>Day 5: Friday (Weekday - Time to work)<br>Day 6: Saturday (Weekend - Time to relax)<br>Day 7: Sunday (Weekend - Time to relax)<br>Day 9: Unknown Day</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Collatz Conjecture (while loop)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Computes the sequence of numbers reaching 1 where <code>n = n/2</code> if even, and <code>n = 3n + 1</code> if odd.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_while.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">long</span> <span class="ty">long</span> n <span class="pu">=</span> <span class="nm">27</span><span class="pu">;</span>
+    <span class="ty">int</span> steps <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Collatz sequence for n = %lld:\n"</span><span class="pu">,</span> n<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%lld"</span><span class="pu">,</span> n<span class="pu">);</span>
+
+    <span class="kw">while</span> <span class="pu">(</span>n <span class="pu">&gt;</span> <span class="nm">1</span><span class="pu">)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">%</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            n <span class="pu">=</span> n <span class="pu">/</span> <span class="nm">2</span><span class="pu">;</span>
+        <span class="pu">}</span> <span class="kw">else</span> <span class="pu">{</span>
+            n <span class="pu">=</span> <span class="nm">3</span> <span class="pu">*</span> n <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">" -> %lld"</span><span class="pu">,</span> n<span class="pu">);</span>
+        steps<span class="pu">++;</span>
+
+        <span class="cm">/* Wrap output line every 8 values for clean formatting */</span>
+        <span class="kw">if</span> <span class="pu">(</span>steps <span class="pu">%</span> <span class="nm">8</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n\nReached 1 in %d total steps.\n"</span><span class="pu">,</span> steps<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output Summary:<br><code>Collatz sequence for n = 27:<br>27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47<br>... -> 1<br><br>Reached 1 in 111 total steps.</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Input Validation Loop (do-while loop)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Simulates re-prompting for user input until a valid value between 1 and 100 is provided.</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_dowhile.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Simulated stream of user inputs: negative, too large, zero, valid */</span>
+    <span class="ty">int</span> simulated_inputs<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="pu">-</span><span class="nm">12</span><span class="pu">,</span> <span class="nm">145</span><span class="pu">,</span> <span class="nm">0</span><span class="pu">,</span> <span class="nm">75</span> <span class="pu">};</span>
+    <span class="ty">int</span> attempt <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+    <span class="ty">int</span> value<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- Simulated Score Entry ---\n"</span><span class="pu">);</span>
+
+    <span class="kw">do</span> <span class="pu">{</span>
+        value <span class="pu">=</span> simulated_inputs<span class="pu">[</span>attempt<span class="pu">];</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"Attempt %d: User entered %d\n"</span><span class="pu">,</span> attempt <span class="pu">+</span> <span class="nm">1</span><span class="pu">,</span> value<span class="pu">);</span>
+
+        <span class="kw">if</span> <span class="pu">(</span>value <span class="pu">&lt;</span> <span class="nm">1</span> <span class="pu">||</span> value <span class="pu">&gt;</span> <span class="nm">100</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"  [ERROR] Score must be between 1 and 100. Please try again.\n"</span><span class="pu">);</span>
+        <span class="pu">}</span>
+        attempt<span class="pu">++;</span>
+    <span class="pu">}</span> <span class="kw">while</span> <span class="pu">(</span>value <span class="pu">&lt;</span> <span class="nm">1</span> <span class="pu">||</span> value <span class="pu">&gt;</span> <span class="nm">100</span><span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Success! Valid score accepted: %d\n"</span><span class="pu">,</span> value<span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>--- Simulated Score Entry ---<br>Attempt 1: User entered -12<br>&nbsp;&nbsp;[ERROR] Score must be between 1 and 100. Please try again.<br>Attempt 2: User entered 145<br>&nbsp;&nbsp;[ERROR] Score must be between 1 and 100. Please try again.<br>Attempt 3: User entered 0<br>&nbsp;&nbsp;[ERROR] Score must be between 1 and 100. Please try again.<br>Attempt 4: User entered 75<br>Success! Valid score accepted: 75</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Multiplication Table (nested for loops)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Generates a clean 10&times;10 multiplication grid with formatted column widths using nested <code>for</code> loops.</p>
+    <div class="code-block">
+      <div class="code-header"><span>05_for.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"     "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> col <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> col <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> col<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> col<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n   +----------------------------------------\n"</span><span class="pu">);</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> row <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> row <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> row<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%2d |"</span><span class="pu">,</span> row<span class="pu">);</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> col <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> col <span class="pu">&lt;=</span> <span class="nm">10</span><span class="pu">;</span> col<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> row <span class="pu">*</span> col<span class="pu">);</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;10<br>&nbsp;&nbsp;&nbsp;+----------------------------------------<br>&nbsp;1 |&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;10<br>&nbsp;2 |&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;10&nbsp;&nbsp;12&nbsp;&nbsp;14&nbsp;&nbsp;16&nbsp;&nbsp;18&nbsp;&nbsp;20<br>&nbsp;3 |&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;12&nbsp;&nbsp;15&nbsp;&nbsp;18&nbsp;&nbsp;21&nbsp;&nbsp;24&nbsp;&nbsp;27&nbsp;&nbsp;30<br>...<br>10 |&nbsp;&nbsp;10&nbsp;&nbsp;20&nbsp;&nbsp;30&nbsp;&nbsp;40&nbsp;&nbsp;50&nbsp;&nbsp;60&nbsp;&nbsp;70&nbsp;&nbsp;80&nbsp;&nbsp;90&nbsp;100</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 6 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 6 — Search &amp; Filter (break and continue)</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Uses <code>break</code> for early loop termination when finding a prime, and <code>continue</code> to skip even numbers.</p>
+    <div class="code-block">
+      <div class="code-header"><span>06_break_continue.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdbool.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* Part A: Using break to find the first prime number >= 50 */</span>
+    <span class="ty">int</span> first_prime <span class="pu">=</span> <span class="pu">-</span><span class="nm">1</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> n <span class="pu">=</span> <span class="nm">50</span><span class="pu">;</span> n <span class="pu">&lt;=</span> <span class="nm">100</span><span class="pu">;</span> n<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="ty">bool</span> is_prime <span class="pu">=</span> <span class="kw">true</span><span class="pu">;</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> d <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span> d <span class="pu">*</span> d <span class="pu">&lt;=</span> n<span class="pu">;</span> d<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="kw">if</span> <span class="pu">(</span>n <span class="pu">%</span> d <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+                is_prime <span class="pu">=</span> <span class="kw">false</span><span class="pu">;</span>
+                <span class="kw">break</span><span class="pu">;</span> <span class="cm">/* Not prime, stop checking divisors for this n */</span>
+            <span class="pu">}</span>
+        <span class="pu">}</span>
+        <span class="kw">if</span> <span class="pu">(</span>is_prime<span class="pu">)</span> <span class="pu">{</span>
+            first_prime <span class="pu">=</span> n<span class="pu">;</span>
+            <span class="kw">break</span><span class="pu">;</span> <span class="cm">/* Found first prime >= 50, terminate search loop */</span>
+        <span class="pu">}</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"First prime >= 50 is: %d\n"</span><span class="pu">,</span> first_prime<span class="pu">);</span>
+
+    <span class="cm">/* Part B: Using continue to print only odd numbers from 1 to 15 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Odd numbers between 1 and 15: "</span><span class="pu">);</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">1</span><span class="pu">;</span> i <span class="pu">&lt;=</span> <span class="nm">15</span><span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">if</span> <span class="pu">(</span>i <span class="pu">%</span> <span class="nm">2</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+            <span class="kw">continue</span><span class="pu">;</span> <span class="cm">/* Skip even numbers directly to i++ */</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"%d "</span><span class="pu">,</span> i<span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>First prime >= 50 is: 53<br>Odd numbers between 1 and 15: 1 3 5 7 9 11 13 15</code></div></div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
     </div>
 
   </main>

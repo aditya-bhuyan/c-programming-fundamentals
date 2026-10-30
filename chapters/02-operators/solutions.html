@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solutions — Chapter 2 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Solutions — Chapter 2 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/02-operators/solutions.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Solutions — Chapter 2 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,178 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html" class="active">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+<div class="callout warn"><span class="callout-icon">&#9888;&#65039;</span><div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div></div>
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Arithmetic Calculator</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">17</span><span class="pu">;</span>
+    <span class="ty">int</span> b <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a = %d, b = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a + b = %d\n"</span><span class="pu">,</span> a <span class="pu">+</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a - b = %d\n"</span><span class="pu">,</span> a <span class="pu">-</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a * b = %d\n"</span><span class="pu">,</span> a <span class="pu">*</span> b<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a / b = %d\n"</span><span class="pu">,</span> a <span class="pu">/</span> b<span class="pu">);</span>          <span class="cm">/* integer division */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a %% b = %d\n"</span><span class="pu">,</span> a <span class="pu">%</span> b<span class="pu">);</span>         <span class="cm">/* remainder */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"a / b (real) = %.2f\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">double</span><span class="pu">)</span>a <span class="pu">/</span> b<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Expected output:<br><code>a = 17, b = 5<br>a + b = 22<br>a - b = 12<br>a * b = 85<br>a / b = 3<br>a % b = 2<br>a / b (real) = 3.40</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div><code>17 / 5</code> is <code>3</code> because both operands are <code>int</code>; <code>17 % 5</code> is the leftover <code>2</code>. The cast in <code>(double)a / b</code> forces real division, giving <code>3.40</code>.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Bit Flags</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">static</span> <span class="ty">void</span> <span class="fn">print_bin</span><span class="pu">(</span><span class="ty">unsigned</span> <span class="ty">char</span> value<span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> bit <span class="pu">=</span> <span class="nm">7</span><span class="pu">;</span> bit <span class="pu">&gt;=</span> <span class="nm">0</span><span class="pu">;</span> bit<span class="pu">--)</span> <span class="pu">{</span>
+        <span class="fn">putchar</span><span class="pu">(((</span>value <span class="pu">&gt;&gt;</span> bit<span class="pu">)</span> <span class="pu">&amp;</span> <span class="nm">1u</span><span class="pu">)</span> <span class="pu">?</span> <span class="st">'1'</span> <span class="pu">:</span> <span class="st">'0'</span><span class="pu">);</span>
+    <span class="pu">}</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">unsigned</span> <span class="ty">char</span> flags <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span>
+
+    flags <span class="pu">|=</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">0</span><span class="pu">);</span>     <span class="cm">/* set bit 0 */</span>
+    flags <span class="pu">|=</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">);</span>     <span class="cm">/* set bit 2 */</span>
+    flags <span class="pu">|=</span> <span class="pu">(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">4</span><span class="pu">);</span>     <span class="cm">/* set bit 4 */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After setting bits 0, 2, 4: "</span><span class="pu">);</span>
+    <span class="fn">print_bin</span><span class="pu">(</span>flags<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">" (%u)\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span><span class="pu">)</span>flags<span class="pu">);</span>
+
+    flags <span class="pu">&amp;=</span> <span class="pu">~(</span><span class="nm">1u</span> <span class="pu">&lt;&lt;</span> <span class="nm">2</span><span class="pu">);</span>    <span class="cm">/* clear bit 2 */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After clearing bit 2:       "</span><span class="pu">);</span>
+    <span class="fn">print_bin</span><span class="pu">(</span>flags<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">" (%u)\n"</span><span class="pu">,</span> <span class="pu">(</span><span class="ty">unsigned</span><span class="pu">)</span>flags<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Expected output:<br><code>After setting bits 0, 2, 4: 00010101 (21)<br>After clearing bit 2:       00010001 (17)</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>Bits 0, 2, 4 give <code>1 + 4 + 16 = 21</code>. Clearing bit 2 with <code>&amp;= ~(1u &lt;&lt; 2)</code> subtracts 4, leaving <code>17</code>. The mask <code>~(1u &lt;&lt; 2)</code> has every bit set except bit 2, so the AND clears only that bit.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — Short-Circuit Demo</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">first</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"first() called\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>                   <span class="cm">/* false */</span>
+<span class="pu">}</span>
+
+<span class="kw">static</span> <span class="ty">int</span> <span class="fn">second</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"second() called\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">1</span><span class="pu">;</span>                   <span class="cm">/* true */</span>
+<span class="pu">}</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> r<span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- first() &amp;&amp; second() ---\n"</span><span class="pu">);</span>
+    r <span class="pu">=</span> <span class="fn">first</span><span class="pu">()</span> <span class="pu">&amp;&amp;</span> <span class="fn">second</span><span class="pu">();</span>    <span class="cm">/* first() is false -&gt; second() skipped */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"result = %d\n\n"</span><span class="pu">,</span> r<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- second() &amp;&amp; first() ---\n"</span><span class="pu">);</span>
+    r <span class="pu">=</span> <span class="fn">second</span><span class="pu">()</span> <span class="pu">&amp;&amp;</span> <span class="fn">first</span><span class="pu">();</span>    <span class="cm">/* second() is true -&gt; first() must run */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"result = %d\n\n"</span><span class="pu">,</span> r<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- first() || second() ---\n"</span><span class="pu">);</span>
+    r <span class="pu">=</span> <span class="fn">first</span><span class="pu">()</span> <span class="pu">||</span> <span class="fn">second</span><span class="pu">();</span>    <span class="cm">/* first() is false -&gt; second() must run */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"result = %d\n\n"</span><span class="pu">,</span> r<span class="pu">);</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"--- second() || first() ---\n"</span><span class="pu">);</span>
+    r <span class="pu">=</span> <span class="fn">second</span><span class="pu">()</span> <span class="pu">||</span> <span class="fn">first</span><span class="pu">();</span>    <span class="cm">/* second() is true -&gt; first() skipped */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"result = %d\n"</span><span class="pu">,</span> r<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Expected output:<br><code>--- first() &amp;&amp; second() ---<br>first() called<br>result = 0<br>&nbsp;<br>--- second() &amp;&amp; first() ---<br>second() called<br>first() called<br>result = 0<br>&nbsp;<br>--- first() || second() ---<br>first() called<br>second() called<br>result = 1<br>&nbsp;<br>--- second() || first() ---<br>second() called<br>result = 1</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>In <code>first() &amp;&amp; second()</code> the left side is false so <code>second()</code> never runs; in <code>second() || first()</code> the left side is true so <code>first()</code> never runs. In the other two expressions both functions are called.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Swap Without Temp</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">12</span><span class="pu">;</span>
+    <span class="ty">int</span> b <span class="pu">=</span> <span class="nm">25</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Before: a = %d, b = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+
+    a <span class="pu">=</span> a <span class="pu">^</span> b<span class="pu">;</span>      <span class="cm">/* a now holds a XOR b          */</span>
+    b <span class="pu">=</span> a <span class="pu">^</span> b<span class="pu">;</span>      <span class="cm">/* (a ^ b) ^ b  -&gt;  original a  */</span>
+    a <span class="pu">=</span> a <span class="pu">^</span> b<span class="pu">;</span>      <span class="cm">/* (a ^ b) ^ a  -&gt;  original b  */</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"After:  a = %d, b = %d\n"</span><span class="pu">,</span> a<span class="pu">,</span> b<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Expected output:<br><code>Before: a = 12, b = 25<br>After:  a = 25, b = 12</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>With a = 12 (<code>01100</code>) and b = 25 (<code>11001</code>): step 1 makes a = <code>10101</code>; step 2 gives b = <code>10101 ^ 11001</code> = <code>01100</code> (12); step 3 gives a = <code>10101 ^ 01100</code> = <code>11001</code> (25). Caveat: this trick fails if both operands are the <em>same object</em> (it zeroes it), and a temporary is usually clearer and just as fast.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Precedence Puzzle</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="ty">int</span> a <span class="pu">=</span> <span class="nm">5</span><span class="pu">,</span> b <span class="pu">=</span> <span class="nm">3</span><span class="pu">,</span> c <span class="pu">=</span> <span class="nm">2</span><span class="pu">;</span>
+
+    <span class="cm">/* 1: * before +        -&gt; 5 + (3 * 2) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"1) a + b * c          = %d\n"</span><span class="pu">,</span> a <span class="pu">+</span> b <span class="pu">*</span> c<span class="pu">);</span>
+
+    <span class="cm">/* 2: - is left-assoc   -&gt; (5 - 3) - 2 */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"2) a - b - c          = %d\n"</span><span class="pu">,</span> a <span class="pu">-</span> b <span class="pu">-</span> c<span class="pu">);</span>
+
+    <span class="cm">/* 3: &amp;&amp; before ||      -&gt; ((a &gt; b) &amp;&amp; (b &gt; c)) || (c &gt; a) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"3) a &gt; b &amp;&amp; b &gt; c || c &gt; a = %d\n"</span><span class="pu">,</span> a <span class="pu">&gt;</span> b <span class="pu">&amp;&amp;</span> b <span class="pu">&gt;</span> c <span class="pu">||</span> c <span class="pu">&gt;</span> a<span class="pu">);</span>
+
+    <span class="cm">/* 4: == before &amp;       -&gt; a &amp; (b == c) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"4) a &amp; b == c         = %d\n"</span><span class="pu">,</span> a <span class="pu">&amp;</span> b <span class="pu">==</span> c<span class="pu">);</span>
+
+    <span class="cm">/* 5: + before &lt;&lt;       -&gt; a &lt;&lt; (1 + c) */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"5) a &lt;&lt; 1 + c         = %d\n"</span><span class="pu">,</span> a <span class="pu">&lt;&lt;</span> <span class="nm">1</span> <span class="pu">+</span> c<span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+<div class="callout tip"><span class="callout-icon">&#9654;</span><div>Expected output:<br><code>1) a + b * c          = 11<br>2) a - b - c          = 0<br>3) a &gt; b &amp;&amp; b &gt; c || c &gt; a = 1<br>4) a &amp; b == c         = 0<br>5) a &lt;&lt; 1 + c         = 40</code></div></div>
+<div class="callout tip"><span class="callout-icon">&#128161;</span><div>With a = 5, b = 3, c = 2 the groupings are:<br>1) <code>5 + (3 * 2)</code> = 11<br>2) <code>(5 - 3) - 2</code> = 0<br>3) <code>((5 &gt; 3) &amp;&amp; (3 &gt; 2)) || (2 &gt; 5)</code> = 1<br>4) <code>5 &amp; (3 == 2)</code> = <code>5 &amp; 0</code> = 0<br>5) <code>5 &lt;&lt; (1 + 2)</code> = 40<br>The compiler warns about lines 3 and 4 (and 5) &mdash; adding the parentheses shown above silences the warnings and documents the intent.</div></div>
+
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../03-control-flow/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
     </div>
 
   </main>

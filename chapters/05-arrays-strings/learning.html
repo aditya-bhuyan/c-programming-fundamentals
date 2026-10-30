@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learning Material — Chapter 5 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Learning Material — Chapter 5 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/05-arrays-strings/learning.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Learning Material — Chapter 5 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -30,9 +40,275 @@
       <a href="exercises.html">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
-    <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+
+    <div class="prose">
+      <h2>1. One-Dimensional Arrays</h2>
+      <p>An <strong>array</strong> is a contiguous block of memory that holds a fixed number of elements all of the <em>same type</em>. Once declared, its size is fixed at compile time (for a regular array) and cannot change at runtime.</p>
+
+      <h3>Declaration and Initialisation</h3>
+      <p>The general declaration syntax is <code>type name[SIZE];</code>. An uninitialised local array contains indeterminate values — reading from it is undefined behaviour.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>array_init.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Full initialisation — all 5 elements explicitly given */</span>
+<span class="ty">int</span> scores<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">,</span> <span class="nm">40</span><span class="pu">,</span> <span class="nm">50</span> <span class="pu">};</span>
+
+<span class="cm">/* Partial initialisation — remaining elements are zero-initialised */</span>
+<span class="ty">int</span> data<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span> <span class="pu">};</span>   <span class="cm">/* data = {1, 2, 0, 0, 0} */</span>
+
+<span class="cm">/* Zero-initialise the entire array */</span>
+<span class="ty">int</span> zeros<span class="pu">[</span><span class="nm">100</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">0</span> <span class="pu">};</span>
+
+<span class="cm">/* Let the compiler deduce the size from the initialiser list */</span>
+<span class="ty">int</span> primes<span class="pu">[]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">5</span><span class="pu">,</span> <span class="nm">7</span><span class="pu">,</span> <span class="nm">11</span> <span class="pu">};</span>  <span class="cm">/* size inferred as 5 */</span></pre>
+    </div>
+
+    <div class="prose">
+      <h3>Indexing</h3>
+      <p>Array elements are accessed using zero-based integer indices: <code>a[0]</code> is the first element and <code>a[N-1]</code> is the last. The subscript operator <code>[]</code> is just syntactic sugar for pointer arithmetic: <code>a[i]</code> is equivalent to <code>*(a + i)</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>array_index.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">int</span> a<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">20</span><span class="pu">,</span> <span class="nm">30</span><span class="pu">,</span> <span class="nm">40</span><span class="pu">,</span> <span class="nm">50</span> <span class="pu">};</span>
+
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"First : %d\n"</span><span class="pu">,</span> a<span class="pu">[</span><span class="nm">0</span><span class="pu">]</span><span class="pu">);</span>   <span class="cm">/* 10 */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"Last  : %d\n"</span><span class="pu">,</span> a<span class="pu">[</span><span class="nm">4</span><span class="pu">]</span><span class="pu">);</span>   <span class="cm">/* 50 */</span>
+a<span class="pu">[</span><span class="nm">2</span><span class="pu">]</span> <span class="pu">=</span> <span class="nm">99</span><span class="pu">;</span>                       <span class="cm">/* modify element */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>Out-of-Bounds Access is Undefined Behaviour:</strong> Accessing <code>a[5]</code> or <code>a[-1]</code> on a five-element array is <em>undefined behaviour</em> in C. The compiler is not required to generate a diagnostic or a crash — the program may silently corrupt memory, produce wrong results, or crash unpredictably. Always keep indices in <code>[0, N-1]</code>.</div>
+      </div>
+
+      <h2>2. Arrays and Memory</h2>
+      <p>Array elements are stored in <strong>contiguous memory</strong>: there is no gap between consecutive elements. For an <code>int</code> array on a system with 4-byte <code>int</code>s, element <code>a[1]</code> is located exactly 4 bytes after <code>a[0]</code>.</p>
+
+      <h3>Array Name as Pointer</h3>
+      <p>In most expressions, the name of an array <strong>decays</strong> to a pointer to its first element. This means <code>a</code> evaluates to <code>&amp;a[0]</code> and has type <code>int *</code> (for an <code>int</code> array). However, an array name is <strong>not a pointer variable</strong> — you cannot assign to it or apply <code>++</code>.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>array_memory.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> a<span class="pu">[</span><span class="nm">4</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span> <span class="nm">2</span><span class="pu">,</span> <span class="nm">3</span><span class="pu">,</span> <span class="nm">4</span> <span class="pu">};</span>
+
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(a)       = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>a<span class="pu">)</span><span class="pu">);</span>         <span class="cm">/* 16 (4 ints × 4 bytes) */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"sizeof(a[0])    = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>a<span class="pu">[</span><span class="nm">0</span><span class="pu">])</span><span class="pu">);</span>      <span class="cm">/* 4  */</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"Element count   = %zu\n"</span><span class="pu">,</span> <span class="kw">sizeof</span><span class="pu">(</span>a<span class="pu">)</span> <span class="pu">/</span> <span class="kw">sizeof</span><span class="pu">(</span>a<span class="pu">[</span><span class="nm">0</span><span class="pu">])</span><span class="pu">);</span>  <span class="cm">/* 4 */</span>
+
+<span class="cm">/* a decays to &amp;a[0] in this expression */</span>
+<span class="ty">int</span> <span class="pu">*</span>p <span class="pu">=</span> a<span class="pu">;</span>
+<span class="fn">printf</span><span class="pu">(</span><span class="st">"a[2] via ptr: %d\n"</span><span class="pu">,</span> <span class="pu">*(</span>p <span class="pu">+</span> <span class="nm">2</span><span class="pu">)</span><span class="pu">);</span>               <span class="cm">/* 3 */</span>
+
+<span class="cm">/* sizeof does NOT decay — it sees the full array type */</span>
+<span class="cm">/* sizeof(p) would return 8 (pointer size), not 16!   */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout tip">
+        <span class="callout-icon">&#128161;</span>
+        <div>The idiom <code>sizeof(a) / sizeof(a[0])</code> computes the number of elements in an array <em>only</em> when <code>a</code> is the actual array in scope — not a pointer to it. In a function that receives the array as a parameter, this idiom gives the pointer size, not the array length. Always pass the length separately.</div>
+      </div>
+
+      <h2>3. Passing Arrays to Functions</h2>
+      <p>When an array is passed to a function, it <strong>decays to a pointer</strong> to its first element. The function cannot determine the array's length from the parameter alone — you must pass the length as a separate argument.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>array_param.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* These three declarations are equivalent — all receive int * */</span>
+<span class="ty">void</span> <span class="fn">print_array</span><span class="pu">(</span><span class="ty">int</span> arr<span class="pu">[],</span> <span class="ty">int</span> n<span class="pu">);</span>
+<span class="ty">void</span> <span class="fn">print_array</span><span class="pu">(</span><span class="ty">int</span> arr<span class="pu">[</span><span class="nm">5</span><span class="pu">],</span> <span class="ty">int</span> n<span class="pu">);</span>   <span class="cm">/* size hint ignored */</span>
+<span class="ty">void</span> <span class="fn">print_array</span><span class="pu">(</span><span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">int</span> n<span class="pu">);</span>   <span class="cm">/* most explicit form */</span>
+
+<span class="cm">/* Read-only parameter: use const to prevent accidental writes */</span>
+<span class="ty">double</span> <span class="fn">average</span><span class="pu">(</span><span class="ty">const</span> <span class="ty">int</span> <span class="pu">*</span>arr<span class="pu">,</span> <span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">double</span> sum <span class="pu">=</span> <span class="nm">0.0</span><span class="pu">;</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span> <span class="pu">{</span>
+        sum <span class="pu">+=</span> arr<span class="pu">[</span>i<span class="pu">];</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> sum <span class="pu">/</span> n<span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>4. Multi-Dimensional Arrays</h2>
+      <p>C supports multi-dimensional arrays. A 2-D array is declared as <code>type name[ROWS][COLS]</code>. Internally, C uses <strong>row-major order</strong>: all elements of row 0 are stored before row 1, row 1 before row 2, and so on. This means iterating row-by-row is cache-friendly.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>2d_array.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="cm">/* 3 rows, 4 columns */</span>
+    <span class="ty">int</span> matrix<span class="pu">[</span><span class="nm">3</span><span class="pu">][</span><span class="nm">4</span><span class="pu">]</span> <span class="pu">=</span> <span class="pu">{</span>
+        <span class="pu">{</span> <span class="nm">1</span><span class="pu">,</span>  <span class="nm">2</span><span class="pu">,</span>  <span class="nm">3</span><span class="pu">,</span>  <span class="nm">4</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">5</span><span class="pu">,</span>  <span class="nm">6</span><span class="pu">,</span>  <span class="nm">7</span><span class="pu">,</span>  <span class="nm">8</span> <span class="pu">},</span>
+        <span class="pu">{</span> <span class="nm">9</span><span class="pu">,</span> <span class="nm">10</span><span class="pu">,</span> <span class="nm">11</span><span class="pu">,</span> <span class="nm">12</span> <span class="pu">}</span>
+    <span class="pu">};</span>
+
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> <span class="nm">3</span><span class="pu">;</span> r<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> <span class="nm">4</span><span class="pu">;</span> c<span class="pu">++)</span> <span class="pu">{</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%3d"</span><span class="pu">,</span> matrix<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]</span><span class="pu">);</span>
+        <span class="pu">}</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>When passing a 2-D array to a function, the number of <strong>columns</strong> must be specified in the parameter type so the compiler can calculate row offsets correctly:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>2d_param.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* Columns must be a compile-time constant */</span>
+<span class="ty">void</span> <span class="fn">print_matrix</span><span class="pu">(</span><span class="ty">int</span> m<span class="pu">[][</span><span class="nm">4</span><span class="pu">],</span> <span class="ty">int</span> rows<span class="pu">)</span> <span class="pu">{</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> r <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> r <span class="pu">&lt;</span> rows<span class="pu">;</span> r<span class="pu">++)</span> <span class="pu">{</span>
+        <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> c <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> c <span class="pu">&lt;</span> <span class="nm">4</span><span class="pu">;</span> c<span class="pu">++)</span>
+            <span class="fn">printf</span><span class="pu">(</span><span class="st">"%4d"</span><span class="pu">,</span> m<span class="pu">[</span>r<span class="pu">][</span>c<span class="pu">]</span><span class="pu">);</span>
+        <span class="fn">printf</span><span class="pu">(</span><span class="st">"\n"</span><span class="pu">);</span>
+    <span class="pu">}</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>5. C Strings</h2>
+      <p>C has no built-in string type. Instead, a <strong>string</strong> is a <code>char</code> array whose last element holds the <strong>null terminator</strong> <code>'\0'</code> (ASCII value 0). Every standard library string function relies on this sentinel to know where the string ends.</p>
+
+      <h3><code>char[]</code> vs <code>char *</code></h3>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>strings_intro.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* char array — stored on the stack, mutable */</span>
+<span class="ty">char</span> greeting<span class="pu">[]</span> <span class="pu">=</span> <span class="st">"Hello"</span><span class="pu">;</span>        <span class="cm">/* {'H','e','l','l','o','\0'} — 6 bytes */</span>
+greeting<span class="pu">[</span><span class="nm">0</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">'h'</span><span class="pu">;</span>                <span class="cm">/* OK — writable */</span>
+
+<span class="cm">/* char pointer — points to a string literal in read-only memory */</span>
+<span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>msg <span class="pu">=</span> <span class="st">"Hello"</span><span class="pu">;</span>        <span class="cm">/* pointer to static read-only data */</span>
+<span class="cm">/* msg[0] = 'h';  UNDEFINED BEHAVIOUR — never write through a string literal */</span>
+
+<span class="cm">/* Explicit size — must account for '\0' */</span>
+<span class="ty">char</span> name<span class="pu">[</span><span class="nm">20</span><span class="pu">];</span>                    <span class="cm">/* room for up to 19 chars + '\0' */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Always declare <code>char *</code> pointing to a string literal as <code><strong>const</strong> char *</code>. While C permits a non-<code>const</code> pointer to a string literal for historical reasons, writing through it is undefined behaviour and will typically crash or corrupt memory on modern systems.</div>
+      </div>
+
+      <h2>6. The <code>&lt;string.h&gt;</code> Functions</h2>
+      <p>The standard header <code>&lt;string.h&gt;</code> provides utilities for working with null-terminated strings and raw memory blocks. Study the pitfall column carefully before using each function.</p>
+
+      <table>
+        <thead>
+          <tr><th>Function</th><th>Signature</th><th>Purpose</th><th>Key Pitfall</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>strlen</code></td><td><code>size_t strlen(const char *s)</code></td><td>Returns the number of characters before <code>'\0'</code> (excludes the null terminator)</td><td>O(n) every call — hoist out of loops</td></tr>
+          <tr><td><code>strcpy</code></td><td><code>char *strcpy(char *dst, const char *src)</code></td><td>Copies <code>src</code> including <code>'\0'</code> into <code>dst</code></td><td><strong>No bounds check</strong> — destination must be large enough</td></tr>
+          <tr><td><code>strncpy</code></td><td><code>char *strncpy(char *dst, const char *src, size_t n)</code></td><td>Copies at most <code>n</code> bytes; pads with <code>'\0'</code> if <code>src</code> is shorter</td><td>Does <strong>not</strong> null-terminate if <code>src</code> is ≥ <code>n</code> chars — add <code>dst[n-1]='\0'</code> manually</td></tr>
+          <tr><td><code>strcat</code></td><td><code>char *strcat(char *dst, const char *src)</code></td><td>Appends <code>src</code> to the end of <code>dst</code></td><td>No bounds check — <code>dst</code> must have enough space for both strings plus <code>'\0'</code></td></tr>
+          <tr><td><code>strncat</code></td><td><code>char *strncat(char *dst, const char *src, size_t n)</code></td><td>Appends at most <code>n</code> chars from <code>src</code>, always null-terminates</td><td><code>n</code> is chars from <em>src</em>, not total buffer size</td></tr>
+          <tr><td><code>strcmp</code></td><td><code>int strcmp(const char *a, const char *b)</code></td><td>Compares two strings lexicographically</td><td>Returns 0 for equal, &lt;0 if a&lt;b, &gt;0 if a&gt;b — never compare strings with <code>==</code></td></tr>
+          <tr><td><code>strncmp</code></td><td><code>int strncmp(const char *a, const char *b, size_t n)</code></td><td>Compares at most <code>n</code> characters</td><td>Stops at <code>'\0'</code> even before <code>n</code> chars</td></tr>
+          <tr><td><code>strstr</code></td><td><code>char *strstr(const char *hay, const char *needle)</code></td><td>Returns pointer to first occurrence of <code>needle</code> in <code>hay</code>, or <code>NULL</code></td><td>Always check return value before dereferencing</td></tr>
+          <tr><td><code>strchr</code></td><td><code>char *strchr(const char *s, int c)</code></td><td>Returns pointer to first occurrence of character <code>c</code>, or <code>NULL</code></td><td>Pass a <code>char</code> value cast to <code>int</code>; searching for <code>'\0'</code> returns a pointer to the terminator</td></tr>
+          <tr><td><code>memcpy</code></td><td><code>void *memcpy(void *dst, const void *src, size_t n)</code></td><td>Copies exactly <code>n</code> bytes; faster than <code>strcpy</code> for known-size blocks</td><td>Source and destination <strong>must not overlap</strong> — use <code>memmove</code> if they might</td></tr>
+          <tr><td><code>memset</code></td><td><code>void *memset(void *s, int c, size_t n)</code></td><td>Fills first <code>n</code> bytes with the byte value <code>c</code></td><td>Sets <em>bytes</em> — using it to zero <code>int</code> arrays is fine (<code>0</code> bytes = zero integer); other values only work correctly for <code>char</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>7. Common String Bugs</h2>
+
+      <h3>Buffer Overflow</h3>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>string_overflow.c — DANGEROUS, do not use</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="ty">char</span> buf<span class="pu">[</span><span class="nm">8</span><span class="pu">];</span>
+<span class="fn">strcpy</span><span class="pu">(</span>buf<span class="pu">,</span> <span class="st">"This string is way too long!"</span><span class="pu">);</span>
+<span class="cm">/* Writes 29 bytes into an 8-byte buffer — overwrites stack memory,       */</span>
+<span class="cm">/* corrupts the return address, and enables code-execution exploits.      */</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout danger">
+        <span class="callout-icon">&#128721;</span>
+        <div><strong>Buffer overflows are one of the most exploited vulnerability classes in software history.</strong> They are the root cause of countless CVEs and high-profile breaches. <em>Never</em> use <code>strcpy</code>, <code>strcat</code>, or <code>gets</code> on untrusted or unbounded input. Prefer <code>strncpy</code>/<code>strncat</code> with explicit size limits, or use <code>snprintf</code> for safe formatted copying.</div>
+      </div>
+
+      <h3>Off-by-One: Forgetting the Null Terminator</h3>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>off_by_one.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* WRONG — no room for '\0' */</span>
+<span class="ty">char</span> s<span class="pu">[</span><span class="nm">5</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">"Hello"</span><span class="pu">;</span>   <span class="cm">/* 5 chars — '\0' has nowhere to go! */</span>
+
+<span class="cm">/* CORRECT — one extra byte for '\0' */</span>
+<span class="ty">char</span> s<span class="pu">[</span><span class="nm">6</span><span class="pu">]</span> <span class="pu">=</span> <span class="st">"Hello"</span><span class="pu">;</span>
+
+<span class="cm">/* WRONG — comparing string addresses, not contents */</span>
+<span class="kw">if</span> <span class="pu">(</span>s <span class="pu">==</span> <span class="st">"Hello"</span><span class="pu">)</span> <span class="pu">{</span> <span class="cm">/* always false — comparing two different pointers */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"equal\n"</span><span class="pu">);</span>
+<span class="pu">}</span>
+
+<span class="cm">/* CORRECT */</span>
+<span class="kw">if</span> <span class="pu">(</span><span class="fn">strcmp</span><span class="pu">(</span>s<span class="pu">,</span> <span class="st">"Hello"</span><span class="pu">)</span> <span class="pu">==</span> <span class="nm">0</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"equal\n"</span><span class="pu">);</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>8. Variable-Length Arrays (VLA) — C99</h2>
+      <p>C99 introduced <strong>Variable-Length Arrays</strong>, which allow the size of an automatic (stack) array to be determined at runtime rather than compile time. While convenient, VLAs carry risks and were made optional in C11.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>vla.c — C99 feature</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">void</span> <span class="fn">sum_vla</span><span class="pu">(</span><span class="ty">int</span> n<span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span> arr<span class="pu">[</span>n<span class="pu">];</span>                    <span class="cm">/* size determined at runtime */</span>
+    <span class="kw">for</span> <span class="pu">(</span><span class="ty">int</span> i <span class="pu">=</span> <span class="nm">0</span><span class="pu">;</span> i <span class="pu">&lt;</span> n<span class="pu">;</span> i<span class="pu">++)</span>
+        arr<span class="pu">[</span>i<span class="pu">]</span> <span class="pu">=</span> i <span class="pu">+</span> <span class="nm">1</span><span class="pu">;</span>
+    <span class="cm">/* ... process arr ... */</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div><strong>VLA Pitfalls:</strong> VLAs are stack-allocated and have no overflow detection. A large or attacker-controlled <code>n</code> can silently overflow the stack and crash the program. In C11 and later, VLA support is optional (<code>__STDC_NO_VLA__</code>). For production code, prefer <code>malloc</code>/<code>free</code> for dynamic arrays of unknown size.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li><strong>Arrays</strong> are fixed-size, contiguous blocks of same-type elements indexed from 0 to N−1. Out-of-bounds access is undefined behaviour.</li>
+        <li>An array name <strong>decays to a pointer</strong> to its first element in most expressions; <code>sizeof</code> is the main exception that retains full array type information.</li>
+        <li>When passing arrays to functions, the array <strong>decays to a pointer</strong> — always pass the length as a separate parameter. Use <code>const</code> for read-only parameters.</li>
+        <li><strong>2-D arrays</strong> are stored in row-major order. The column dimension must be specified when passing to functions.</li>
+        <li>C strings are <code>char</code> arrays terminated by <code>'\0'</code>. String literals are read-only; use <code>char[]</code> for mutable strings.</li>
+        <li>Use <code>strcmp</code> to compare strings — never <code>==</code>. Use bounded functions (<code>strncpy</code>, <code>strncat</code>) or <code>snprintf</code> to prevent buffer overflows.</li>
+        <li><strong>VLAs</strong> (C99) are stack-allocated arrays with runtime size — treat with caution and prefer dynamic allocation for large or unbounded data.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="index.html" class="btn btn-outline">&#8592; Overview</a>
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
     </div>
 
   </main>

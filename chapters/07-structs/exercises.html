@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Exercises — Chapter 7 — C Programming Fundamentals</title>
+  <link rel="icon" href="../../favicon.ico" type="image/x-icon" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="C Programming Fundamentals" />
+  <meta property="og:title" content="Exercises — Chapter 7 — C Programming Fundamentals" />
+  <meta property="og:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <meta property="og:url" content="https://c-programming-fundamentals.netlify.app/chapters/07-structs/exercises.html" />
+  <meta property="og:image" content="https://c-programming-fundamentals.netlify.app/assets/og-image.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Exercises — Chapter 7 — C Programming Fundamentals" />
+  <meta name="twitter:description" content="A free, open-source C programming course with chapters, code examples, quizzes, exercises, and solutions." />
   <link rel="stylesheet" href="../../assets/css/style.css" />
   <link rel="stylesheet" href="../../assets/css/highlight.css" />
 </head>
@@ -18,8 +28,8 @@
 
     <div class="page-header">
       <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 7</a> › Exercises</div>
-      <h1>Exercises</h1>
-      <p class="subtitle">Chapter 7 — Structures &amp; Unions</p>
+      <h1>Coding Exercises</h1>
+      <p class="subtitle">Chapter 7 — Structures &amp; Unions &bull; 5 exercises</p>
     </div>
 
     <div class="tab-bar">
@@ -30,9 +40,128 @@
       <a href="exercises.html" class="active">&#127947; Exercises</a>
       <a href="solutions.html">&#9989; Solutions</a>
     </div>
+
     <div class="callout info">
-      <span class="callout-icon">&#128161;</span>
-      <div>Content coming soon. Contribute on <a href="https://github.com/aditya-bhuyan/c-programming-fundamentals" target="_blank" rel="noopener">GitHub</a>.</div>
+      <span class="callout-icon">&#127947;</span>
+      <div>Try to solve each exercise yourself before looking at the solutions. Write your code in a text editor, compile with <code>gcc -std=c17 -Wall -Wextra -o ex&lt;N&gt; ex&lt;N&gt;.c</code>, and run it to verify your output.</div>
+    </div>
+
+    <!-- Exercise 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">1</span>
+        Student Record
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Define a <code>Student</code> struct with a <code>name</code> (character array), an <code>age</code> (<code>int</code>) and a <code>gpa</code> (<code>double</code>). Create an array of 3 students, then print them <strong>sorted by GPA from highest to lowest</strong>. Write a separate function <code>sort_by_gpa(Student *s, size_t n)</code> that sorts the array in place.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Name     Age  GPA
+Bob      22   3.90
+Alice    20   3.45
+Carol    21   3.12</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use struct assignment to swap or move whole elements: <code>Student tmp = s[i];</code> copies every member at once. An insertion sort or bubble sort is enough for 3 elements.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">2</span>
+        Point Distance
+        <span class="diff easy" style="margin-left:auto;">Easy</span>
+      </div>
+      <div class="exercise-body">
+        <p>Define a <code>Point</code> struct with <code>double x, y</code>. Write <code>double distance(Point a, Point b)</code> that returns the Euclidean distance between two points, and test it on at least two pairs. Link with <code>-lm</code> if your compiler requires it for <code>sqrt</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Distance (0,0) to (3,4)       = 5.0000
+Distance (-1.5,2) to (4.5,-2) = 7.2111</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">The distance is <code>sqrt(dx*dx + dy*dy)</code> where <code>dx = b.x - a.x</code> and <code>dy = b.y - a.y</code>. Include <code>&lt;math.h&gt;</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">3</span>
+        Linked List Node
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Define a self-referential <code>Node</code> struct holding an <code>int value</code> and a <code>struct Node *next</code>. Build a 5-node list containing 10, 20, 30, 40, 50 in that order, print it, then free every node. (This is a preview of Chapter 9, so <code>malloc</code> and <code>free</code> are all you need.)</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>10 -&gt; 20 -&gt; 30 -&gt; 40 -&gt; 50 -&gt; NULL
+List freed.</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Insert at the front by looping from the largest value down to the smallest. To free: save <code>head-&gt;next</code> in a temporary <em>before</em> calling <code>free(head)</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">4</span>
+        Tagged Union Calculator
+        <span class="diff medium" style="margin-left:auto;">Medium</span>
+      </div>
+      <div class="exercise-body">
+        <p>Use a tagged union <code>Result</code> that holds either an <code>int</code> or a <code>double</code>. Write <code>add(int, int)</code>, which returns an int result, and <code>divide(int, int)</code>, which returns an int result when the division is exact and a double result otherwise. Write <code>print_result</code> that inspects the tag and prints with the correct format specifier.</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>7 + 5    = 12 (int)
+12 / 4   = 3 (int)
+7 / 2    = 3.5000 (double)
+10 / 3   = 3.3333 (double)</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Use <code>a % b == 0</code> to detect an exact division. Remember to cast before dividing for the double case: <code>(double)a / b</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercise 5 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exnum">5</span>
+        Binary File Record
+        <span class="diff hard" style="margin-left:auto;">Hard</span>
+      </div>
+      <div class="exercise-body">
+        <p>Define a <code>Record</code> struct (<code>int id</code>, <code>char name[24]</code>, <code>double balance</code>). Write an array of 3 records to a binary file with <code>fwrite</code>, then read them back into a second, zeroed array with <code>fread</code> and print them. Check every <code>fopen</code> for failure. (This is a preview of Chapter 8.)</p>
+        <div class="code-block">
+          <div class="code-header"><span>Expected output</span></div>
+          <pre>Wrote 3 records (40 bytes each) to records.bin
+Read  3 records back
+
+id=1 name=Alice  balance=1250.75
+id=2 name=Bob    balance=310.00
+id=3 name=Carol  balance=9999.99</pre>
+        </div>
+        <div class="exercise-hint">
+          <button class="hint-toggle">&#128161; Show hint</button>
+          <div class="hint-body">Open with modes <code>"wb"</code> and <code>"rb"</code>. <code>fwrite(arr, sizeof(Record), count, fp)</code> returns the number of <em>records</em> written. Close the file between writing and reading.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="quiz.html" class="btn btn-outline">&#8592; Quiz</a>
+      <a href="solutions.html" class="btn btn-primary">View Solutions &#8594;</a>
     </div>
 
   </main>
