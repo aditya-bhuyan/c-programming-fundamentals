@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Material — Chapter 0 — C Programming Fundamentals</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <link rel="stylesheet" href="../../assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 0</a> › Learning Material</div>
+      <h1>Learning Material</h1>
+      <p class="subtitle">Chapter 0 — Getting Started</p>
+    </div>
+
+    <div class="tab-bar">
+      <a href="index.html">Overview</a>
+      <a href="learning.html" class="active">&#128214; Learning</a>
+      <a href="examples.html">&#128187; Examples</a>
+      <a href="quiz.html">&#129504; Quiz</a>
+      <a href="exercises.html">&#127947; Exercises</a>
+      <a href="solutions.html">&#9989; Solutions</a>
+    </div>
+
+    <div class="prose">
+
+      <h2>1. A brief history of C</h2>
+      <p>C was developed between 1969 and 1973 at Bell Labs by <strong>Dennis Ritchie</strong>, primarily to rewrite the Unix operating system in a portable language. Before C, operating systems were written in assembly language — tightly coupled to a specific processor family.</p>
+      <p>The language was standardised as <strong>ANSI C (C89)</strong> in 1989, then as <strong>C99</strong>, <strong>C11</strong>, and most recently <strong>C17</strong> (ISO/IEC 9899:2018). A new revision, <strong>C23</strong>, is in the final stages of publication.</p>
+
+      <blockquote>"C is a general-purpose programming language which features economy of expression, modern control flow and data structures, and a rich set of operators." — Brian W. Kernighan &amp; Dennis M. Ritchie, <em>The C Programming Language</em></blockquote>
+
+      <h2>2. Why learn C in 2024+?</h2>
+      <ul>
+        <li><strong>Systems programming</strong> — operating systems, device drivers, embedded firmware.</li>
+        <li><strong>Performance-critical software</strong> — databases, game engines, language runtimes (Python's CPython interpreter is written in C).</li>
+        <li><strong>Understanding the machine</strong> — C exposes memory layout, pointers, and hardware in a way no higher-level language does.</li>
+        <li><strong>Foundation for other languages</strong> — C++, Objective-C, Go, Rust, and many others are directly inspired by C.</li>
+        <li><strong>TIOBE &amp; industry demand</strong> — C consistently ranks in the top 3 most-used languages worldwide.</li>
+      </ul>
+
+      <h2>3. The compilation pipeline</h2>
+      <p>When you run <code>gcc hello.c -o hello</code>, four distinct phases execute in sequence:</p>
+
+      <table>
+        <thead><tr><th>#</th><th>Phase</th><th>What happens</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Pre-processing</td><td>Handles <code>#include</code>, <code>#define</code>, macros, conditional compilation</td><td><code>.i</code> file</td></tr>
+          <tr><td>2</td><td>Compilation</td><td>Translates C source to architecture-specific assembly</td><td><code>.s</code> file</td></tr>
+          <tr><td>3</td><td>Assembly</td><td>Translates assembly mnemonics into binary object code</td><td><code>.o</code> file</td></tr>
+          <tr><td>4</td><td>Linking</td><td>Combines object files + libraries into a single executable</td><td><code>a.out</code> / <code>hello.exe</code></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div>You can inspect intermediate outputs: <code>gcc -E hello.c</code> (preprocessor only), <code>gcc -S hello.c</code> (assembly), <code>gcc -c hello.c</code> (object file only).</div>
+      </div>
+
+      <h2>4. Anatomy of a C program</h2>
+      <p>Every C program must have exactly one <code>main</code> function — this is the entry point. The runtime calls <code>main</code> when the program starts.</p>
+
+    </div><!-- end prose -->
+
+    <div class="code-block">
+      <div class="code-header"><span>hello.c — annotated</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* 1. Preprocessor directive — tells the compiler to include
+      the Standard I/O library header (declares printf, scanf, etc.) */</span>
+<span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* 2. main() — program entry point.
+      int  = return type (exit code returned to the OS)
+      void = no command-line arguments accepted (can also be argc/argv) */</span>
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span>
+<span class="pu">{</span>
+    <span class="cm">/* 3. printf — print formatted text to standard output.
+          \n = newline character */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, World!\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* 4. return 0 — signals success to the OS (non-zero = error) */</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <div class="prose">
+      <h2>5. The <code>printf</code> function</h2>
+      <p><code>printf</code> (print formatted) is declared in <code>&lt;stdio.h&gt;</code>. It takes a <em>format string</em> followed by optional arguments.</p>
+
+      <table>
+        <thead><tr><th>Format specifier</th><th>Type</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><code>%d</code></td><td><code>int</code></td><td><code>printf("%d", 42);</code> → <code>42</code></td></tr>
+          <tr><td><code>%ld</code></td><td><code>long int</code></td><td><code>printf("%ld", 1000000L);</code></td></tr>
+          <tr><td><code>%f</code></td><td><code>double</code></td><td><code>printf("%.2f", 3.14159);</code> → <code>3.14</code></td></tr>
+          <tr><td><code>%c</code></td><td><code>char</code></td><td><code>printf("%c", 'A');</code> → <code>A</code></td></tr>
+          <tr><td><code>%s</code></td><td><code>char *</code> (string)</td><td><code>printf("%s", "hello");</code></td></tr>
+          <tr><td><code>%%</code></td><td>literal <code>%</code></td><td><code>printf("100%%");</code> → <code>100%</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Escape sequences</h3>
+      <table>
+        <thead><tr><th>Sequence</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>\n</code></td><td>Newline</td></tr>
+          <tr><td><code>\t</code></td><td>Horizontal tab</td></tr>
+          <tr><td><code>\\</code></td><td>Backslash</td></tr>
+          <tr><td><code>\"</code></td><td>Double quote inside a string</td></tr>
+          <tr><td><code>\0</code></td><td>Null character (string terminator)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>6. Return codes and the OS</h2>
+      <p>The value returned by <code>main</code> is the <strong>exit status</strong> of the program. By convention:</p>
+      <ul>
+        <li><code>return 0;</code> — success</li>
+        <li><code>return 1;</code> (or any non-zero value) — failure</li>
+      </ul>
+      <p>In a shell you can inspect the last exit code:</p>
+
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre>./hello
+echo $?       <span class="cm"># prints 0</span></pre>
+    </div>
+
+    <div class="prose">
+      <p>This matters in shell scripting and CI pipelines where a non-zero exit terminates the pipeline.</p>
+
+      <h2>7. Comments in C</h2>
+      <p>C supports two comment styles:</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span>comments.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/* This is a
+   multi-line block comment (C89 style) */</span>
+
+<span class="ty">int</span> x <span class="pu">=</span> <span class="nm">5</span><span class="pu">;</span>  <span class="cm">// This is a single-line comment (C99 and later)</span></pre>
+    </div>
+
+    <div class="prose">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;&#65039;</span>
+        <div>Block comments (<code>/* */</code>) do not nest. Writing <code>/* outer /* inner */ */</code> causes a compile error because the parser treats the first <code>*/</code> as closing the entire comment.</div>
+      </div>
+
+      <h2>Summary</h2>
+      <ul>
+        <li>C is a compiled, statically-typed, procedural language created at Bell Labs in the early 1970s.</li>
+        <li>Compilation goes through four stages: pre-processing → compilation → assembly → linking.</li>
+        <li>Every program has a single <code>main</code> function as its entry point.</li>
+        <li><code>printf</code> is the primary way to produce output; it uses format specifiers and escape sequences.</li>
+        <li>The return value of <code>main</code> becomes the program's exit code.</li>
+      </ul>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;">
+      <a href="examples.html" class="btn btn-primary">Next: Code Examples &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="../../assets/js/shared-layout.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

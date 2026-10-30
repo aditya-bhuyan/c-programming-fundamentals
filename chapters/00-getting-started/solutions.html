@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solutions — Chapter 0 — C Programming Fundamentals</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <link rel="stylesheet" href="../../assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 0</a> › Solutions</div>
+      <h1>Solutions</h1>
+      <p class="subtitle">Chapter 0 — Getting Started</p>
+    </div>
+
+    <div class="tab-bar">
+      <a href="index.html">Overview</a>
+      <a href="learning.html">&#128214; Learning</a>
+      <a href="examples.html">&#128187; Examples</a>
+      <a href="quiz.html">&#129504; Quiz</a>
+      <a href="exercises.html">&#127947; Exercises</a>
+      <a href="solutions.html" class="active">&#9989; Solutions</a>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#9888;&#65039;</span>
+      <div>Try the exercises yourself first! Consulting solutions before attempting the problem will reduce your learning gain significantly.</div>
+    </div>
+
+    <!-- Solution 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 1 — Hello, Name!</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex1_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, World!\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, C!\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, Programmer!\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Three separate <code>printf</code> calls each ending with <code>\n</code>. Simple and straightforward.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 2 — Personal Profile Card</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex2_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">const</span> <span class="ty">char</span> <span class="pu">*</span>name   <span class="pu">=</span> <span class="st">"Alice Johnson"</span><span class="pu">;</span>
+    <span class="ty">int</span>         age    <span class="pu">=</span> <span class="nm">28</span><span class="pu">;</span>
+    <span class="ty">double</span>      height <span class="pu">=</span> <span class="nm">5.6</span><span class="pu">;</span>
+    <span class="ty">char</span>        grade  <span class="pu">=</span> <span class="st">'A'</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"===========================\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Name   : %s\n"</span><span class="pu">,</span>    name<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Age    : %d\n"</span><span class="pu">,</span>    age<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Height : %.1f ft\n"</span><span class="pu">,</span> height<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade  : %c\n"</span><span class="pu">,</span>    grade<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"===========================\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#128161;</span><div>Notice <code>const char *name</code> — a pointer to a string literal. We cover pointers fully in Chapter 6. For now, know that <code>%s</code> expects a pointer to a null-terminated character array.</div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 3 — ASCII Art Box</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex3_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"+----------+\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"|  Hello   |\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"|  World   |\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"+----------+\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 4 — Inspection Pipeline</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex4.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm">/*
+ * Exercise 4 — Inspecting the C compilation pipeline
+ *
+ * Observations:
+ * 1. gcc -E ex4.c
+ *    Output: the #include <stdio.h> is replaced by hundreds of lines of
+ *    function declarations from the system header. Our code appears at the bottom.
+ *
+ * 2. gcc -S -std=c17 ex4.c → ex4.s
+ *    The string "Inspecting the pipeline\n" appears as a .string directive.
+ *    The call to printf becomes a 'call printf' assembly instruction.
+ *
+ * 3. gcc -c -std=c17 ex4.c → ex4.o
+ *    Binary object file. Not human-readable directly (use objdump -d ex4.o).
+ *
+ * 4. gcc -std=c17 -o ex4 ex4.c && ./ex4
+ *    Produces the executable and runs it immediately.
+ *
+ * 5. echo $?
+ *    Prints 0 — our return 0; became the process exit code.
+ */</span>
+<span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Inspecting the pipeline\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.4rem 0;" />
+
+    <!-- Solution 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:1.4rem 0 .4rem;">Exercise 5 — Escape Sequence Table</h2>
+    <div class="code-block">
+      <div class="code-header"><span>ex5_solution.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Escape  Effect\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"------  ------\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* \n — the newline itself is the effect */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\\n      (newline — the next line starts here)\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* \t — horizontal tab */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\\t      (tab)\tlike this\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* \\ — literal backslash */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\\\\      one backslash: \\\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* \" — literal double quote */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"\\\"      a quote: \"\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* %% — literal percent sign in printf */</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"%%%%      a percent: %%\n"</span><span class="pu">);</span>
+
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-icon">&#128161;</span>
+      <div>Key insight: to <em>print</em> the two-character sequence <code>\n</code> literally (not as a newline), you need <code>\\n</code> in the source — the first <code>\\</code> becomes a single backslash, followed by the literal <code>n</code>.</div>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="exercises.html" class="btn btn-outline">&#8592; Exercises</a>
+      <a href="../../chapters/01-variables/index.html" class="btn btn-primary">Next Chapter &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="../../assets/js/shared-layout.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

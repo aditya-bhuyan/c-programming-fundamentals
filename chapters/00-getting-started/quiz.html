@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — Chapter 0 — C Programming Fundamentals</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <link rel="stylesheet" href="../../assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 0</a> › Quiz</div>
+      <h1>Quiz</h1>
+      <p class="subtitle">Chapter 0 — Getting Started &bull; 8 questions</p>
+    </div>
+
+    <div class="tab-bar">
+      <a href="index.html">Overview</a>
+      <a href="learning.html">&#128214; Learning</a>
+      <a href="examples.html">&#128187; Examples</a>
+      <a href="quiz.html" class="active">&#129504; Quiz</a>
+      <a href="exercises.html">&#127947; Exercises</a>
+      <a href="solutions.html">&#9989; Solutions</a>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">&#128221;</span>
+      <div>Select one answer per question, then click <strong>Submit Quiz</strong>. Feedback and your score will appear immediately. You can retake the quiz by refreshing the page.</div>
+    </div>
+
+    <div class="quiz-form">
+
+      <!-- Q1 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 1 of 8</div>
+        <div class="qtext">Who created the C programming language?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>Brian Kernighan</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="true"  /><label>Dennis Ritchie</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>Linus Torvalds</label></label>
+          <label class="quiz-option"><input type="radio" name="q1" data-correct="false" /><label>Ken Thompson</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="Dennis Ritchie created C at Bell Labs (1969–1973). Kernighan co-authored the famous K&amp;R book. Thompson co-created Unix."></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 2 of 8</div>
+        <div class="qtext">What is the correct order of the C compilation pipeline?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Compilation → Assembly → Linking → Pre-processing</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="true"  /><label>Pre-processing → Compilation → Assembly → Linking</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Linking → Pre-processing → Compilation → Assembly</label></label>
+          <label class="quiz-option"><input type="radio" name="q2" data-correct="false" /><label>Assembly → Pre-processing → Compilation → Linking</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="The correct order is: Pre-processing (expand macros/includes) → Compilation (to assembly) → Assembly (to object code) → Linking (to executable)."></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 3 of 8</div>
+        <div class="qtext">Which <code>#include</code> directive is needed to use <code>printf</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>#include &lt;stdlib.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>#include &lt;string.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="true"  /><label><code>#include &lt;stdio.h&gt;</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q3" data-correct="false" /><label><code>#include &lt;math.h&gt;</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="printf is declared in &lt;stdio.h&gt; (Standard Input/Output)."></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 4 of 8</div>
+        <div class="qtext">What does <code>return 0;</code> at the end of <code>main</code> indicate?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>The program ran 0 iterations</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>The program encountered 0 warnings</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="true"  /><label>The program exited successfully</label></label>
+          <label class="quiz-option"><input type="radio" name="q4" data-correct="false" /><label>The program found 0 errors</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="By convention, returning 0 from main signals success to the operating system. Non-zero return values indicate errors."></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 5 of 8</div>
+        <div class="qtext">Which format specifier is used to print a <code>double</code> with <code>printf</code>?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>%d</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="true"  /><label><code>%f</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>%s</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q5" data-correct="false" /><label><code>%c</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="%f (and %lf for scanf) is used for float and double. %d is for int, %s for strings, %c for char."></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 6 of 8</div>
+        <div class="qtext">What does the escape sequence <code>\n</code> represent inside a string?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>The letter 'n'</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="true"  /><label>A newline character (moves cursor to next line)</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>A null terminator</label></label>
+          <label class="quiz-option"><input type="radio" name="q6" data-correct="false" /><label>A tab character</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="\n is the newline escape sequence. \0 is null, \t is tab."></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 7 of 8</div>
+        <div class="qtext">Which GCC flag enables all common compiler warnings?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>-W</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="true"  /><label><code>-Wall</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>-warn</code></label></label>
+          <label class="quiz-option"><input type="radio" name="q7" data-correct="false" /><label><code>-Werror</code></label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="-Wall enables most useful warnings. -Wextra adds more. -Werror turns warnings into errors (stricter). -W alone does little."></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="quiz-question">
+        <div class="qnum">Question 8 of 8</div>
+        <div class="qtext">What does <code>gcc -S hello.c</code> produce?</div>
+        <div class="quiz-options">
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>A final executable binary</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>A pre-processed source file (<code>.i</code>)</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="false" /><label>An object file (<code>.o</code>)</label></label>
+          <label class="quiz-option"><input type="radio" name="q8" data-correct="true"  /><label>An assembly source file (<code>.s</code>)</label></label>
+        </div>
+        <div class="quiz-feedback" data-explanation="-S stops after the compilation phase and produces a .s assembly file. -E produces .i (preprocessor), -c produces .o (object file)."></div>
+      </div>
+
+      <button class="btn btn-primary quiz-submit" type="button">Submit Quiz</button>
+      <div class="quiz-score"></div>
+
+    </div><!-- end quiz-form -->
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="examples.html" class="btn btn-outline">&#8592; Examples</a>
+      <a href="exercises.html" class="btn btn-primary">Next: Exercises &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="../../assets/js/shared-layout.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

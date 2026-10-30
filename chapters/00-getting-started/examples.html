@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Examples — Chapter 0 — C Programming Fundamentals</title>
+  <link rel="stylesheet" href="../../assets/css/style.css" />
+  <link rel="stylesheet" href="../../assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="../../index.html">Home</a> › <a href="index.html">Chapter 0</a> › Code Examples</div>
+      <h1>Code Examples</h1>
+      <p class="subtitle">Chapter 0 — Getting Started</p>
+    </div>
+
+    <div class="tab-bar">
+      <a href="index.html">Overview</a>
+      <a href="learning.html">&#128214; Learning</a>
+      <a href="examples.html" class="active">&#128187; Examples</a>
+      <a href="quiz.html">&#129504; Quiz</a>
+      <a href="exercises.html">&#127947; Exercises</a>
+      <a href="solutions.html">&#9989; Solutions</a>
+    </div>
+
+    <!-- Example 1 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 1 — Hello, World!</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">The classic first program. Demonstrates <code>#include</code>, <code>main</code>, <code>printf</code>, and <code>return</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>01_hello.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, World!\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Compile: <code>gcc -std=c17 -Wall -o 01_hello 01_hello.c</code> &nbsp;|&nbsp; Run: <code>./01_hello</code> &nbsp;|&nbsp; Output: <code>Hello, World!</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 2 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 2 — Multiple <code>printf</code> calls</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Demonstrates that <code>printf</code> does not add a newline automatically — you must include <code>\n</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span>02_multiline.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Line 1\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Line 2\n"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"No newline at the end of this line"</span><span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">" — continued on same line\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>Line 1<br>Line 2<br>No newline at the end of this line — continued on same line</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 3 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 3 — Format specifiers</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Using <code>%d</code>, <code>%f</code>, <code>%c</code>, and <code>%s</code> to print different types.</p>
+    <div class="code-block">
+      <div class="code-header"><span>03_format.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="ty">int</span>    age    <span class="pu">=</span> <span class="nm">25</span><span class="pu">;</span>
+    <span class="ty">double</span> height <span class="pu">=</span> <span class="nm">5.9</span><span class="pu">;</span>
+    <span class="ty">char</span>   grade  <span class="pu">=</span> <span class="st">'A'</span><span class="pu">;</span>
+
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Age    : %d\n"</span><span class="pu">,</span>    age<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Height : %.1f ft\n"</span><span class="pu">,</span> height<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Grade  : %c\n"</span><span class="pu">,</span>    grade<span class="pu">);</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Name   : %s\n"</span><span class="pu">,</span>    <span class="st">"Alice"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>Output:<br><code>Age    : 25<br>Height : 5.9 ft<br>Grade  : A<br>Name   : Alice</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 4 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 4 — Exit codes</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Using <code>EXIT_SUCCESS</code> and <code>EXIT_FAILURE</code> from <code>&lt;stdlib.h&gt;</code> (preferred over bare integers).</p>
+    <div class="code-block">
+      <div class="code-header"><span>04_exit.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="st">&lt;stdlib.h&gt;</span>   <span class="cm">/* EXIT_SUCCESS, EXIT_FAILURE */</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Program running...\n"</span><span class="pu">);</span>
+
+    <span class="cm">/* Using the named constants is more readable than 0 / 1 */</span>
+    <span class="kw">return</span> EXIT_SUCCESS<span class="pu">;</span>  <span class="cm">/* equivalent to return 0; */</span>
+<span class="pu">}</span></pre>
+    </div>
+    <div class="callout tip"><span class="callout-icon">&#9654;</span><div>After running, check the exit code: <code>echo $?</code> → <code>0</code></div></div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.6rem 0;" />
+
+    <!-- Example 5 -->
+    <h2 style="font-size:1.05rem;font-weight:800;margin:0 0 .4rem;">Example 5 — Inspecting pre-processor output</h2>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.5rem;">Shows how to stop after pre-processing to see what the compiler actually works with.</p>
+    <div class="code-block">
+      <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="cm"># Stop after pre-processing; output goes to stdout</span>
+gcc -E 01_hello.c | head -40
+
+<span class="cm"># Stop after compiling to assembly</span>
+gcc -S -std=c17 01_hello.c       <span class="cm"># produces 01_hello.s</span>
+cat 01_hello.s
+
+<span class="cm"># Compile to object file only (no linking)</span>
+gcc -c -std=c17 01_hello.c       <span class="cm"># produces 01_hello.o</span></pre>
+    </div>
+
+    <div style="display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;">
+      <a href="learning.html" class="btn btn-outline">&#8592; Learning</a>
+      <a href="quiz.html" class="btn btn-primary">Next: Quiz &#8594;</a>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="../../assets/js/shared-layout.js"></script>
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

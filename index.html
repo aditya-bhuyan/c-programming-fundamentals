@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C Programming Fundamentals</title>
+  <meta name="description" content="A free, open-source, structured C programming course with chapters, code examples, quizzes, exercises, and solutions." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="hero">
+      <h1>C Programming Fundamentals</h1>
+      <p>A structured, hands-on course for learning the C language from first principles — with concept explanations, runnable examples, quizzes, exercises, and reference solutions.</p>
+      <div class="hero-badges">
+        <span class="badge">10 Chapters</span>
+        <span class="badge">50+ Code Examples</span>
+        <span class="badge">Quizzes &amp; Exercises</span>
+        <span class="badge">GNU GPL v3</span>
+        <span class="badge">Free &amp; Open Source</span>
+      </div>
+    </div>
+
+    <!-- Quick start strip -->
+    <div class="callout info">
+      <span class="callout-icon">&#128161;</span>
+      <div>New to C? Start with <a href="intro.html"><strong>Setup &amp; Environment</strong></a> to install a compiler on your OS and run your first program, then continue to <a href="chapters/00-getting-started/index.html"><strong>Chapter 0: Getting Started</strong></a>.</div>
+    </div>
+
+    <!-- Chapter grid -->
+    <h2 style="font-size:1.1rem;font-weight:800;margin:1.8rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">Chapters</h2>
+    <div class="card-grid">
+
+      <a class="card" href="chapters/00-getting-started/index.html">
+        <span class="card-icon">&#127959;</span>
+        <span class="card-title">Ch 0 — Getting Started</span>
+        <span class="card-desc">History of C, the compilation pipeline, your first program, and <code>printf</code>.</span>
+        <span class="card-meta">5 sections &bull; Beginner</span>
+      </a>
+
+      <a class="card" href="chapters/01-variables/index.html">
+        <span class="card-icon">&#128200;</span>
+        <span class="card-title">Ch 1 — Variables &amp; Data Types</span>
+        <span class="card-desc">Integer types, float/double, char, type sizes, and <code>sizeof</code>.</span>
+        <span class="card-meta">5 sections &bull; Beginner</span>
+      </a>
+
+      <a class="card" href="chapters/02-operators/index.html">
+        <span class="card-icon">&#10133;</span>
+        <span class="card-title">Ch 2 — Operators &amp; Expressions</span>
+        <span class="card-desc">Arithmetic, relational, logical, bitwise, and assignment operators.</span>
+        <span class="card-meta">5 sections &bull; Beginner</span>
+      </a>
+
+      <a class="card" href="chapters/03-control-flow/index.html">
+        <span class="card-icon">&#128260;</span>
+        <span class="card-title">Ch 3 — Control Flow</span>
+        <span class="card-desc"><code>if/else</code>, <code>switch</code>, <code>for</code>, <code>while</code>, <code>do-while</code>, and <code>goto</code>.</span>
+        <span class="card-meta">5 sections &bull; Beginner</span>
+      </a>
+
+      <a class="card" href="chapters/04-functions/index.html">
+        <span class="card-icon">&#128295;</span>
+        <span class="card-title">Ch 4 — Functions</span>
+        <span class="card-desc">Declarations, definitions, parameters, return values, recursion, and scope.</span>
+        <span class="card-meta">5 sections &bull; Intermediate</span>
+      </a>
+
+      <a class="card" href="chapters/05-arrays-strings/index.html">
+        <span class="card-icon">&#128196;</span>
+        <span class="card-title">Ch 5 — Arrays &amp; Strings</span>
+        <span class="card-desc">1-D &amp; 2-D arrays, C strings, <code>string.h</code> functions, and null termination.</span>
+        <span class="card-meta">5 sections &bull; Intermediate</span>
+      </a>
+
+      <a class="card" href="chapters/06-pointers/index.html">
+        <span class="card-icon">&#128204;</span>
+        <span class="card-title">Ch 6 — Pointers</span>
+        <span class="card-desc">Address-of, dereference, pointer arithmetic, pointers &amp; arrays, double pointers.</span>
+        <span class="card-meta">5 sections &bull; Intermediate</span>
+      </a>
+
+      <a class="card" href="chapters/07-structs/index.html">
+        <span class="card-icon">&#128218;</span>
+        <span class="card-title">Ch 7 — Structures &amp; Unions</span>
+        <span class="card-desc"><code>struct</code>, <code>union</code>, <code>typedef</code>, nested structs, and bit-fields.</span>
+        <span class="card-meta">5 sections &bull; Intermediate</span>
+      </a>
+
+      <a class="card" href="chapters/08-file-io/index.html">
+        <span class="card-icon">&#128190;</span>
+        <span class="card-title">Ch 8 — File I/O</span>
+        <span class="card-desc"><code>fopen</code>, <code>fclose</code>, text vs binary mode, <code>fprintf</code>, <code>fscanf</code>, <code>fseek</code>.</span>
+        <span class="card-meta">5 sections &bull; Intermediate</span>
+      </a>
+
+      <a class="card" href="chapters/09-dynamic-memory/index.html">
+        <span class="card-icon">&#129504;</span>
+        <span class="card-title">Ch 9 — Dynamic Memory</span>
+        <span class="card-desc"><code>malloc</code>, <code>calloc</code>, <code>realloc</code>, <code>free</code>, memory leaks, and Valgrind.</span>
+        <span class="card-meta">5 sections &bull; Advanced</span>
+      </a>
+
+    </div>
+
+    <!-- How each chapter is structured -->
+    <h2 style="font-size:1.1rem;font-weight:800;margin:2rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">How Each Chapter is Structured</h2>
+    <div class="section-links">
+      <a class="section-link" href="chapters/00-getting-started/learning.html">
+        <span class="section-icon">&#128214;</span>Learning Material
+      </a>
+      <a class="section-link" href="chapters/00-getting-started/examples.html">
+        <span class="section-icon">&#128187;</span>Code Examples
+      </a>
+      <a class="section-link" href="chapters/00-getting-started/quiz.html">
+        <span class="section-icon">&#129504;</span>Quiz
+      </a>
+      <a class="section-link" href="chapters/00-getting-started/exercises.html">
+        <span class="section-icon">&#127947;</span>Exercises
+      </a>
+      <a class="section-link" href="chapters/00-getting-started/solutions.html">
+        <span class="section-icon">&#9989;</span>Solutions
+      </a>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#128218;</span>
+      <div>All code examples and solutions are provided under the <strong>GNU General Public License v3</strong>. You are free to study, modify, and redistribute them under the same terms.</div>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="assets/js/shared-layout.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

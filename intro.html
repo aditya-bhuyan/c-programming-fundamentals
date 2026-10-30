@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup &amp; Environment — C Programming Fundamentals</title>
+  <meta name="description" content="How to install a C compiler and run C programs on Windows, macOS, and Linux." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/highlight.css" />
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<div class="layout">
+  <nav class="sidebar"></nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="breadcrumb"><a href="index.html">Home</a> › Setup &amp; Environment</div>
+      <h1>Setup &amp; Environment</h1>
+      <p class="subtitle">Installing a C compiler and running your first program — on any operating system.</p>
+    </div>
+
+    <!-- What is a C compiler? -->
+    <div class="prose">
+      <h2>What happens when you run a C program?</h2>
+      <p>C is a <strong>compiled language</strong>. Unlike Python or JavaScript, C source code (<code>.c</code> files) cannot be interpreted directly. It must be transformed into a native binary by a <em>compiler</em>. The pipeline looks like this:</p>
+
+      <table>
+        <thead><tr><th>Stage</th><th>Input</th><th>Output</th><th>Tool</th></tr></thead>
+        <tbody>
+          <tr><td>Pre-processing</td><td><code>hello.c</code></td><td><code>hello.i</code> (expanded source)</td><td><code>cpp</code></td></tr>
+          <tr><td>Compilation</td><td><code>hello.i</code></td><td><code>hello.s</code> (assembly)</td><td><code>cc1</code></td></tr>
+          <tr><td>Assembly</td><td><code>hello.s</code></td><td><code>hello.o</code> (object file)</td><td><code>as</code></td></tr>
+          <tr><td>Linking</td><td><code>hello.o</code> + libraries</td><td><code>hello</code> / <code>hello.exe</code></td><td><code>ld</code></td></tr>
+        </tbody>
+      </table>
+
+      <p>You never need to run these steps individually — the <code>gcc</code> (or <code>clang</code> / <code>cl</code>) command does all of them for you with a single invocation.</p>
+
+      <h2>Choosing a compiler</h2>
+      <table>
+        <thead><tr><th>Compiler</th><th>Platforms</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GCC</strong> (GNU Compiler Collection)</td><td>Linux, macOS, Windows (MinGW/MSYS2)</td><td>Most widely used; excellent standards support</td></tr>
+          <tr><td><strong>Clang</strong></td><td>macOS, Linux, Windows</td><td>Fast, precise error messages; default on macOS</td></tr>
+          <tr><td><strong>MSVC</strong> (cl.exe)</td><td>Windows only</td><td>Ships with Visual Studio; tightest Windows integration</td></tr>
+          <tr><td><strong>TCC</strong> (Tiny C Compiler)</td><td>Linux, Windows</td><td>Very small; good for quick experiments</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <span class="callout-icon">&#128161;</span>
+        <div>For this course we use <strong>GCC</strong> because it is free, cross-platform, and the most common choice in educational and open-source contexts. Every example compiles cleanly with <code>gcc -std=c17 -Wall -Wextra</code>.</div>
+      </div>
+    </div>
+
+    <!-- OS install tabs -->
+    <h2 style="font-size:1.15rem;font-weight:800;margin:2rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">&#9881; Installation Instructions</h2>
+
+    <div class="os-tab-group">
+      <div class="os-tabs">
+        <button class="os-tab-btn active" data-os="linux">&#127926; Linux</button>
+        <button class="os-tab-btn" data-os="macos">&#127822; macOS</button>
+        <button class="os-tab-btn" data-os="windows">&#128759; Windows</button>
+      </div>
+
+      <!-- Linux -->
+      <div class="os-tab-content active" data-os-panel="linux">
+        <div class="prose">
+          <h3>Debian / Ubuntu / Pop!_OS</h3>
+          <p>GCC is available in the default repositories:</p>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Update package index</span>
+sudo apt update
+
+<span class="cm"># Install GCC, Make, and the build-essential meta-package</span>
+sudo apt install -y build-essential
+
+<span class="cm"># Verify installation</span>
+gcc --version
+<span class="cm"># Expected output: gcc (Ubuntu ...) 12.x.x ...</span></pre>
+        </div>
+
+        <div class="prose">
+          <h3>Fedora / RHEL / Rocky Linux</h3>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre>sudo dnf install -y gcc make
+gcc --version</pre>
+        </div>
+
+        <div class="prose">
+          <h3>Arch Linux / Manjaro</h3>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+          <pre>sudo pacman -S --noconfirm gcc make
+gcc --version</pre>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">&#9989;</span>
+          <div>If you prefer Clang, install it with <code>sudo apt install clang</code> and replace <code>gcc</code> with <code>clang</code> in all commands below. The flags are identical.</div>
+        </div>
+      </div>
+
+      <!-- macOS -->
+      <div class="os-tab-content" data-os-panel="macos">
+        <div class="prose">
+          <h3>Option A — Xcode Command Line Tools (recommended, no IDE needed)</h3>
+          <p>This installs Clang (which is aliased as <code>gcc</code> on macOS) along with the standard C library headers:</p>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>bash — Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Opens an installer dialog if not already installed</span>
+xcode-select --install
+
+<span class="cm"># Confirm</span>
+gcc --version
+<span class="cm"># Apple clang version 15.x.x (clang-1500.x.x.x)</span></pre>
+        </div>
+
+        <div class="prose">
+          <h3>Option B — Homebrew GCC (true GCC, not Clang)</h3>
+          <p>First install <a href="https://brew.sh" target="_blank" rel="noopener">Homebrew</a> if you haven't, then:</p>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>bash — Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Install Homebrew (skip if already installed)</span>
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+<span class="cm"># Install GCC (installs as gcc-13 or similar)</span>
+brew install gcc
+
+<span class="cm"># Check the installed version name</span>
+brew list --formula | grep gcc
+<span class="cm"># Use the versioned binary, e.g.:</span>
+gcc-13 --version</pre>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">&#128161;</span>
+          <div>On macOS the command <code>gcc</code> is Apple Clang. For the course examples either works perfectly. If you installed true GCC via Homebrew, substitute <code>gcc-13</code> (or whichever version) in place of <code>gcc</code>.</div>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div class="os-tab-content" data-os-panel="windows">
+        <div class="prose">
+          <h3>Option A — MSYS2 + MinGW-w64 (recommended)</h3>
+          <p>MSYS2 provides a Linux-like environment with a current GCC toolchain:</p>
+          <ol>
+            <li>Download the MSYS2 installer from <a href="https://www.msys2.org" target="_blank" rel="noopener">msys2.org</a> and run it.</li>
+            <li>Open the <strong>MSYS2 UCRT64</strong> terminal (from the Start Menu) and run:</li>
+          </ol>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><span>MSYS2 UCRT64 shell</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Update package database</span>
+pacman -Syu
+
+<span class="cm"># Install GCC toolchain</span>
+pacman -S --noconfirm mingw-w64-ucrt-x86_64-gcc
+
+<span class="cm"># Confirm</span>
+gcc --version</pre>
+        </div>
+        <div class="prose">
+          <p>Add <code>C:\msys64\ucrt64\bin</code> to your Windows <strong>PATH</strong> environment variable so you can run <code>gcc</code> from any terminal.</p>
+
+          <h3>Option B — VS Code + MinGW-w64 (step-by-step)</h3>
+          <ol>
+            <li>Follow Microsoft's official guide: <em>Using GCC with MinGW</em> in the VS Code C/C++ extension docs.</li>
+            <li>Install the <strong>C/C++ Extension Pack</strong> in VS Code.</li>
+            <li>Configure <code>.vscode/tasks.json</code> to call <code>gcc</code> on save.</li>
+          </ol>
+
+          <h3>Option C — Visual Studio (MSVC)</h3>
+          <p>Download <a href="https://visualstudio.microsoft.com/downloads/" target="_blank" rel="noopener">Visual Studio Community</a> (free). Select the <em>Desktop development with C++</em> workload. Use <code>cl.exe</code> instead of <code>gcc</code>.</p>
+        </div>
+
+        <div class="callout warn">
+          <span class="callout-icon">&#9888;&#65039;</span>
+          <div>Windows users: avoid installing old MinGW from <em>mingw.org</em> — it is unmaintained. Use <strong>MSYS2 / MinGW-w64</strong> which ships GCC 13+ and is actively maintained.</div>
+        </div>
+      </div>
+    </div><!-- end os-tab-group -->
+
+    <!-- Compile & run section -->
+    <h2 style="font-size:1.15rem;font-weight:800;margin:2.2rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">&#9654;&#65039; Compiling &amp; Running a C Program</h2>
+
+    <div class="prose">
+      <p>The workflow is identical on all three operating systems, with minor differences in the output file name and how you run it.</p>
+    </div>
+
+    <!-- Step 1 -->
+    <h3 style="font-size:1rem;font-weight:700;margin:.8rem 0 .4rem;">Step 1 — Write the source file</h3>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.4rem;">Save the following as <code>hello.c</code>:</p>
+    <div class="code-block">
+      <div class="code-header"><span>hello.c</span><button class="copy-btn">Copy</button></div>
+      <pre><span class="pp">#include</span> <span class="st">&lt;stdio.h&gt;</span>
+
+<span class="ty">int</span> <span class="fn">main</span><span class="pu">(</span><span class="ty">void</span><span class="pu">)</span> <span class="pu">{</span>
+    <span class="fn">printf</span><span class="pu">(</span><span class="st">"Hello, World!\n"</span><span class="pu">);</span>
+    <span class="kw">return</span> <span class="nm">0</span><span class="pu">;</span>
+<span class="pu">}</span></pre>
+    </div>
+
+    <!-- Step 2 -->
+    <h3 style="font-size:1rem;font-weight:700;margin:.8rem 0 .4rem;">Step 2 — Compile</h3>
+
+    <div class="os-tab-group">
+      <div class="os-tabs">
+        <button class="os-tab-btn active" data-os="run-linux">Linux / macOS</button>
+        <button class="os-tab-btn" data-os="run-windows">Windows (CMD / PowerShell)</button>
+        <button class="os-tab-btn" data-os="run-msvc">Windows (MSVC)</button>
+      </div>
+
+      <div class="os-tab-content active" data-os-panel="run-linux">
+        <div class="code-block">
+          <div class="code-header"><span>Terminal</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Compile with recommended warning flags</span>
+gcc -std=c17 -Wall -Wextra -o hello hello.c
+
+<span class="cm"># Run</span>
+./hello</pre>
+        </div>
+      </div>
+
+      <div class="os-tab-content" data-os-panel="run-windows">
+        <div class="code-block">
+          <div class="code-header"><span>MSYS2 / MinGW-w64 terminal</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm"># Compile — produces hello.exe</span>
+gcc -std=c17 -Wall -Wextra -o hello hello.c
+
+<span class="cm"># Run (MSYS2 shell)</span>
+./hello.exe
+
+<span class="cm"># Run (Windows CMD)</span>
+hello.exe</pre>
+        </div>
+      </div>
+
+      <div class="os-tab-content" data-os-panel="run-msvc">
+        <div class="code-block">
+          <div class="code-header"><span>Developer Command Prompt for VS</span><button class="copy-btn">Copy</button></div>
+          <pre><span class="cm">rem Compile</span>
+cl hello.c
+
+<span class="cm">rem Run</span>
+hello.exe</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compiler flags reference -->
+    <h2 style="font-size:1.15rem;font-weight:800;margin:2.2rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">&#128270; Recommended Compiler Flags</h2>
+    <div class="prose">
+      <table>
+        <thead><tr><th>Flag</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>-std=c17</code></td><td>Use the C17 standard (ISO/IEC 9899:2018). Also try <code>-std=c11</code>.</td></tr>
+          <tr><td><code>-Wall</code></td><td>Enable all common warnings. Always use this.</td></tr>
+          <tr><td><code>-Wextra</code></td><td>Enable extra warnings beyond <code>-Wall</code>.</td></tr>
+          <tr><td><code>-Wpedantic</code></td><td>Strictly enforce the standard; warn about non-portable extensions.</td></tr>
+          <tr><td><code>-g</code></td><td>Include debug symbols (required for <code>gdb</code> / LLDB).</td></tr>
+          <tr><td><code>-O2</code></td><td>Optimise for speed (use for production; omit while debugging).</td></tr>
+          <tr><td><code>-o &lt;name&gt;</code></td><td>Specify the output binary name.</td></tr>
+          <tr><td><code>-fsanitize=address</code></td><td>Enable AddressSanitizer to catch memory errors at runtime.</td></tr>
+        </tbody>
+      </table>
+
+      <p>A good all-purpose development command:</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span>bash</span><button class="copy-btn">Copy</button></div>
+      <pre>gcc -std=c17 -Wall -Wextra -Wpedantic -g -fsanitize=address -o myprog myprog.c</pre>
+    </div>
+
+    <!-- Editors -->
+    <h2 style="font-size:1.15rem;font-weight:800;margin:2.2rem 0 .8rem;border-bottom:2px solid var(--border);padding-bottom:.3rem;">&#128221; Recommended Editors &amp; IDEs</h2>
+    <div class="prose">
+      <table>
+        <thead><tr><th>Tool</th><th>Platform</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>VS Code</strong> + C/C++ Extension</td><td>All</td><td>Free, excellent IntelliSense, integrated debugger</td></tr>
+          <tr><td><strong>CLion</strong></td><td>All</td><td>Full IDE; free for students via JetBrains Educational</td></tr>
+          <tr><td><strong>Vim / Neovim</strong></td><td>All</td><td>Lightweight; add <code>clangd</code> LSP for autocompletion</td></tr>
+          <tr><td><strong>Geany</strong></td><td>Linux / Windows</td><td>Lightweight IDE; good for beginners</td></tr>
+          <tr><td><strong>Visual Studio</strong></td><td>Windows</td><td>Full IDE with MSVC; best Windows debugging</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Verifying your setup — checklist</h2>
+      <ul>
+        <li>Run <code>gcc --version</code> — you should see a version number, not "command not found".</li>
+        <li>Compile and run <code>hello.c</code> — output should be <code>Hello, World!</code>.</li>
+        <li>Compile with <code>-Wall -Wextra</code> — zero warnings on a clean file means the toolchain is healthy.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">&#127919;</span>
+        <div>Once your setup works, proceed to <a href="chapters/00-getting-started/index.html"><strong>Chapter 0 — Getting Started</strong></a> to write your first real C program.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer></footer>
+
+<script src="assets/js/shared-layout.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

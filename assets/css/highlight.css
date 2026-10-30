@@ -1,0 +1,21 @@
+/* =============================================
+   C Programming Fundamentals — Syntax highlight
+   Catppuccin Mocha palette for C keywords
+   ============================================= */
+
+/* keywords */
+.kw  { color: #cba6f7; }
+/* types */
+.ty  { color: #89dceb; }
+/* strings */
+.st  { color: #a6e3a1; }
+/* comments */
+.cm  { color: #6c7086; font-style: italic; }
+/* numbers */
+.nm  { color: #fab387; }
+/* preprocessor */
+.pp  { color: #f38ba8; }
+/* function names */
+.fn  { color: #89b4fa; }
+/* punctuation */
+.pu  { color: #cdd6f4; }
